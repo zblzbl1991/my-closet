@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, toRefs, onMounted } from 'vue';
-import Tabbar from "../../custom-tab-bar/index.vue";
+import Tabbar from "../../component/index.vue";
 const data = reactive({
   categoryInfo: {},
   category: [{}],

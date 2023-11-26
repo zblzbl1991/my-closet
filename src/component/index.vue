@@ -1,0 +1,68 @@
+<template>
+  <nut-tabbar @tab-switch="switchTab" v-model:visible="selected" bottom>
+    <nut-tabbar-item v-for="(item,index) in list" :tab-title="item.text">
+              <template #icon>
+      <!--          <Home></Home>-->
+              </template>
+    </nut-tabbar-item>
+  </nut-tabbar>
+</template>
+
+<script>
+import Taro from "@tarojs/taro";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+
+export default {
+  name:'Tabbar',
+  props: {},
+  setup() {
+    const store = useStore();
+    const selected = computed(() => store.getters.getSelected);
+    const url = [
+      "/pages/index/index",
+      "/pages/cate/index",
+      "/pages/cart/index",
+      "/pages/my/index",
+    ];
+    function switchTab(item, index) {
+      console.log(index);
+      setSelected(index);
+      Taro.switchTab({
+        url: list[index].pagePath,
+      });
+    }
+    const list = [
+      {
+        pagePath: '/pages/index/index',
+        // selectedIconPath: '../images/tabbar_home_on.png',
+        // iconPath: '../images/tabbar_home.png',
+        text: '我的首页'
+      },
+      {
+        pagePath: '/pages/my-closet/index',
+        // selectedIconPath: '../images/tabbar_cate_on.png',
+        // iconPath: '../images/tabbar_cate.png',
+        text: '我的衣橱'
+      },
+      {
+        pagePath: '/pages/my-fashion/index',
+        // selectedIconPath: '../images/tabbar_cate_on.png',
+        // iconPath: '../images/tabbar_cate.png',
+        text: '我的穿搭'
+      },
+    ]
+    function setSelected(index) {
+      store.dispatch("setSelected", index);
+    }
+    return{
+      switchTab,
+      selected,
+      list
+    }
+  },
+};
+</script>
+
+<style lang="scss">
+</style>
