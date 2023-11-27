@@ -7,10 +7,13 @@ import { Grid, GridItem } from '@nutui/nutui-taro';
 import { Row, Col } from '@nutui/nutui-taro';
 import { Swiper,SwiperItem } from '@nutui/nutui-taro';
 import { Avatar } from '@nutui/nutui-taro';
+// taro
+// taro
+import { DatePicker, Picker, Popup, OverLay } from '@nutui/nutui-taro';
 import './app.scss'
 
 const App = createApp({
-  onShow (options) {},
+  // onShow (options) {},
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
 })
 
@@ -30,4 +33,9 @@ app.use(Col);
 app.use(Swiper);
 app.use(SwiperItem);
 app.use(Avatar);
+app.use(DatePicker);
+app.use(Picker);
+app.use(Popup);
+app.use(OverLay);
+
 export default App

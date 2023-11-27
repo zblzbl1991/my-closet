@@ -36,17 +36,58 @@ const dynamicForm = {
     }
   }
 };
+const show = ref(false);
+const desc = ref('2022年05月10日');
+const minDate = new Date(2020, 0, 1);
+const maxDate = new Date(2025, 10, 1);
+const currentDate = new Date(2022, 4, 10, 10, 10);
+const confirm = ({ selectedValue, selectedOptions })=>{
+  desc.value = selectedOptions.map((option) => option.text).join('');
+}
 </script>
-
 <template>
   <nut-form :model-value="dynamicForm.state" ref="dynamicRefForm">
-    <nut-form-item label="姓名" prop="name" required :rules="[{ required: true, message: '请填写姓名' }]">
+    <nut-form-item label="名称" prop="name" required :rules="[{ required: true, message: '请填写姓名' }]">
       <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
     </nut-form-item>
-    <nut-form-item :label="'联系方式'+index" :prop="'tels.' + index + '.value'" required
-                   :rules="[{ required: true, message: '请填写联系方式'+index }]" :key="item.key"
-                   v-for="(item,index) in dynamicForm.state.tels">
-      <input class="nut-input-text" v-model="item.value" :placeholder="'请输入联系方式'+index" type="text" />
+    <nut-form-item label="分类" prop="type" required :rules="[{ required: true, message: '请填写分类' }]">
+      <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
+    </nut-form-item>
+    <nut-form-item label="季节" prop="type" required :rules="[{ required: true, message: '请填写季节' }]">
+      <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
+    </nut-form-item>
+    <nut-form-item label="颜色" prop="type" required :rules="[{ required: true, message: '请填写季节' }]">
+      <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
+    </nut-form-item>
+    <nut-form-item label="收纳位置" prop="type" required :rules="[{ required: true, message: '请填写季节' }]">
+      <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
+    </nut-form-item>
+    <nut-form-item label="品牌" prop="type" required :rules="[{ required: true, message: '请填写季节' }]">
+      <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
+    </nut-form-item>
+    <nut-form-item label="价格" prop="type" required :rules="[{ required: true, message: '请填写季节' }]">
+      <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
+    </nut-form-item>
+    <nut-form-item label="尺码" prop="type" required :rules="[{ required: true, message: '请填写季节' }]">
+      <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
+    </nut-form-item>
+    <nut-form-item label="购买日期" prop="type"  required :rules="[{ required: true, message: '请填写季节' }]">
+      <nut-cell  :desc="desc" @click="show = true"></nut-cell>
+      <nut-datepicker
+          v-model="currentDate"
+          v-model:visible="show"
+          :min-date="minDate"
+          :max-date="maxDate"
+          :is-show-chinese="true"
+          :three-dimensional="false"
+          @confirm="confirm"
+      ></nut-datepicker>
+    </nut-form-item>
+    <nut-form-item label="标签" prop="type" required :rules="[{ required: true, message: '请填写季节' }]">
+      <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
+    </nut-form-item>
+    <nut-form-item label="备注" prop="type" required :rules="[{ required: true, message: '请填写季节' }]">
+      <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓名" type="text" />
     </nut-form-item>
     <nut-cell>
       <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.add">添加</nut-button>
