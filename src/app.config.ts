@@ -3,6 +3,7 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/my-closet/index',
     'pages/my-fashion/index',
+    'pages/closet/index',
   ],
   window: {
     backgroundTextStyle: 'light',

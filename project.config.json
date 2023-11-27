@@ -1,6 +1,6 @@
 {
   "miniprogramRoot": "./dist",
-  "projectname": "myApp",
+  "projectname": "my-closet",
   "description": "my app",
   "appid": "touristappid",
   "setting": {
@@ -11,7 +11,8 @@
     "postcss": false,
     "minified": false,
     "ignoreDevUnusedFiles": false,
-    "ignoreUploadUnusedFiles": false
+    "ignoreUploadUnusedFiles": false,
+    "useCompilerModule":true
   },
   "compileType": "miniprogram"
 }

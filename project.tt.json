@@ -1,6 +1,6 @@
 {
   "miniprogramRoot": "./",
-  "projectname": "myApp",
+  "projectname": "my-closet",
   "description": "my app",
   "appid": "touristappid",
   "setting": {
