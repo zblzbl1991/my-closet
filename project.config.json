@@ -1,8 +1,8 @@
 {
-  "miniprogramRoot": "./dist",
+  "miniprogramRoot": "dist/",
   "projectname": "my-closet",
   "description": "my app",
-  "appid": "touristappid",
+  "appid": "wx207a7bcbd23ad844",
   "setting": {
     "urlCheck": true,
     "es6": false,
@@ -12,7 +12,23 @@
     "minified": false,
     "ignoreDevUnusedFiles": false,
     "ignoreUploadUnusedFiles": false,
-    "useCompilerModule":true
+    "useCompilerModule": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
   },
-  "compileType": "miniprogram"
+  "compileType": "miniprogram",
+  "libVersion": "3.2.3",
+  "srcMiniprogramRoot": "dist/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
 }

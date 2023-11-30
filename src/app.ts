@@ -10,6 +10,7 @@ import { Avatar } from '@nutui/nutui-taro';
 // taro
 // taro
 import { DatePicker, Picker, Popup, OverLay } from '@nutui/nutui-taro';
+import { Input } from '@nutui/nutui-taro';
 import './app.scss'
 
 const App = createApp({
@@ -37,5 +38,6 @@ app.use(DatePicker);
 app.use(Picker);
 app.use(Popup);
 app.use(OverLay);
+app.use(Input);
 
 export default App
