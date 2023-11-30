@@ -11,6 +11,7 @@ import { Avatar } from '@nutui/nutui-taro';
 // taro
 import { DatePicker, Picker, Popup, OverLay } from '@nutui/nutui-taro';
 import { Input } from '@nutui/nutui-taro';
+import { Checkbox, CheckboxGroup } from '@nutui/nutui-taro';
 import './app.scss'
 
 const App = createApp({
@@ -39,5 +40,6 @@ app.use(Picker);
 app.use(Popup);
 app.use(OverLay);
 app.use(Input);
-
+app.use(CheckboxGroup);
+app.use(Checkbox);
 export default App

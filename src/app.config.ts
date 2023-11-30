@@ -48,5 +48,5 @@ export default defineAppConfig({
       //   text: '个人中心'
       // }
     ]
-  }
-})
+  },
+  })

@@ -1,9 +1,9 @@
 <template>
   <nut-tabbar @tab-switch="switchTab" v-model:visible="selected" bottom>
     <nut-tabbar-item v-for="(item,index) in list" :tab-title="item.text">
-              <template #icon>
-      <!--          <Home></Home>-->
-              </template>
+      <template #icon>
+        <!--          <Home></Home>-->
+      </template>
     </nut-tabbar-item>
   </nut-tabbar>
 </template>
@@ -31,6 +31,10 @@ export default {
       Taro.switchTab({
         url: list[index].pagePath,
       });
+    }
+    const active=ref(null)
+    const onChange=function (e){
+      active.value= e.detail ;
     }
     const list = [
       {
