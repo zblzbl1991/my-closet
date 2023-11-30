@@ -7,10 +7,17 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    NutAvatar: typeof import('@nutui/nutui-taro')['Avatar']
     NutCategory: typeof import('@nutui/nutui-taro')['Category']
     NutCategoryPane: typeof import('@nutui/nutui-taro')['CategoryPane']
-    NutCollapse: typeof import('@nutui/nutui-taro')['Collapse']
-    NutCollapseItem: typeof import('@nutui/nutui-taro')['CollapseItem']
+    NutCell: typeof import('@nutui/nutui-taro')['Cell']
+    NutCellGroup: typeof import('@nutui/nutui-taro')['CellGroup']
+    NutCheckbox: typeof import('@nutui/nutui-taro')['Checkbox']
+    NutCheckboxGroup: typeof import('@nutui/nutui-taro')['CheckboxGroup']
+    NutGrid: typeof import('@nutui/nutui-taro')['Grid']
+    NutGridItem: typeof import('@nutui/nutui-taro')['GridItem']
+    NutIcon: typeof import('@nutui/nutui-taro')['Icon']
+    NutRow: typeof import('@nutui/nutui-taro')['Row']
     NutTabbar: typeof import('@nutui/nutui-taro')['Tabbar']
     NutTabbarItem: typeof import('@nutui/nutui-taro')['TabbarItem']
   }

@@ -1,5 +1,5 @@
 <template>
-  <nut-tabbar @tab-switch="switchTab" v-model:visible="selected" bottom>
+  <nut-tabbar @tab-switch="switchTab" v-model="selected" bottom>
     <nut-tabbar-item v-for="(item,index) in list" :tab-title="item.text">
       <template #icon>
         <!--          <Home></Home>-->

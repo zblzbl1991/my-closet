@@ -1,13 +1,30 @@
+import Components from 'unplugin-vue-components/webpack';
+import NutUIResolver from '@nutui/auto-import-resolver';
+const path = require('path');
 const config = {
-  projectName: 'tabbar-demo',
-  date: '2022-11-28',
-  designWidth: 375,
-  deviceRatio: {
-    640: 2.34 / 2,
-    750: 1,
-    828: 1.81 / 2,
-    375: 2 / 1
+  projectName: 'taro',
+  date: '2023-7-19',
+  designWidth (input) {
+    if (input?.file?.replace(/\\+/g, '/').indexOf('@nutui') > -1) {
+      return 375
+    }
+    return 750
   },
+    deviceRatio: {
+      640: 2.34 / 2,
+      750: 1,
+      828: 1.81 / 2,
+      375: 2 / 1
+    },
+    sass: {
+      // 默认京东 APP 10.0主题 > @import "@nutui/nutui-taro/dist/styles/variables.scss";
+      // 京东科技主题 > @import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";
+      // 京东B商城主题 > @import "@nutui/nutui-taro/dist/styles/variables-jdb.scss";
+      // 京东企业业务主题 > @import "@nutui/nutui-taro/dist/styles/variables-jddkh.scss";
+      data: `@import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";`
+    },
+    // ...
+
   sourceRoot: 'src',
   outputRoot: 'dist',
   plugins: ['@tarojs/plugin-html'],
@@ -15,48 +32,29 @@ const config = {
   },
   copy: {
     patterns: [
-      // { from: 'src/components/vant-weapp/dist/wxs', to: 'dist/components/vant-weapp/dist/wxs' },
-      // { from: 'src/components/vant-weapp/dist/common/style', to: 'dist/components/vant-weapp/dist/common/style' },
-      // {
-      //   from: 'src/components/vant-weapp/dist/common/index.wxss',
-      //   to: 'dist/components/vant-weapp/dist/common/index.wxss',
-      // },
-      // {
-      //   from: 'src/components/vant-weapp/dist/calendar/index.wxs',
-      //   to: 'dist/components/vant-weapp/dist/calendar/index.wxs',
-      // },
-      // {
-      //   from: 'src/components/vant-weapp/dist/calendar/utils.wxs',
-      //   to: 'dist/components/vant-weapp/dist/calendar/utils.wxs',
-      // },
-      // {
-      //   from: 'src/components/vant-weapp/dist/calendar/calendar.wxml',
-      //   to: 'dist/components/vant-weapp/dist/calendar/calendar.wxml',
-      // },
-      // {
-      //   from: 'src/components/vant-weapp/dist/calendar/components/month/index.wxs',
-      //   to: 'dist/components/vant-weapp/dist/calendar/components/month/index.wxs',
-      // },
     ],
-
     options: {
     }
   },
   framework: 'vue3',
-  compiler: 'webpack5',
+  compiler: {
+    type: 'webpack5',
+    prebundle: { enable: false }
+  },
   cache: {
     enable: false // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
   },
-  sass:{
-    data: `@import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";`
-  },
   mini: {
-
+    webpackChain(chain) {
+      chain.plugin('unplugin-vue-components').use(Components({
+        resolvers: [NutUIResolver({taro: true})]
+      }))
+    },
     postcss: {
       pxtransform: {
         enable: true,
         config: {
-          selectorBlackList: [/nut-/],
+           selectorBlackList: ['nut-']
         }
       },
       url: {
@@ -75,9 +73,14 @@ const config = {
     }
   },
   h5: {
+    webpackChain(chain) {
+      chain.plugin('unplugin-vue-components').use(Components({
+        resolvers: [NutUIResolver({taro: true})]
+      }))
+    },
     publicPath: '/',
     staticDirectory: 'static',
-    esnextModules: ['nutui-taro'],
+    esnextModules: ['nutui-taro', 'icons-vue-taro'],
     postcss: {
       autoprefixer: {
         enable: true,
