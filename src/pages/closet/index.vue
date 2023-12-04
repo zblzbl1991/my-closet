@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {computed, reactive, ref} from 'vue';
 import './index.scss'
+import {CheckNormal, IconFont} from "@nutui/icons-vue";
 
 const dynamicRefForm = ref(null);
 const dynamicForm = {
@@ -8,30 +9,30 @@ const dynamicForm = {
     //名称
     name: '',
     //分类
-    type:'',
+    type: '',
     //颜色
-    color:'',
+    color: '',
     //收纳位置
-    position:'',
+    position: '',
     //季节
-    season:[],
+    season: [],
     //品牌
-    brand:'',
+    brand: '',
     //价格
-    price:'',
+    price: '',
     //尺码
-    size:'',
+    size: '',
     //购买日期
-    purchaseDate:'',
+    purchaseDate: '',
     //标签
-    tag:[],
+    tag: [],
     //备注
-    remarks:''
+    remarks: ''
   }),
 
   methods: {
     submit() {
-      dynamicRefForm.value.validate().then(({ valid, errors }) => {
+      dynamicRefForm.value.validate().then(({valid, errors}) => {
         if (valid) {
           console.log('success', dynamicForm);
         } else {
@@ -60,52 +61,54 @@ const desc = ref('2022年05月10日');
 const minDate = new Date(2020, 0, 1);
 const maxDate = new Date(2025, 10, 1);
 const currentDate = new Date(2022, 4, 10, 10, 10);
-const confirm = ({ selectedValue, selectedOptions })=>{
+const confirm = ({selectedValue, selectedOptions}) => {
   desc.value = selectedOptions.map((option) => option.text).join('');
 }
-const seasonComputed=computed(()=>{
-  if(dynamicForm.state.season.length===0){
-    return '请选择季节'
-  }
+const seasonComputed = computed(() => {
   return dynamicForm.state.season.map((val) => val).join(',');
 })
-const checkSeasonShow=ref(false)
-const checkTypeShow=ref(false)
-const checkColorShow=ref(false)
+const checkSeasonShow = ref(false)
+const checkTypeShow = ref(false)
+const checkColorShow = ref(false)
 </script>
 <template>
   <view>
     <nut-form :model-value="dynamicForm.state" ref="dynamicRefForm">
+
       <nut-form-item label="名称" prop="name" required :rules="[{ required: true, message: '请填写名称' }]">
-        <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入名称" type="text" />
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入名称" type="text"/>
       </nut-form-item>
       <nut-form-item label="分类" prop="type" required :rules="[{ required: true, message: '请填写分类' }]">
-        <input class="nut-input-text" v-model="dynamicForm.state.type"   @click="checkTypeShow =true"
-               readonly
-               placeholder="请选择分类" />
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.type" @click="checkTypeShow =true"
+                   readonly
+                   placeholder="请选择分类"/>
       </nut-form-item>
       <nut-form-item label="季节" prop="type" required :rules="[{ required: true, message: '请填写季节' }]">
-        <nut-cell :desc="seasonComputed"  @click="checkSeasonShow=true "></nut-cell>
-
+        <nut-input class="nut-input-text" v-model="seasonComputed" @click="checkSeasonShow =true"
+                   readonly
+                   placeholder="请选择季节"/>
       </nut-form-item>
 
       <nut-form-item label="颜色" prop="type" required :rules="[{ required: true, message: '请填写颜色' }]">
-        <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入姓颜色" type="text" />
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.color" @click="checkColorShow =true"
+                   readonly
+                   placeholder="请选择颜色"/>
       </nut-form-item>
-      <nut-form-item label="收纳位置" prop="type" required :rules="[{ required: true, message: '请填写收纳位置' }]">
-        <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入收纳位置" type="text" />
-      </nut-form-item>
+<!--      <nut-form-item label="收纳位置" prop="type" required :rules="[{ required: true, message: '请填写收纳位置' }]">-->
+<!--        <nut-input class="nut-input-text" v-model="dynamicForm.state.position" placeholder="请输入收纳位置"-->
+<!--                   type="text"/>-->
+<!--      </nut-form-item>-->
       <nut-form-item label="品牌" prop="type" required :rules="[{ required: true, message: '请填写品牌' }]">
-        <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入品牌" type="text" />
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.brand" placeholder="请输入品牌" type="text"/>
       </nut-form-item>
       <nut-form-item label="价格" prop="type" required :rules="[{ required: true, message: '请填写价格' }]">
-        <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入价格" type="text" />
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.price" placeholder="请输入价格" type="text"/>
       </nut-form-item>
       <nut-form-item label="尺码" prop="type" required :rules="[{ required: true, message: '请填写尺码' }]">
-        <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入尺码" type="text" />
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.size" placeholder="请输入尺码" type="text"/>
       </nut-form-item>
-      <nut-form-item label="购买日期" prop="type"  required :rules="[{ required: true, message: '请填写购买日期' }]">
-        <nut-cell style="margin-top: -10px;"   :desc="desc" @click="show = true"></nut-cell>
+      <nut-form-item label="购买日期" prop="type" required :rules="[{ required: true, message: '请填写购买日期' }]">
+        <nut-cell style="margin-top: -10px;" :desc="desc" @click="show = true"></nut-cell>
         <nut-datepicker
             v-model="currentDate"
             v-model:visible="show"
@@ -117,15 +120,16 @@ const checkColorShow=ref(false)
         ></nut-datepicker>
       </nut-form-item>
       <nut-form-item label="标签" prop="type" required :rules="[{ required: true, message: '请填写标签' }]">
-        <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入标签" type="text" />
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入标签" type="text"/>
       </nut-form-item>
       <nut-form-item label="备注" prop="type" required :rules="[{ required: true, message: '请填写备注' }]">
-        <input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入备注" type="text" />
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.remarks" placeholder="请输入备注" type="text"/>
       </nut-form-item>
       <nut-cell>
-<!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.add">添加</nut-button>-->
-<!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.remove">删除</nut-button>-->
-        <nut-button type="primary" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">提交</nut-button>
+        <!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.add">添加</nut-button>-->
+        <!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.remove">删除</nut-button>-->
+        <nut-button type="primary" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">提交
+        </nut-button>
         <nut-button size="small" @click="dynamicForm.methods.reset">重置提示状态</nut-button>
       </nut-cell>
     </nut-form>
@@ -139,39 +143,67 @@ const checkColorShow=ref(false)
       </nut-checkbox-group>
 
     </nut-popup>
-    <nut-popup position="bottom" v-model:visible="checkTypeShow" closeable  :catch-move="true" style="height: 40%" >
-<!--      <nut-cell>  <nut-tag>上装</nut-tag></nut-cell>-->
-      <view>
-      <scroll-view class="scroll-view_H" :scroll-y="true"  style="width: 40%">
-      <nut-radio-group v-model="dynamicForm.state.type">
-        <nut-cell title="大衣"> <nut-radio label="大衣" shape="button">大衣</nut-radio></nut-cell>
-        <nut-cell title="羽绒服"> <nut-radio label="羽绒服" shape="button">羽绒服</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="外套" shape="button">外套</nut-radio></nut-cell>
-      </nut-radio-group>
+    <nut-popup position="bottom" v-model:visible="checkTypeShow" :catch-move="true" style="height: 50%">
+      <!--      <nut-cell>  <nut-tag>上装</nut-tag></nut-cell>-->
+      <scroll-view class="scroll-view_H" :scroll-y="true">
+        <view>
+          <nut-cell-group title="上装">
+            <template #title>
+              <nut-tag>上装</nut-tag>
+            </template>
+            <nut-cell>
+              <nut-radio-group text-position="left" v-model="dynamicForm.state.type">
+                <nut-radio label="大衣">大衣</nut-radio>
+                <nut-radio label="羽绒服">羽绒服</nut-radio>
+                <nut-radio label="外套">外套</nut-radio>
+
+              </nut-radio-group>
+            </nut-cell>
+          </nut-cell-group>
+          <nut-cell-group title="下装">
+            <nut-cell>
+              <nut-radio-group text-position="left" v-model="dynamicForm.state.type">
+                <nut-radio label="牛仔裤">牛仔裤</nut-radio>
+                <nut-radio label="喇叭裤">喇叭裤</nut-radio>
+                <nut-radio label="短裤">短裤</nut-radio>
+
+              </nut-radio-group>
+            </nut-cell>
+          </nut-cell-group>
+          <nut-cell-group title="鞋子">
+            <nut-cell>
+              <nut-radio-group text-position="left" v-model="dynamicForm.state.type">
+                <nut-radio label="皮鞋">皮鞋</nut-radio>
+                <nut-radio label="凉鞋">凉鞋</nut-radio>
+                <nut-radio label="旅游鞋">旅游鞋</nut-radio>
+
+              </nut-radio-group>
+            </nut-cell>
+          </nut-cell-group>
+          <nut-cell-group title="包包">
+            <nut-cell>
+              <nut-radio-group text-position="left" v-model="dynamicForm.state.type">
+                <nut-radio label="皮包">皮包</nut-radio>
+                <nut-radio label="帆布包">帆布包</nut-radio>
+                <nut-radio label="托特包">托特包</nut-radio>
+
+              </nut-radio-group>
+            </nut-cell>
+          </nut-cell-group>
+        </view>
       </scroll-view>
-      </view>
     </nut-popup>
 
-    <nut-popup position="bottom" v-model:visible="checkColorShow" closeable >
-      <nut-cell>  <nut-tag>上装</nut-tag></nut-cell>
-      <nut-radio-group v-model="dynamicForm.state.type">
-        <nut-cell> <nut-radio label="黑色系" shape="button">黑色系</nut-radio></nut-cell>
-        <nut-cell> <nut-radio label="白色系" shape="button">白色系</nut-radio></nut-cell>
-      </nut-radio-group>
+    <nut-popup position="bottom" v-model:visible="checkColorShow">
+      <nut-cell-group>
+        <nut-cell>
+          <nut-radio-group v-model="dynamicForm.state.color">
+            <nut-radio label="黑色系">黑色系<IconFont name="check-normal"  color="#000000"></IconFont ></nut-radio>
+            <nut-radio label="白色系" >白色系<IconFont name="check-checked"  color="#FFFFFF"></IconFont ></nut-radio>
+            <nut-radio label="红色系" >红色系<IconFont name="check-normal"  color="#FF0000"></IconFont ></nut-radio>
+          </nut-radio-group>
+        </nut-cell>
+      </nut-cell-group>
 
     </nut-popup>
   </view>
