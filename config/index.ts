@@ -21,7 +21,7 @@ const config = {
       // 京东科技主题 > @import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";
       // 京东B商城主题 > @import "@nutui/nutui-taro/dist/styles/variables-jdb.scss";
       // 京东企业业务主题 > @import "@nutui/nutui-taro/dist/styles/variables-jddkh.scss";
-      data: `@import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";`
+      // data: `@import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";`
     },
     // ...
 
