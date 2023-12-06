@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {computed, reactive, ref} from 'vue';
 import './index.scss'
-import {CheckNormal, IconFont} from "@nutui/icons-vue";
+import {IconFont} from "@nutui/icons-vue";
 
-const dynamicRefForm = ref(null);
+const dynamicRefForm:any = ref(null);
 const dynamicForm = {
   state: reactive({
     //名称
@@ -134,7 +134,7 @@ const clickIndex = (key) => {
                    readonly
                    placeholder="请选择分类"/>
       </nut-form-item>
-      <nut-form-item label="季节" prop="seasonComputed" required :rules="[{ required: true, message: '请填写季节' }]">
+      <nut-form-item label="季节" prop="season" required :rules="[{ required: true, message: '请填写季节' }]">
         <nut-input class="nut-input-text" v-model="seasonComputed" @click="checkSeasonShow =true"
                    readonly
                    placeholder="请选择季节"/>
@@ -153,10 +153,10 @@ const clickIndex = (key) => {
         <nut-input class="nut-input-text" readonly @click="checkBrandShow =true" v-model="dynamicForm.state.brand" placeholder="请输入品牌" type="text"/>
       </nut-form-item>
       <nut-form-item label="价格" prop="price" required :rules="[{ required: true, message: '请填写价格' }]">
-        <nut-input class="nut-input-text" v-model="dynamicForm.state.price" placeholder="请输入价格" type="text"/>
+        <nut-input-number class="nut-input-text" v-model="dynamicForm.state.price" placeholder="请输入价格" type="text"/>
       </nut-form-item>
       <nut-form-item label="尺码" prop="size" required :rules="[{ required: true, message: '请填写尺码' }]">
-        <nut-input class="nut-input-text" v-model="dynamicForm.state.size" placeholder="请输入尺码" type="text"/>
+        <nut-input-number class="nut-input-text" v-model="dynamicForm.state.size" placeholder="请输入尺码" type="text"/>
       </nut-form-item>
       <nut-form-item label="购买日期" prop="purchaseDate" required :rules="[{ required: true, message: '请填写购买日期' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.purchaseDate" @click="checkDateShow =true"
@@ -164,12 +164,12 @@ const clickIndex = (key) => {
                    placeholder="请选择购买日期"/>
 
       </nut-form-item>
-      <nut-form-item label="标签" prop="tag" required :rules="[{ required: false, message: '请填写标签' }]">
+      <nut-form-item label="标签" prop="tag"  :rules="[{ required: false, message: '请填写标签' }]">
         <nut-input class="nut-input-text" v-model="tagComputed" @click="checkTagShow =true"
                    readonly
                    placeholder="请选择标签"/>
       </nut-form-item>
-      <nut-form-item label="备注" prop="remarks" required :rules="[{ required: false, message: '请填写备注' }]">
+      <nut-form-item label="备注" prop="remarks"  :rules="[{ required: false, message: '请填写备注' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.remarks" placeholder="请输入备注" type="text"/>
       </nut-form-item>
       <nut-cell>
