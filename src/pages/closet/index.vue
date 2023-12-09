@@ -2,7 +2,7 @@
 import {computed, reactive, ref} from 'vue';
 import './index.scss'
 import {IconFont} from "@nutui/icons-vue";
-
+import closetSeason from '../closet-season'
 const dynamicRefForm:any = ref(null);
 const dynamicForm = {
   state: reactive({
@@ -10,7 +10,6 @@ const dynamicForm = {
     name: '',
     //分类
     type: '',
-    //颜色
     color: '',
     //收纳位置
     position: '',
@@ -28,6 +27,10 @@ const dynamicForm = {
     tag: [],
     //备注
     remarks: ''
+  }),
+  show:reactive({
+    season:false
+    //颜色
   }),
 
   methods: {
@@ -98,19 +101,6 @@ const data = ref([
 
     ]
   },
-  // {
-  //   title: 'H',
-  //   list: [
-  //     {
-  //       name: '湖南',
-  //       id: 5
-  //     },
-  //     {
-  //       name: '湖北',
-  //       id: 6
-  //     }
-  //   ]
-  // }
 ]);
 
 const clickItem = (key, item) => {
@@ -121,6 +111,7 @@ const clickItem = (key, item) => {
 const clickIndex = (key) => {
   console.log(key);
 };
+// const closetSeason =ref(null)
 </script>
 <template>
   <view>
@@ -138,6 +129,7 @@ const clickIndex = (key) => {
         <nut-input class="nut-input-text" v-model="seasonComputed" @click="checkSeasonShow =true"
                    readonly
                    placeholder="请选择季节"/>
+        <closetSeason v-model:state="dynamicForm.state"  v-model:checkSeasonShow="dynamicForm.show"></closetSeason>
       </nut-form-item>
 
       <nut-form-item label="颜色" prop="color" required :rules="[{ required: true, message: '请填写颜色' }]">
@@ -181,15 +173,15 @@ const clickIndex = (key) => {
       </nut-cell>
     </nut-form>
 
-    <nut-popup position="bottom" v-model:visible="checkSeasonShow" closeable :style="{ height: '20%' }">
-      <nut-checkbox-group v-model="dynamicForm.state.season">
-        <nut-checkbox label="春季" shape="button">春季</nut-checkbox>
-        <nut-checkbox label="夏季" shape="button">夏季</nut-checkbox>
-        <nut-checkbox label="秋季" shape="button">秋季</nut-checkbox>
-        <nut-checkbox label="冬季" shape="button">冬季</nut-checkbox>
-      </nut-checkbox-group>
+<!--    <nut-popup position="bottom" v-model:visible="checkSeasonShow" closeable :style="{ height: '20%' }">-->
+<!--      <nut-checkbox-group v-model="dynamicForm.state.season">-->
+<!--        <nut-checkbox label="春季" shape="button">春季</nut-checkbox>-->
+<!--        <nut-checkbox label="夏季" shape="button">夏季</nut-checkbox>-->
+<!--        <nut-checkbox label="秋季" shape="button">秋季</nut-checkbox>-->
+<!--        <nut-checkbox label="冬季" shape="button">冬季</nut-checkbox>-->
+<!--      </nut-checkbox-group>-->
 
-    </nut-popup>
+<!--    </nut-popup>-->
     <nut-popup position="bottom" v-model:visible="checkTypeShow" :catch-move="true" style="height: 50%">
       <!--      <nut-cell>  <nut-tag>上装</nut-tag></nut-cell>-->
       <scroll-view class="scroll-view_H" :scroll-y="true">
