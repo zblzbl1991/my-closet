@@ -18,9 +18,13 @@
     "jsx": "preserve",
     "allowJs": true,
     "resolveJsonModule": true,
+    "types": ["@tarojs/components/vue3"],
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "paths": {
+      "@/pages/*": ["./src/pages/*"]
+    }
   },
   "include": ["./src", "./types", "components.d.ts"],
   "compileOnSave": false

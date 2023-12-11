@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import {computed, reactive, ref} from 'vue';
 import './index.scss'
-import {IconFont} from "@nutui/icons-vue";
 import closetSeason from '../closet-season'
+import closetColor from '@/pages/closet-color'
+import closetBrand from '@/pages/closet-brand'
+import closetType from '@/pages/closet-type'
+import {closetModel} from "../../../types/closet/closetModel";
+
 const dynamicRefForm:any = ref(null);
 const dynamicForm = {
-  state: reactive({
+  state: reactive<closetModel>({
     //名称
     name: '',
     //分类
@@ -66,50 +70,15 @@ const tagComputed = computed(() => {
   return dynamicForm.state.tag.map((val) => val).join(',');
 })
 const checkTypeShow = ref(false)
-const checkColorShow = ref(false)
 const checkBrandShow = ref(false)
 const checkDateShow = ref(false)
 const checkTagShow = ref(false)
 
-const data = ref([
-  {
-    title: 'A',
-    list: [
-      {
-        name: 'Armani',
-        id: 1
-      }
-    ]
-  },
-  {
-    title: 'Y',
-    list: [
-      {
-        name: 'YSL',
-        id: 2
-      }
-    ]
-  },
-  {
-    title: '马',
-    list: [
-      {
-        name: '马赛克',
-        id: 3
-      },
+const priceShow =ref(false)
+const sizeShow =ref(false)
 
-    ]
-  },
-]);
-
-const clickItem = (key, item) => {
-  console.log(key, item);
-  dynamicForm.state.brand=item.name
-};
-
-const clickIndex = (key) => {
-  console.log(key);
-};
+const customKey = reactive(['.']);
+const customSizeKey = reactive(['.']);
 // const closetSeason =ref(null)
 </script>
 <template>
@@ -120,31 +89,33 @@ const clickIndex = (key) => {
         <nut-input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入名称" type="text"/>
       </nut-form-item>
       <nut-form-item label="分类" prop="type" required :rules="[{ required: true, message: '请填写分类' }]">
-        <nut-input class="nut-input-text" v-model="dynamicForm.state.type" @click="checkTypeShow =true"
-                   readonly
-                   placeholder="请选择分类"/>
+        <closetType v-model:state="dynamicForm.state"  ></closetType>
       </nut-form-item>
       <nut-form-item label="季节" prop="season" required :rules="[{ required: true, message: '请填写季节' }]">
         <closetSeason v-model:state="dynamicForm.state"  ></closetSeason>
       </nut-form-item>
 
       <nut-form-item label="颜色" prop="color" required :rules="[{ required: true, message: '请填写颜色' }]">
-        <nut-input class="nut-input-text" v-model="dynamicForm.state.color" @click="checkColorShow =true"
-                   readonly
-                   placeholder="请选择颜色"/>
+        <closetColor v-model:state="dynamicForm.state" ></closetColor>
       </nut-form-item>
 <!--      <nut-form-item label="收纳位置" prop="type" required :rules="[{ required: true, message: '请填写收纳位置' }]">-->
 <!--        <nut-input class="nut-input-text" v-model="dynamicForm.state.position" placeholder="请输入收纳位置"-->
 <!--                   type="text"/>-->
 <!--      </nut-form-item>-->
       <nut-form-item label="品牌" prop="brand" required :rules="[{ required: true, message: '请填写品牌' }]">
-        <nut-input class="nut-input-text" readonly @click="checkBrandShow =true" v-model="dynamicForm.state.brand" placeholder="请输入品牌" type="text"/>
+        <closetBrand v-model:state="dynamicForm.state" ></closetBrand>
       </nut-form-item>
-      <nut-form-item label="价格" prop="price" required :rules="[{ required: true, message: '请填写价格' }]">
-        <nut-input-number class="nut-input-text" v-model="dynamicForm.state.price" placeholder="请输入价格" type="text"/>
+      <nut-form-item label="价格(￥)" prop="price" required :rules="[{ required: true, message: '请填写价格' }]">
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.price" @click="priceShow =true"
+                   readonly
+                   placeholder="请输入价格" type="digit"/>
+        <nut-number-keyboard v-model:visible="priceShow" :custom-key="customKey" type="rightColumn" :title="dynamicForm.state.price" v-model="dynamicForm.state.price" maxlength="6" @close="priceShow=false"> </nut-number-keyboard>
       </nut-form-item>
       <nut-form-item label="尺码" prop="size" required :rules="[{ required: true, message: '请填写尺码' }]">
-        <nut-input-number class="nut-input-text" v-model="dynamicForm.state.size" placeholder="请输入尺码" type="text"/>
+        <nut-input class="nut-input-text" v-model="dynamicForm.state.size"
+
+                   placeholder="请输入尺码" />
+<!--        <nut-number-keyboard v-model:visible="sizeShow" :custom-key="customSizeKey" type="rightColumn" :title="dynamicForm.state.size" v-model="dynamicForm.state.size" maxlength="6" @close="sizeShow=false"> </nut-number-keyboard>-->
       </nut-form-item>
       <nut-form-item label="购买日期" prop="purchaseDate" required :rules="[{ required: true, message: '请填写购买日期' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.purchaseDate" @click="checkDateShow =true"
@@ -169,76 +140,10 @@ const clickIndex = (key) => {
       </nut-cell>
     </nut-form>
 
-    <nut-popup position="bottom" v-model:visible="checkTypeShow" :catch-move="true" style="height: 50%">
-      <!--      <nut-cell>  <nut-tag>上装</nut-tag></nut-cell>-->
-      <scroll-view class="scroll-view_H" :scroll-y="true">
-        <view>
-          <nut-cell-group title="上装">
-            <template #title>
-              <nut-tag>上装</nut-tag>
-            </template>
-            <nut-cell>
-              <nut-radio-group text-position="left" v-model="dynamicForm.state.type">
-                <nut-radio label="大衣">大衣</nut-radio>
-                <nut-radio label="羽绒服">羽绒服</nut-radio>
-                <nut-radio label="外套">外套</nut-radio>
 
-              </nut-radio-group>
-            </nut-cell>
-          </nut-cell-group>
-          <nut-cell-group title="下装">
-            <nut-cell>
-              <nut-radio-group text-position="left" v-model="dynamicForm.state.type">
-                <nut-radio label="牛仔裤">牛仔裤</nut-radio>
-                <nut-radio label="喇叭裤">喇叭裤</nut-radio>
-                <nut-radio label="短裤">短裤</nut-radio>
 
-              </nut-radio-group>
-            </nut-cell>
-          </nut-cell-group>
-          <nut-cell-group title="鞋子">
-            <nut-cell>
-              <nut-radio-group text-position="left" v-model="dynamicForm.state.type">
-                <nut-radio label="皮鞋">皮鞋</nut-radio>
-                <nut-radio label="凉鞋">凉鞋</nut-radio>
-                <nut-radio label="旅游鞋">旅游鞋</nut-radio>
 
-              </nut-radio-group>
-            </nut-cell>
-          </nut-cell-group>
-          <nut-cell-group title="包包">
-            <nut-cell>
-              <nut-radio-group text-position="left" v-model="dynamicForm.state.type">
-                <nut-radio label="皮包">皮包</nut-radio>
-                <nut-radio label="帆布包">帆布包</nut-radio>
-                <nut-radio label="托特包">托特包</nut-radio>
 
-              </nut-radio-group>
-            </nut-cell>
-          </nut-cell-group>
-        </view>
-      </scroll-view>
-    </nut-popup>
-
-    <nut-popup position="bottom" v-model:visible="checkColorShow">
-      <nut-cell-group>
-        <nut-cell>
-          <nut-radio-group v-model="dynamicForm.state.color">
-            <nut-radio label="黑色系">黑色系<IconFont name="check-normal"  color="#000000"></IconFont ></nut-radio>
-            <nut-radio label="白色系" >白色系<IconFont name="check-checked"  color="#FFFFFF"></IconFont ></nut-radio>
-            <nut-radio label="红色系" >红色系<IconFont name="check-normal"  color="#FF0000"></IconFont ></nut-radio>
-          </nut-radio-group>
-        </nut-cell>
-      </nut-cell-group>
-    </nut-popup>
-    <nut-popup position="bottom" v-model:visible="checkBrandShow">
-          <nut-elevator :index-list="data" :height="260" @click-item="clickItem" @click-index="clickIndex">
-            <template #default="slotProps">
-<!--              <Jd width="12px"></Jd>-->
-              <span :style="{ marginLeft: '15px' }">{{ slotProps.item.name }}</span>
-            </template>
-          </nut-elevator>
-    </nut-popup>
     <nut-popup position="bottom" v-model:visible="checkDateShow">
       <nut-date-picker
           v-model="currentDate"

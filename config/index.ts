@@ -3,6 +3,9 @@ import NutUIResolver from '@nutui/auto-import-resolver';
 const path = require('path');
 const config = {
   projectName: 'taro',
+  alias:{
+    '@/pages': path.resolve(__dirname, '..', 'src/pages'),
+  },
   date: '2023-7-19',
   designWidth (input) {
     if (input?.file?.replace(/\\+/g, '/').indexOf('@nutui') > -1) {
