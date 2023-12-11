@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import './index.scss'
 import {computed, ref, watchEffect} from "vue";
+import {closetModel} from "@/types/closet/closetModel";
 
 const props =defineProps({
-  state:Object
+  state:closetModel
 })
 
 const emit =defineEmits(['update:state','update:show'])

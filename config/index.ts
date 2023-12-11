@@ -5,6 +5,7 @@ const config = {
   projectName: 'taro',
   alias:{
     '@/pages': path.resolve(__dirname, '..', 'src/pages'),
+    '@/types': path.resolve(__dirname, '..', 'types'),
   },
   date: '2023-7-19',
   designWidth (input) {
@@ -52,6 +53,9 @@ const config = {
       chain.plugin('unplugin-vue-components').use(Components({
         resolvers: [NutUIResolver({taro: true})]
       }))
+    },
+    miniCssExtractPluginOption: {
+      ignoreOrder: true
     },
     postcss: {
       pxtransform: {

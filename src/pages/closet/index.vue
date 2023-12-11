@@ -63,23 +63,15 @@ const confirm = ({selectedValue, selectedOptions}) => {
   dynamicForm.state.purchaseDate = selectedOptions.map((option) => option.text).join('');
   checkDateShow.value=false
 }
-const seasonComputed = computed(() => {
-  return dynamicForm.state.season.map((val) => val).join(',');
-})
 const tagComputed = computed(() => {
   return dynamicForm.state.tag.map((val) => val).join(',');
 })
-const checkTypeShow = ref(false)
-const checkBrandShow = ref(false)
 const checkDateShow = ref(false)
 const checkTagShow = ref(false)
 
 const priceShow =ref(false)
-const sizeShow =ref(false)
 
 const customKey = reactive(['.']);
-const customSizeKey = reactive(['.']);
-// const closetSeason =ref(null)
 </script>
 <template>
   <view>
@@ -131,6 +123,9 @@ const customSizeKey = reactive(['.']);
       <nut-form-item label="备注" prop="remarks"  :rules="[{ required: false, message: '请填写备注' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.remarks" placeholder="请输入备注" type="text"/>
       </nut-form-item>
+      <nut-uploader :url="uploadUrl" v-model:file-list="defaultFileList" maximum="10" multiple list-type="list">
+        <nut-button type="success" size="small">上传文件</nut-button>
+      </nut-uploader>
       <nut-cell>
         <!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.add">添加</nut-button>-->
         <!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.remove">删除</nut-button>-->

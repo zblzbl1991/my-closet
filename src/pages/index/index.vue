@@ -86,6 +86,12 @@ const handleClick= function () {
     url: '/pages/closet/index',
   })
 }
+
+const getData =function (res){
+
+   const data=res.data;
+  data
+}
 </script>
 <style>
 .scroll-view_H{
