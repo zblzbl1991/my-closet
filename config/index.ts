@@ -53,6 +53,9 @@ const config = {
         resolvers: [NutUIResolver({taro: true})]
       }))
     },
+    miniCssExtractPluginOption: {
+      ignoreOrder: true
+    },
     postcss: {
       pxtransform: {
         enable: true,

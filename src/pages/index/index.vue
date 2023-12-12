@@ -1,66 +1,22 @@
 <template>
   <nut-cell-group >
     <nut-cell title="上衣">
-      <template #link>
-        <nut-icon name="category"></nut-icon>
-<!--        <nut-switch v-model="checked" />-->
-      </template>
     </nut-cell>
-  </nut-cell-group>
-  <nut-row type="flex" wrap="nowrap"  justify="center">
-    <scroll-view class="scroll-view_H" :scroll-x="true" @scroll="scroll" style="width: 100%">
-      <image :onTap="click" :id="1321"
-          style="width: 150px;height: 100px;background: #fff;"
-          src="https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67"
-      />
-      <image
-          style="width: 150px;height: 100px;background: #fff;"
-          src="https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67"
-      />
-      <image
-          style="width: 150px;height: 100px;background: #fff;"
-          src="https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67"
-      />
-      <image
-          style="width: 150px;height: 100px;background: #fff;"
-          src="https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67"
-      />
-      <image
-          style="width: 150px;height: 100px;background: #fff;"
-          src="https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67"
-      />
-      <image
-          style="width: 150px;height: 100px;background: #fff;"
-          src="https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67"
-      />
-    </scroll-view>
-  </nut-row>
-  <nut-cell-group >
-    <nut-cell title="裤子">
-      <template #link>
-        <nut-icon name="add"></nut-icon>
-        <!--        <nut-switch v-model="checked" />-->
-      </template>
-    </nut-cell>
-  </nut-cell-group>
-  <nut-row type="flex" wrap="nowrap"  justify="center">
-    <scroll-view class="scroll-view_H" :scroll-x="true" @scroll="scroll" style="width: 100%">
+    <nut-row type="flex" wrap="nowrap"  justify="center">
+      <scroll-view class="scroll-view_H" :scroll-x="true" @scroll="scroll" style="width: 100%">
+        <image :onTap="click" :id="1321"
+               style="width: 150px;height: 100px;background: #fff;"
+               src="https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67"
+        />
 
-    </scroll-view>
-  </nut-row>
-  <nut-cell-group >
-    <nut-cell title="鞋子">
-      <template #link>
-        <nut-icon name="add"></nut-icon>
-        <!--        <nut-switch v-model="checked" />-->
-      </template>
-    </nut-cell>
+      </scroll-view>
+    </nut-row>
   </nut-cell-group>
-  <nut-row type="flex" wrap="nowrap"  justify="center">
-    <scroll-view class="scroll-view_H" :scroll-x="true" @scroll="scroll" style="width: 100%">
 
-    </scroll-view>
-  </nut-row>
+  <nut-cell-group v-for="(item,key) in typeList">
+    <nut-cell :title="key"></nut-cell>
+  </nut-cell-group>
+
   <div class="add-button" @click="handleClick">
     +
   </div>
@@ -70,8 +26,8 @@
 import Tabbar from "../../component/index.vue";
 import {ref} from "vue";
 import Taro from "@tarojs/taro";
+import {request} from "../../service/request";
 
-const checked = ref(true);
  const scroll=function (e){
    console.log('scroll:', e)
  }
@@ -86,6 +42,30 @@ const handleClick= function () {
     url: '/pages/closet/index',
   })
 }
+const  dataList =ref()
+const typeList =ref();
+const getData = () => {
+  request({
+    url:'/closet/',
+    success: function (res) {
+      // console.log(res.data)
+      dataList.value=res.data
+    }
+  })
+};
+
+ const getTypes=()=>{
+   request({
+     url:'/closet/types',
+     success: function (res) {
+       console.log(res.data)
+       typeList.value=res.data.data
+       getData()
+       // console.log(res.data)
+     }
+   })
+ }
+getTypes()
 </script>
 <style>
 .scroll-view_H{

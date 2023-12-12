@@ -6,6 +6,7 @@ import closetColor from '@/pages/closet-color'
 import closetBrand from '@/pages/closet-brand'
 import closetType from '@/pages/closet-type'
 import {closetModel} from "../../../types/closet/closetModel";
+import {request} from "../../service/request";
 
 const dynamicRefForm:any = ref(null);
 const dynamicForm = {
@@ -42,6 +43,14 @@ const dynamicForm = {
       dynamicRefForm.value.validate().then(({valid, errors}) => {
         if (valid) {
           console.log('success', dynamicForm);
+          request({
+            url:'/closet/save',
+            method:"POST",
+            data:dynamicForm.state,
+            success: function (res) {
+              console.log(res)
+            }
+          })
         } else {
           // showToast.warn(errors[0].message);
           console.log('error submit!!', errors);
@@ -69,8 +78,6 @@ const seasonComputed = computed(() => {
 const tagComputed = computed(() => {
   return dynamicForm.state.tag.map((val) => val).join(',');
 })
-const checkTypeShow = ref(false)
-const checkBrandShow = ref(false)
 const checkDateShow = ref(false)
 const checkTagShow = ref(false)
 
@@ -78,7 +85,6 @@ const priceShow =ref(false)
 const sizeShow =ref(false)
 
 const customKey = reactive(['.']);
-const customSizeKey = reactive(['.']);
 // const closetSeason =ref(null)
 </script>
 <template>
