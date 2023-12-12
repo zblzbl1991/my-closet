@@ -23,7 +23,8 @@
       "node_modules/@types"
     ],
     "paths": {
-      "@/pages/*": ["./src/pages/*"]
+      "@/pages/*": ["./src/pages/*"],
+      "@/types/*": ["./types/*"]
     }
   },
   "include": ["./src", "./types", "components.d.ts"],

@@ -5,6 +5,7 @@ const config = {
   projectName: 'taro',
   alias:{
     '@/pages': path.resolve(__dirname, '..', 'src/pages'),
+    '@/types': path.resolve(__dirname, '..', 'types'),
   },
   date: '2023-7-19',
   designWidth (input) {

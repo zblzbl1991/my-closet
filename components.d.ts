@@ -31,5 +31,6 @@ declare module 'vue' {
     NutTabbar: typeof import('@nutui/nutui-taro')['Tabbar']
     NutTabbarItem: typeof import('@nutui/nutui-taro')['TabbarItem']
     NutTag: typeof import('@nutui/nutui-taro')['Tag']
+    NutUploader: typeof import('@nutui/nutui-taro')['Uploader']
   }
 }
