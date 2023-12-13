@@ -13,9 +13,23 @@
     </nut-row>
   </nut-cell-group>
 
-  <nut-cell-group v-for="(item,key) in typeList">
+  <nut-cell-group v-for="(item,key) in dataList">
     <nut-cell :title="key"></nut-cell>
+    <nut-row type="flex" wrap="nowrap"  justify="center">
+      <scroll-view class="scroll-view_H" :scroll-x="true" @scroll="scroll" style="width: 100%">
+        <view v-for="(closet,index) in item">
+<!--          <image :onTap="click" :id="index"-->
+<!--                 style="width: 150px;height: 100px;background: #fff;"-->
+<!--                 :src="closet.images?closet.images[0]:defaultImg" v-for="(closet,index) in item"-->
+<!--          />-->
+<!--          {{dataList[index]}}-->
+        </view>
+
+<!--       <span v-for="(closet,index) in item">{{closet}},{{index}}</span>-->
+      </scroll-view>
+    </nut-row>
   </nut-cell-group>
+
 
   <div class="add-button" @click="handleClick">
     +
@@ -42,14 +56,15 @@ const handleClick= function () {
     url: '/pages/closet/index',
   })
 }
+const defaultImg=ref('')
 const  dataList =ref()
 const typeList =ref();
 const getData = () => {
   request({
     url:'/closet/',
     success: function (res) {
-      // console.log(res.data)
-      dataList.value=res.data
+      console.log('dataList',res.data.data)
+      dataList.value=res.data.data
     }
   })
 };
@@ -58,7 +73,7 @@ const getData = () => {
    request({
      url:'/closet/types',
      success: function (res) {
-       console.log(res.data)
+       // console.log('分类:',res.data)
        typeList.value=res.data.data
        getData()
        // console.log(res.data)

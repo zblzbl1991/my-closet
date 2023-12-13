@@ -81,12 +81,52 @@ const checkTagShow = ref(false)
 const priceShow =ref(false)
 
 const customKey = reactive(['.']);
+const uploadUrl =ref(process.env.TARO_APP_API+'/closet/uploadImg')
+const defaultFileList =ref()
+const beforeXhrUpload = (taroUploadFile, options) => {
+  //taroUploadFile  是 Taro.uploadFile ， 你也可以自定义设置其它函数
+  options.url=process.env.TARO_APP_API+'/closet/uploadImg'
+  console.log('options',options)
+
+  const uploadTask = taroUploadFile({
+    url: options.url,
+    filePath: options.taroFilePath,
+    fileType: options.fileType,
+    header: {
+      'Content-Type': 'multipart/form-data',
+      ...options.headers
+    }, //
+    formData: options.formData,
+    name: options.name,
+    success(response: { errMsg; statusCode; data }) {
+      if (options.xhrState == response.statusCode) {
+        options.onSuccess?.(response, options);
+      } else {
+        options.onFailure?.(response, options);
+      }
+    },
+    fail(e) {
+      options.onFailure?.(e, options);
+    }
+  });
+  options.onStart?.(options);
+  uploadTask.progress((res) => {
+    options.onProgress?.(res, options);
+    // console.log('上传进度', res.progress);
+    // console.log('已经上传的数据长度', res.totalBytesSent);
+    // console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend);
+  });
+  // uploadTask.abort(); // 取消上传任务
+};
 // const closetSeason =ref(null)
 </script>
 <template>
   <view>
     <nut-form :model-value="dynamicForm.state" ref="dynamicRefForm">
-
+<!--      <nut-uploader url="/closet/uploadImg" :before-xhr-upload="beforeXhrUpload" v-model:file-list="defaultFileList" maximum="10" multiple list-type="list">-->
+<!--        <nut-button type="success" size="small">上传文件</nut-button>-->
+<!--      </nut-uploader>-->
+      <nut-uploader  :before-xhr-upload="beforeXhrUpload" v-model:file-list="defaultFileList"></nut-uploader>
       <nut-form-item label="名称" prop="name" required :rules="[{ required: true, message: '请填写名称' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入名称" type="text"/>
       </nut-form-item>
@@ -133,9 +173,7 @@ const customKey = reactive(['.']);
       <nut-form-item label="备注" prop="remarks"  :rules="[{ required: false, message: '请填写备注' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.remarks" placeholder="请输入备注" type="text"/>
       </nut-form-item>
-      <nut-uploader :url="uploadUrl" v-model:file-list="defaultFileList" maximum="10" multiple list-type="list">
-        <nut-button type="success" size="small">上传文件</nut-button>
-      </nut-uploader>
+
       <nut-cell>
         <!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.add">添加</nut-button>-->
         <!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.remove">删除</nut-button>-->
