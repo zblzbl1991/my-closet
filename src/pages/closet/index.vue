@@ -31,7 +31,8 @@ const dynamicForm = {
     //标签
     tag: [],
     //备注
-    remarks: ''
+    remarks: '',
+    imgList:[]
   }),
   show:reactive({
     season:false
@@ -82,12 +83,12 @@ const priceShow =ref(false)
 
 const customKey = reactive(['.']);
 const uploadUrl =ref(process.env.TARO_APP_API+'/closet/uploadImg')
-const defaultFileList =ref()
+
+const uploadList =ref([])
 const beforeXhrUpload = (taroUploadFile, options) => {
   //taroUploadFile  是 Taro.uploadFile ， 你也可以自定义设置其它函数
   options.url=process.env.TARO_APP_API+'/closet/uploadImg'
   console.log('options',options)
-
   const uploadTask = taroUploadFile({
     url: options.url,
     filePath: options.taroFilePath,
@@ -118,7 +119,6 @@ const beforeXhrUpload = (taroUploadFile, options) => {
   });
   // uploadTask.abort(); // 取消上传任务
 };
-// const closetSeason =ref(null)
 </script>
 <template>
   <view>
@@ -126,7 +126,7 @@ const beforeXhrUpload = (taroUploadFile, options) => {
 <!--      <nut-uploader url="/closet/uploadImg" :before-xhr-upload="beforeXhrUpload" v-model:file-list="defaultFileList" maximum="10" multiple list-type="list">-->
 <!--        <nut-button type="success" size="small">上传文件</nut-button>-->
 <!--      </nut-uploader>-->
-      <nut-uploader  :before-xhr-upload="beforeXhrUpload" v-model:file-list="defaultFileList"></nut-uploader>
+
       <nut-form-item label="名称" prop="name" required :rules="[{ required: true, message: '请填写名称' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.name" placeholder="请输入名称" type="text"/>
       </nut-form-item>
@@ -173,7 +173,9 @@ const beforeXhrUpload = (taroUploadFile, options) => {
       <nut-form-item label="备注" prop="remarks"  :rules="[{ required: false, message: '请填写备注' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.remarks" placeholder="请输入备注" type="text"/>
       </nut-form-item>
-
+      <nut-uploader  :before-xhr-upload="beforeXhrUpload" v-model:file-list="uploadList" >
+        <nut-button type="success" size="small">上传文件</nut-button>
+      </nut-uploader>
       <nut-cell>
         <!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.add">添加</nut-button>-->
         <!--        <nut-button size="small" style="margin-right: 10px" @click="dynamicForm.methods.remove">删除</nut-button>-->
