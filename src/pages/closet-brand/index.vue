@@ -45,7 +45,7 @@ watchEffect(() => {
 })
 const clickItem = (key, item) => {
   console.log(key, item);
-  props.state.brand=item.name
+  props.state.value.brand=item.name
 };
 
 const clickIndex = (key) => {
@@ -54,7 +54,7 @@ const clickIndex = (key) => {
 const popupShow=ref(false)
 </script>
 <template>
-  <nut-input class="nut-input-text" readonly @click="popupShow =true" v-model="props.state.brand" placeholder="请输入品牌" type="text"/>
+  <nut-input class="nut-input-text" readonly @click="popupShow =true" v-model="props.state.value.brand" placeholder="请输入品牌" type="text"/>
   <nut-popup position="bottom" v-model:visible="popupShow">
     <nut-elevator :index-list="data" :height="260" @click-item="clickItem" @click-index="clickIndex">
       <template #default="slotProps">

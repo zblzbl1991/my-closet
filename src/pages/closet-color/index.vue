@@ -17,13 +17,13 @@ watchEffect(() => {
 const popupShow=ref(false)
 </script>
 <template>
-  <nut-input class="nut-input-text" v-model="props.state.color" @click="popupShow =true"
+  <nut-input class="nut-input-text" v-model="props.state.value.color" @click="popupShow =true"
              readonly
              placeholder="请选择颜色"/>
   <nut-popup position="bottom" v-model:visible="popupShow">
     <nut-cell-group>
       <nut-cell>
-        <nut-radio-group v-model="props.state.color">
+        <nut-radio-group v-model="props.state.value.color">
           <nut-radio label="黑色系">黑色系<IconFont name="check-normal"  color="#000000"></IconFont ></nut-radio>
           <nut-radio label="白色系" >白色系<IconFont name="check-checked"  color="#FFFFFF"></IconFont ></nut-radio>
           <nut-radio label="红色系" >红色系<IconFont name="check-normal"  color="#FF0000"></IconFont ></nut-radio>

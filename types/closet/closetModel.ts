@@ -10,4 +10,5 @@ export interface closetModel {
     purchaseDate:string
     tag:string[]
     remarks:string
+    images:string[]
 }

@@ -46,7 +46,7 @@ watchEffect(() => {
 const popupShow=ref(false)
 </script>
 <template>
-  <nut-input class="nut-input-text" v-model="props.state.type" @click="popupShow =true"
+  <nut-input class="nut-input-text" v-model="props.state.value.type" @click="popupShow =true"
              readonly
              placeholder="请选择分类"/>
   <nut-popup position="bottom" v-model:visible="popupShow" :catch-move="true" style="height: 50%">
@@ -57,7 +57,7 @@ const popupShow=ref(false)
             <nut-tag>上装</nut-tag>
           </template>
           <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.type">
+            <nut-radio-group text-position="left" v-model="props.state.value.type">
               <nut-radio label="大衣">大衣</nut-radio>
               <nut-radio label="羽绒服">羽绒服</nut-radio>
               <nut-radio label="外套">外套</nut-radio>
@@ -70,7 +70,7 @@ const popupShow=ref(false)
             <nut-tag>下装</nut-tag>
           </template>
           <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.type">
+            <nut-radio-group text-position="left" v-model="props.state.value.type">
               <nut-radio label="牛仔裤">牛仔裤</nut-radio>
               <nut-radio label="喇叭裤">喇叭裤</nut-radio>
               <nut-radio label="短裤">短裤</nut-radio>
@@ -83,7 +83,7 @@ const popupShow=ref(false)
             <nut-tag>鞋子</nut-tag>
           </template>
           <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.type">
+            <nut-radio-group text-position="left" v-model="props.state.value.type">
               <nut-radio label="皮鞋">皮鞋</nut-radio>
               <nut-radio label="凉鞋">凉鞋</nut-radio>
               <nut-radio label="旅游鞋">旅游鞋</nut-radio>
@@ -96,7 +96,7 @@ const popupShow=ref(false)
             <nut-tag>包包</nut-tag>
           </template>
           <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.type">
+            <nut-radio-group text-position="left" v-model="props.state.value.type">
               <nut-radio label="皮包">皮包</nut-radio>
               <nut-radio label="帆布包">帆布包</nut-radio>
               <nut-radio label="托特包">托特包</nut-radio>

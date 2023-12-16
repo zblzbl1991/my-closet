@@ -14,7 +14,7 @@ watchEffect(() => {
   emit('update:state', props.state)
 })
 const seasonComputed = computed(() => {
-  return props.state.season.map((val) => val).join(',');
+  return props.state.value.season.map((val) => val).join(',');
 })
 const popupShow=ref(false)
 </script>
@@ -23,7 +23,7 @@ const popupShow=ref(false)
              readonly
              placeholder="请选择季节"/>
   <nut-popup position="bottom" v-model:visible="popupShow"  :style="{ height: '20%' }">
-    <nut-checkbox-group v-model="props.state.season">
+    <nut-checkbox-group v-model="props.state.value.season">
       <nut-checkbox label="春季" shape="button">春季</nut-checkbox>
       <nut-checkbox label="夏季" shape="button">夏季</nut-checkbox>
       <nut-checkbox label="秋季" shape="button">秋季</nut-checkbox>
