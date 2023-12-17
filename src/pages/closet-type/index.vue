@@ -61,6 +61,13 @@ const popupShow=ref(false)
               <nut-radio label="大衣">大衣</nut-radio>
               <nut-radio label="羽绒服">羽绒服</nut-radio>
               <nut-radio label="外套">外套</nut-radio>
+              <nut-radio label="针织开衫">针织开衫</nut-radio>
+              <nut-radio label="卫衣">卫衣</nut-radio>
+              <nut-radio label="毛衣">毛衣</nut-radio>
+              <nut-radio label="打底衫">打底衫</nut-radio>
+              <nut-radio label="衬衫">衬衫</nut-radio>
+              <nut-radio label="T恤">T恤</nut-radio>
+              <nut-radio label="夹克">夹克</nut-radio>
 
             </nut-radio-group>
           </nut-cell>
@@ -72,8 +79,10 @@ const popupShow=ref(false)
           <nut-cell>
             <nut-radio-group text-position="left" v-model="props.state.value.type">
               <nut-radio label="牛仔裤">牛仔裤</nut-radio>
-              <nut-radio label="喇叭裤">喇叭裤</nut-radio>
-              <nut-radio label="短裤">短裤</nut-radio>
+              <nut-radio label="运动裤">运动裤</nut-radio>
+              <nut-radio label="打底裤">打底裤</nut-radio>
+              <nut-radio label="长裙">长裙</nut-radio>
+              <nut-radio label="半裙">半裙</nut-radio>
 
             </nut-radio-group>
           </nut-cell>
@@ -85,8 +94,8 @@ const popupShow=ref(false)
           <nut-cell>
             <nut-radio-group text-position="left" v-model="props.state.value.type">
               <nut-radio label="皮鞋">皮鞋</nut-radio>
-              <nut-radio label="凉鞋">凉鞋</nut-radio>
-              <nut-radio label="旅游鞋">旅游鞋</nut-radio>
+              <nut-radio label="运动鞋">运动鞋</nut-radio>
+              <nut-radio label="帆布鞋">帆布鞋</nut-radio>
 
             </nut-radio-group>
           </nut-cell>
@@ -100,6 +109,25 @@ const popupShow=ref(false)
               <nut-radio label="皮包">皮包</nut-radio>
               <nut-radio label="帆布包">帆布包</nut-radio>
               <nut-radio label="托特包">托特包</nut-radio>
+              <nut-radio label="钱包">钱包</nut-radio>
+              <nut-radio label="斜挎包">斜挎包</nut-radio>
+              <nut-radio label="手提包">手提包</nut-radio>
+              <nut-radio label="背包">背包</nut-radio>
+
+            </nut-radio-group>
+          </nut-cell>
+        </nut-cell-group>
+        <nut-cell-group title="配饰">
+          <template #title>
+            <nut-tag>配饰</nut-tag>
+          </template>
+          <nut-cell>
+            <nut-radio-group text-position="left" v-model="props.state.value.type">
+              <nut-radio label="帽子">帽子</nut-radio>
+              <nut-radio label="围巾">围巾</nut-radio>
+              <nut-radio label="项链">项链</nut-radio>
+              <nut-radio label="墨镜">墨镜</nut-radio>
+              <nut-radio label="手表">手表</nut-radio>
 
             </nut-radio-group>
           </nut-cell>
