@@ -1,17 +1,4 @@
 <template>
-<!--  <nut-cell-group >-->
-<!--    <nut-cell title="上衣">-->
-<!--    </nut-cell>-->
-<!--    <nut-row type="flex" wrap="nowrap"  justify="center">-->
-<!--      <scroll-view class="scroll-view_H" :scroll-x="true" @scroll="scroll" style="width: 100%">-->
-<!--        <image :onTap="click" :id="1321"-->
-<!--               style="width: 150px;height: 100px;background: #fff;"-->
-<!--               src="https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67"-->
-<!--        />-->
-
-<!--      </scroll-view>-->
-<!--    </nut-row>-->
-<!--  </nut-cell-group>-->
 
   <nut-cell-group v-for="(item,key) in dataList">
     <nut-cell :title="key"></nut-cell>
@@ -22,15 +9,6 @@
                  style="width: 150px;height: 100px;background: #fff;"
                  :src="closet.images[0]?closet.images[0].url:'https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67'"
           />
-<!--          {{closet.name}}-->
-<!--          <image :onTap="click" :id="index"-->
-<!--                 style="width: 150px;height: 100px;background: #fff;"-->
-<!--                 :src="closet.images?closet.images[0]:defaultImg" v-for="(closet,index) in item"-->
-<!--          />-->
-<!--          {{dataList[index]}}-->
-<!--        </view>-->
-
-<!--       <span v-for="(closet,index) in item">{{closet}},{{index}}</span>-->
       </scroll-view>
     </nut-row>
   </nut-cell-group>
@@ -47,6 +25,7 @@ import {onMounted, ref} from "vue";
 import Taro from "@tarojs/taro";
 import {request} from "../../service/request";
 import { useDidShow } from '@tarojs/taro'
+import {useOpenidStore, useSessionKeyStore} from "../../store/wechat";
 
 const scroll=function (e){
    console.log('scroll:', e)
@@ -100,10 +79,15 @@ const login=function () {
     success: function (res) {
       if (res.code) {
         //发起网络请求
-        Taro.request({
-          url: '/onLogin',
+        request({
+          url: '/wx/user/wxc7a91a709ffd2852/login',
           data: {
             code: res.code
+          },success:function (res) {
+            console.log(res.data)
+
+            useOpenidStore.val=res.data.openid
+            useSessionKeyStore.val=res.data.sessionKey
           }
         })
       } else {
