@@ -20,6 +20,17 @@ export const useSessionKeyStore = defineStore('sessionKey', () => {
     return { val }
 })
 
+export const useTokenStore = defineStore('token', () => {
+    const val = ref()
+    // function increment() {
+    //     count.value++
+    // }
+
+    // return { count, increment }
+    return { val }
+})
+
+
 
 // export default defineComponent({
 //     computed: {

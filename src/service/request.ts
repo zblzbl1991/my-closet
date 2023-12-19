@@ -1,4 +1,5 @@
 import Taro from "@tarojs/taro";
+import {useTokenStore} from "../store/wechat";
 // import * as process from "process";
 
 const interceptor = function (chain) {
@@ -20,6 +21,11 @@ const interceptor = function (chain) {
 export function request(options){
     Taro.addInterceptor(interceptor)
     options.url=process.env.TARO_APP_API+options.url
-    console.log()
+    var tokenValue = useTokenStore.val;
+    if(!options.header){
+        options.header={}
+    }
+    console.log(options.header)
+    options.header['satoken']=tokenValue
     Taro.request(options)
 }

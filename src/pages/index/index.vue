@@ -6,7 +6,7 @@
       <scroll-view class="scroll-view_H" :scroll-x="true" @scroll="scroll" style="width: 100%">
 <!--        <view v-for="(closet,index) in item">-->
           <image  v-for="(closet,index) in item" :onTap="click" :id="closet.id"
-                 style="width: 150px;height: 100px;background: #fff;"
+                 style="width: 150px;height: 100px;background: #fff;margin-right: 10px"
                  :src="closet.images[0]?closet.images[0].url:'https://camo.githubusercontent.com/3e1b76e514b895760055987f164ce6c95935a3aa/687474703a2f2f73746f726167652e333630627579696d672e636f6d2f6d74642f686f6d652f6c6f676f2d3278313531333833373932363730372e706e67'"
           />
       </scroll-view>
@@ -25,7 +25,7 @@ import {onMounted, ref} from "vue";
 import Taro from "@tarojs/taro";
 import {request} from "../../service/request";
 import { useDidShow } from '@tarojs/taro'
-import {useOpenidStore, useSessionKeyStore} from "../../store/wechat";
+import {useOpenidStore, useSessionKeyStore, useTokenStore} from "../../store/wechat";
 
 const scroll=function (e){
    console.log('scroll:', e)
@@ -84,10 +84,14 @@ const login=function () {
           data: {
             code: res.code
           },success:function (res) {
-            console.log(res.data)
+            let data = res.data;
+            console.log(data.data)
 
-            useOpenidStore.val=res.data.openid
-            useSessionKeyStore.val=res.data.sessionKey
+            useOpenidStore.val=data.data.openid
+            useSessionKeyStore.val=data.data.sessionKey
+            useTokenStore.val=data.data.token
+
+            getTypes()
           }
         })
       } else {

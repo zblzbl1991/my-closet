@@ -8,6 +8,7 @@ import closetType from '@/pages/closet-type'
 import {closetModel} from "@/types/closet/closetModel";
 import {request} from "../../service/request";
 import Taro from "@tarojs/taro";
+import {useTokenStore} from "../../store/wechat";
 
 const dynamicRefForm: any = ref(null);
 const dynamicForm = {
@@ -134,6 +135,7 @@ const beforeXhrUpload = (taroUploadFile, options) => {
     fileType: options.fileType,
     header: {
       'Content-Type': 'multipart/form-data',
+      'satoken':useTokenStore.val,
       ...options.headers
     }, //
     formData: options.formData,
