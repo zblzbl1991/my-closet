@@ -108,6 +108,7 @@ watchEffect(() => {
 const clickItem = (key, item) => {
   console.log(key, item);
   props.state.value.brand=item.name
+  popupShow.value=false
 };
 
 const clickIndex = (key) => {

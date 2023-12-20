@@ -43,6 +43,9 @@ const data = ref([
 watchEffect(() => {
   emit('update:state', props.state)
 })
+const onChange =function (){
+  popupShow.value=false
+}
 const popupShow=ref(false)
 </script>
 <template>
@@ -57,7 +60,7 @@ const popupShow=ref(false)
             <nut-tag>上装</nut-tag>
           </template>
           <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.value.type">
+            <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
               <nut-radio label="大衣">大衣</nut-radio>
               <nut-radio label="羽绒服">羽绒服</nut-radio>
               <nut-radio label="外套">外套</nut-radio>
@@ -77,7 +80,7 @@ const popupShow=ref(false)
             <nut-tag>下装</nut-tag>
           </template>
           <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.value.type">
+            <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
               <nut-radio label="牛仔裤">牛仔裤</nut-radio>
               <nut-radio label="运动裤">运动裤</nut-radio>
               <nut-radio label="打底裤">打底裤</nut-radio>
@@ -92,7 +95,7 @@ const popupShow=ref(false)
             <nut-tag>鞋子</nut-tag>
           </template>
           <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.value.type">
+            <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
               <nut-radio label="皮鞋">皮鞋</nut-radio>
               <nut-radio label="运动鞋">运动鞋</nut-radio>
               <nut-radio label="帆布鞋">帆布鞋</nut-radio>
@@ -105,7 +108,7 @@ const popupShow=ref(false)
             <nut-tag>包包</nut-tag>
           </template>
           <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.value.type">
+            <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
               <nut-radio label="皮包">皮包</nut-radio>
               <nut-radio label="帆布包">帆布包</nut-radio>
               <nut-radio label="托特包">托特包</nut-radio>
@@ -122,7 +125,7 @@ const popupShow=ref(false)
             <nut-tag>配饰</nut-tag>
           </template>
           <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.value.type">
+            <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
               <nut-radio label="帽子">帽子</nut-radio>
               <nut-radio label="围巾">围巾</nut-radio>
               <nut-radio label="项链">项链</nut-radio>

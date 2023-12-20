@@ -5,6 +5,7 @@ import closetSeason from '../closet-season'
 import closetColor from '@/pages/closet-color'
 import closetBrand from '@/pages/closet-brand'
 import closetType from '@/pages/closet-type'
+import closetTag from '@/pages/closet-tag'
 import {closetModel} from "@/types/closet/closetModel";
 import {request} from "../../service/request";
 import Taro from "@tarojs/taro";
@@ -88,16 +89,6 @@ const dynamicForm = {
                 status:'success',
                 percentage: 100,
                 type: "image"
-                /*
-                * message: "上传成功"
-name: "http://tmp/WZagsY7pBz5h65cd2a4aa54ab6f6d3a80f678266b4b2.png"
-path: "http://tmp/WZagsY7pBz5h65cd2a4aa54ab6f6d3a80f678266b4b2.png"
-percentage: 100
-status: "success"
-type: "image"
-uid: "1702720964999"
-url: "http://tmp/WZagsY7pBz5h65cd2a4aa54ab6f6d3a80f678266b4b2.png"
-                * */
               })
             }
 
@@ -114,9 +105,7 @@ const confirm = ({selectedValue, selectedOptions}) => {
   dynamicForm.state.value.purchaseDate = selectedOptions.map((option) => option.text).join('');
   checkDateShow.value = false
 }
-const tagComputed = computed(() => {
-  return dynamicForm.state.value.tag.map((val) => val).join(',');
-})
+
 const checkDateShow = ref(false)
 const checkTagShow = ref(false)
 
@@ -157,9 +146,6 @@ const beforeXhrUpload = (taroUploadFile, options) => {
   options.onStart?.(options);
   uploadTask.progress((res) => {
     options.onProgress?.(res, options);
-    // console.log('上传进度', res.progress);
-    // console.log('已经上传的数据长度', res.totalBytesSent);
-    // console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend);
   });
   // uploadTask.abort(); // 取消上传任务
 };
@@ -178,9 +164,6 @@ onMounted(() => {
 <template>
   <view>
     <nut-form :model-value="dynamicForm.state.value" ref="dynamicRefForm">
-      <!--      <nut-uploader url="/closet/uploadImg" :before-xhr-upload="beforeXhrUpload" v-model:file-list="defaultFileList" maximum="10" multiple list-type="list">-->
-      <!--        <nut-button type="success" size="small">上传文件</nut-button>-->
-      <!--      </nut-uploader>-->
 
       <nut-form-item label="名称" prop="name" required :rules="[{ required: true, message: '请填写名称' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.name" placeholder="请输入名称" type="text"/>
@@ -202,7 +185,7 @@ onMounted(() => {
       <nut-form-item label="品牌" prop="brand" required :rules="[{ required: true, message: '请填写品牌' }]">
         <closetBrand v-model:state="dynamicForm.state"></closetBrand>
       </nut-form-item>
-      <nut-form-item label="价格(￥)" prop="price" required :rules="[{ required: true, message: '请填写价格' }]">
+      <nut-form-item label="价格(￥)" prop="price" required :rules="[{ required: false, message: '请填写价格' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.price" @click="priceShow =true"
                    readonly
                    placeholder="请输入价格" type="digit"/>
@@ -211,23 +194,21 @@ onMounted(() => {
                              maxlength="6"
                              @close="priceShow=false"></nut-number-keyboard>
       </nut-form-item>
-      <nut-form-item label="尺码" prop="size" required :rules="[{ required: true, message: '请填写尺码' }]">
+      <nut-form-item label="尺码" prop="size" required :rules="[{ required: false, message: '请填写尺码' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.size"
 
                    placeholder="请输入尺码"/>
         <!--        <nut-number-keyboard v-model:visible="sizeShow" :custom-key="customSizeKey" type="rightColumn" :title="dynamicForm.state.size" v-model="dynamicForm.state.size" maxlength="6" @close="sizeShow=false"> </nut-number-keyboard>-->
       </nut-form-item>
       <nut-form-item label="购买日期" prop="purchaseDate" required
-                     :rules="[{ required: true, message: '请填写购买日期' }]">
+                     :rules="[{ required: false, message: '请填写购买日期' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.purchaseDate" @click="checkDateShow =true"
                    readonly
                    placeholder="请选择购买日期"/>
 
       </nut-form-item>
       <nut-form-item label="标签" prop="tag" :rules="[{ required: false, message: '请填写标签' }]">
-        <nut-input class="nut-input-text" v-model="tagComputed" @click="checkTagShow =true"
-                   readonly
-                   placeholder="请选择标签"/>
+        <closetTag  v-model:state="dynamicForm.state"></closetTag>
       </nut-form-item>
       <nut-form-item label="备注" prop="remarks" :rules="[{ required: false, message: '请填写备注' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.remarks" placeholder="请输入备注"
@@ -235,8 +216,6 @@ onMounted(() => {
       </nut-form-item>
       <nut-uploader :before-xhr-upload="beforeXhrUpload" v-model:file-list="uploadList"
                     @delete="onDelete"></nut-uploader>
-
-
       <nut-cell>
         <nut-button type="primary" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">提交
         </nut-button>
@@ -255,13 +234,6 @@ onMounted(() => {
           :three-dimensional="false"
           @confirm="confirm"
       ></nut-date-picker>
-    </nut-popup>
-    <nut-popup position="bottom" v-model:visible="checkTagShow" closeable :style="{ height: '20%' }">
-      <nut-checkbox-group v-model="dynamicForm.state.tag">
-        <nut-checkbox label="好看" shape="button">好看</nut-checkbox>
-        <nut-checkbox label="性价比高" shape="button">性价比高</nut-checkbox>
-      </nut-checkbox-group>
-
     </nut-popup>
   </view>
 
