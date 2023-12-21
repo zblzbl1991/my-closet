@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - "./minio/data1:/data1"
+      - "./minio/data2:/data2"
+    command: server --console-address ":9001" http://minio/data{1...2}
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=12345678
+      #- MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      #- MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+  postgres:
+    image: postgres:13.1
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - APP_DB_USER=docker
+      - APP_DB_PASS=docker
+      - APP_DB_NAME=docker
+    volumes:
+      - ./postgres/db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432

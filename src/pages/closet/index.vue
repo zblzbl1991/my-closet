@@ -135,6 +135,7 @@ onMounted(() => {
 const clickImg =function (url){
   console.log('click',url)
   showPreview.value=true
+  showImg.value=[]
   for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
     showImg.value.push({src:dynamicForm.state.value.images[i].url})
   }
