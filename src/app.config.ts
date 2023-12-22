@@ -4,6 +4,11 @@ export default defineAppConfig({
     'pages/my-closet/index',
     'pages/my-fashion/index',
     'pages/closet/index',
+    'pages/personal/index',
+    'pages/config/config-type/index',
+    'pages/config/config-color/index',
+    'pages/config/config-size/index',
+    'pages/config/config-brand/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -34,6 +39,12 @@ export default defineAppConfig({
         // selectedIconPath: '../images/tabbar_cate_on.png',
         // iconPath: '../images/tabbar_cate.png',
         text: '我的穿搭'
+      },
+      {
+        pagePath: 'pages/personal/index',
+        // selectedIconPath: '../images/tabbar_cate_on.png',
+        // iconPath: '../images/tabbar_cate.png',
+        text: '个人中心'
       },
       // {
       //   pagePath: 'pages/cart/index',

@@ -19,12 +19,6 @@ export default {
   setup() {
     const store = useStore();
     const selected = computed(() => store.getters.getSelected);
-    const url = [
-      "/pages/index/index",
-      "/pages/cate/index",
-      "/pages/cart/index",
-      "/pages/my/index",
-    ];
     function switchTab(item, index) {
       console.log(index);
       setSelected(index);
@@ -33,9 +27,6 @@ export default {
       });
     }
     const active=ref(null)
-    const onChange=function (e){
-      active.value= e.detail ;
-    }
     const list = [
       {
         pagePath: '/pages/index/index',
@@ -54,6 +45,12 @@ export default {
         // selectedIconPath: '../images/tabbar_cate_on.png',
         // iconPath: '../images/tabbar_cate.png',
         text: '我的穿搭'
+      },
+      {
+        pagePath: '/pages/personal/index',
+        // selectedIconPath: '../images/tabbar_cate_on.png',
+        // iconPath: '../images/tabbar_cate.png',
+        text: '个人中心'
       },
     ]
     function setSelected(index) {

@@ -33,7 +33,6 @@ const scroll=function (e){
  const click =function (e){
    let id = e.mpEvent.target.id;
    console.log(id)
-   id
    Taro.navigateTo({
      url: '/pages/closet/index?id='+id,
    })

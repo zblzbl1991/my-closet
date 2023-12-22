@@ -145,9 +145,9 @@ const showImg =ref([])
 </script>
 <template>
   <view>
-    <nut-swiper  :pagination-visible="true" pagination-color="#426543" v-if="dynamicForm.state.value.images">
+    <nut-swiper  :pagination-visible="true" pagination-color="#426543" v-if="dynamicForm.state.value.images"  :height="150">
       <nut-swiper-item v-for="item in dynamicForm.state.value.images">
-        <img :src="item.url" alt=""  @click="clickImg(item.url)"/>
+        <img :src="item.url" alt=""   @click="clickImg(item.url)"/>
       </nut-swiper-item>
     </nut-swiper>
     <nut-form :model-value="dynamicForm.state.value" ref="dynamicRefForm">
