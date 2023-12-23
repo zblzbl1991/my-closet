@@ -93,7 +93,7 @@ const addType = function (types) {
     </nut-swipe>
   </view>
 
-  <nut-input v-model="val" v-if="" placeholder="输入部位">
+  <nut-input v-model="val" placeholder="输入部位">
     <template #right>
       <nut-button type="primary" size="small" @click="saveLocation">确认</nut-button>
     </template>
