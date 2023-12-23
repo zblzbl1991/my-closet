@@ -10,7 +10,7 @@ const interceptor = function (chain) {
 
     return chain.proceed(requestParams)
         .then(res => {
-            console.log(`http <-- ${url} result:`, res)
+            // console.log(`http <-- ${url} result:`, res)
             return res
         })
 }
@@ -25,7 +25,7 @@ export function request(options){
     if(!options.header){
         options.header={}
     }
-    console.log(options.header)
+    // console.log(options.header)
     options.header['satoken']=tokenValue
     Taro.request(options)
 }
