@@ -80,17 +80,17 @@ const dynamicForm = {
           success: function (res) {
             dynamicForm.state.value = res.data.data
             console.log(dynamicForm.state.value.images)
-            for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
-              let img = dynamicForm.state.value.images[i];
-              uploadList.value.push({
-                uid: img.id,
-                url:img.url,
-                name:img.objectName,
-                status:'success',
-                percentage: 100,
-                type: "image"
-              })
-            }
+            // for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
+            //   let img = dynamicForm.state.value.images[i];
+            //   uploadList.value.push({
+            //     uid: img.id,
+            //     url: img.url,
+            //     name: img.objectName,
+            //     status: 'success',
+            //     percentage: 100,
+            //     type: "image"
+            //   })
+            // }
 
           }
         })
@@ -113,10 +113,10 @@ const beforeXhrUpload = (taroUploadFile, options) => {
     url: options.url,
     filePath: options.taroFilePath,
     fileType: options.fileType,
-    timeout:20000,
+    timeout: 100000,
     header: {
       'Content-Type': 'multipart/form-data',
-      'satoken':useTokenStore.val,
+      'satoken': useTokenStore.val,
       ...options.headers
     }, //
     formData: options.formData,
@@ -167,48 +167,57 @@ const currentDate = new Date(2023, 5, 10, 10, 10);
 onMounted(() => {
   dynamicForm.methods.init()
 })
-const clickImg =function (url){
-  console.log('click',url)
-  showPreview.value=true
-  showImg.value=[]
-  for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
-    showImg.value.push({src:dynamicForm.state.value.images[i].url})
-  }
+const clickImg = function (url) {
+  console.log('click', url)
+  showPreview.value = true
+  showImg.value = []
+  const imgArr=dynamicForm.state.value.images.map(image=>image.url)
+  console.log(imgArr)
+  // for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
+  //   showImg.value.push({src: dynamicForm.state.value.images[i].url})
+  // }
   // showImg.value=[{src:url}]
 }
-const showPreview=ref(false)
-const showImg =ref([])
+const showPreview = ref(false)
+const showImg = ref([])
 </script>
 <template>
   <view>
-    <nut-swiper  :pagination-visible="true" pagination-color="#426543" v-if="dynamicForm.state.value.images"  :height="150">
+    <nut-swiper :pagination-visible="true" pagination-color="#426543" v-if="dynamicForm.state.value.images"
+                :height="150">
       <nut-swiper-item v-for="item in dynamicForm.state.value.images">
-        <img :src="item.url" alt=""   @click="clickImg(item.url)"/>
+        <view>
+          <image
+              style="width: 300px;height: 100px;background: #fff;margin:0 auto;display:block" mode="aspectFit"
+              :src="item.thumbUrl?item.thumbUrl:item.url" :catchTap="clickImg(item.url)"
+          />
+        </view>
+        <!--        <img :src="item.thumbUrl?item.thumbUrl:item.url" alt=""   @click="clickImg(item.url)"/>-->
       </nut-swiper-item>
     </nut-swiper>
     <nut-form :model-value="dynamicForm.state.value" ref="dynamicRefForm">
 
-      <nut-form-item label="名称" prop="name"  :rules="[{ required: false, message: '请填写名称' }]">
+      <nut-form-item label="名称" prop="name" :rules="[{ required: false, message: '请填写名称' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.name" placeholder="请输入名称" type="text"/>
       </nut-form-item>
-      <nut-form-item label="分类" prop="type"  :rules="[{ required: false, message: '请填写分类' }]">
+      <nut-form-item label="分类" prop="type" :rules="[{ required: false, message: '请填写分类' }]">
         <closetType v-model:state="dynamicForm.state"></closetType>
       </nut-form-item>
-      <nut-form-item label="季节" prop="season"  :rules="[{ required: false, message: '请填写季节' }]">
+      <nut-form-item label="季节" prop="season" :rules="[{ required: false, message: '请填写季节' }]">
         <closetSeason v-model:state="dynamicForm.state"></closetSeason>
       </nut-form-item>
 
-      <nut-form-item label="颜色" prop="color"  :rules="[{ required: false, message: '请填写颜色' }]">
+      <nut-form-item label="颜色" prop="color" :rules="[{ required: false, message: '请填写颜色' }]">
         <closetColor v-model:state="dynamicForm.state"></closetColor>
       </nut-form-item>
       <!--      <nut-form-item label="收纳位置" prop="type" required :rules="[{ required: true, message: '请填写收纳位置' }]">-->
       <!--        <nut-input class="nut-input-text" v-model="dynamicForm.state.position" placeholder="请输入收纳位置"-->
       <!--                   type="text"/>-->
       <!--      </nut-form-item>-->
-      <nut-form-item label="品牌" prop="brand"  :rules="[{ required: false, message: '请填写品牌' }]">
+      <nut-form-item label="品牌" prop="brand" :rules="[{ required: false, message: '请填写品牌' }]">
         <closetBrand v-model:state="dynamicForm.state"></closetBrand>
       </nut-form-item>
-      <nut-form-item label="价格(￥)" prop="price"  :rules="[{ required: false, message: '请填写价格' }]">
+      <nut-form-item label="价格(￥)" prop="price" :rules="[{ required: false, message: '请填写价格' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.price" @click="priceShow =true"
                    readonly
                    placeholder="请输入价格" type="digit"/>
@@ -217,7 +226,7 @@ const showImg =ref([])
                              maxlength="6"
                              @close="priceShow=false"></nut-number-keyboard>
       </nut-form-item>
-      <nut-form-item label="尺码" prop="size"  :rules="[{ required: false, message: '请填写尺码' }]">
+      <nut-form-item label="尺码" prop="size" :rules="[{ required: false, message: '请填写尺码' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.size"
 
                    placeholder="请输入尺码"/>
@@ -231,7 +240,7 @@ const showImg =ref([])
 
       </nut-form-item>
       <nut-form-item label="标签" prop="tag" :rules="[{ required: false, message: '请填写标签' }]">
-        <closetTag  v-model:state="dynamicForm.state"></closetTag>
+        <closetTag v-model:state="dynamicForm.state"></closetTag>
       </nut-form-item>
       <nut-form-item label="备注" prop="remarks" :rules="[{ required: false, message: '请填写备注' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.remarks" placeholder="请输入备注"
@@ -259,7 +268,7 @@ const showImg =ref([])
       ></nut-date-picker>
     </nut-popup>
 
-    <nut-image-preview :show="showPreview" :images="showImg" @close="hideFn" />
+    <nut-image-preview :show="showPreview" :images="showImg" @close="hideFn"/>
   </view>
 
 </template>
