@@ -113,6 +113,7 @@ const beforeXhrUpload = (taroUploadFile, options) => {
     url: options.url,
     filePath: options.taroFilePath,
     fileType: options.fileType,
+    timeout:20000,
     header: {
       'Content-Type': 'multipart/form-data',
       'satoken':useTokenStore.val,

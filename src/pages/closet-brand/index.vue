@@ -4,11 +4,11 @@ import {computed, ref, watchEffect} from "vue";
 import {IconFont} from "@nutui/icons-vue";
 import {closetModel} from "../../../types/closet/closetModel";
 
-const props =defineProps({
-  state:closetModel
+const props = defineProps({
+  state: closetModel
 })
 
-const emit =defineEmits(['update:state'])
+const emit = defineEmits(['update:state'])
 const data = ref([
   {
     title: 'A',
@@ -107,24 +107,29 @@ watchEffect(() => {
 })
 const clickItem = (key, item) => {
   console.log(key, item);
-  props.state.value.brand=item.name
-  popupShow.value=false
+  props.state.value.brand = item.name
+  popupShow.value = false
 };
 
 const clickIndex = (key) => {
   console.log(key);
 };
-const popupShow=ref(false)
+const popupShow = ref(false)
 </script>
 <template>
-  <nut-input class="nut-input-text" readonly @click="popupShow =true" v-model="props.state.value.brand" placeholder="请输入品牌" type="text"/>
-  <nut-popup position="bottom" v-model:visible="popupShow">
-    <nut-elevator :index-list="data" :height="260" @click-item="clickItem" @click-index="clickIndex">
-      <template #default="slotProps">
-        <!--              <Jd width="12px"></Jd>-->
-        <span :style="{ marginLeft: '15px' }">{{ slotProps.item.name }}</span>
-      </template>
-    </nut-elevator>
+  <nut-input class="nut-input-text" readonly @click="popupShow =true" v-model="props.state.value.brand"
+             placeholder="请输入品牌" type="text"/>
+  <nut-popup position="bottom" v-model:visible="popupShow" style="height: 50%">
+    <scroll-view class="scroll-view_H" :scroll-y="true">
+      <view>
+        <nut-elevator :index-list="data" :height="260" @click-item="clickItem" @click-index="clickIndex">
+          <template #default="slotProps">
+            <!--              <Jd width="12px"></Jd>-->
+            <span :style="{ marginLeft: '15px' }">{{ slotProps.item.name }}</span>
+          </template>
+        </nut-elevator>
+      </view>
+    </scroll-view>
   </nut-popup>
 
 </template>

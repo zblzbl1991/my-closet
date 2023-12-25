@@ -27,5 +27,13 @@ export function request(options){
     }
     // console.log(options.header)
     options.header['satoken']=tokenValue
+
+    options.fail=(res=>{
+        Taro.showToast({
+            title: res,
+            icon: 'error',
+            duration: 2000
+        })
+    })
     Taro.request(options)
 }

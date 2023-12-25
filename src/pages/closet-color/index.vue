@@ -4,21 +4,21 @@ import {ref, watchEffect} from "vue";
 import {IconFont} from "@nutui/icons-vue";
 import {closetModel} from "@/types/closet/closetModel";
 
-const props =defineProps({
-  state:closetModel
+const props = defineProps({
+  state: closetModel
 })
 
-const emit =defineEmits(['update:state','update:show'])
+const emit = defineEmits(['update:state', 'update:show'])
 
 // 监听 依赖发生变化 更新
 watchEffect(() => {
   emit('update:state', props.state)
 })
-const onChange =function (){
-  popupShow.value=false
+const onChange = function () {
+  popupShow.value = false
 }
 
-const colorList=ref([
+const colorList = ref([
   {text: '黑色', vaule: '1', bgColor: '#000000', color: '#fff'},
   {text: '白色', vaule: '2', bgColor: '#ffffff', color: '#333'},
   {text: '红色', vaule: '3', bgColor: '#ff0000', color: '#fff'},
@@ -45,7 +45,7 @@ const colorList=ref([
   {text: '浅棕色', vaule: '5', bgColor: '#D2691E', color: '#fff'},
   {text: '深棕色', vaule: '5', bgColor: '#8B4513', color: '#fff'},
 ])
-const popupShow=ref(false)
+const popupShow = ref(false)
 </script>
 <template>
 
@@ -55,46 +55,22 @@ const popupShow=ref(false)
 
   <nut-popup position="bottom" v-model:visible="popupShow" :catch-move="true" style="height: 50%">
     <scroll-view class="scroll-view_H" :scroll-y="true">
-   <view>
+      <view>
 
-     <nut-cell-group>
-       <nut-cell>
-         <nut-radio-group v-model="props.state.value.color" @change="onChange">
-           <nut-radio :label="item.text" v-for="item in colorList">
-<!--             <span style="border: 1px solid black;background:#000000;color: antiquewhite ">黑色</span>-->
-             <div  style="display: flex;align-items: center">  <p class="radio-span" :style="{background: item.bgColor}"></p>{{item.text}}</div>
-             <!--            <div class="circle"></div>-->
-           </nut-radio>
+        <nut-cell-group>
+          <nut-cell>
+            <nut-radio-group v-model="props.state.value.color" @change="onChange">
+              <nut-radio :label="item.text" v-for="item in colorList">
+                <div style="display: flex;align-items: center"><p class="radio-span"
+                                                                  :style="{background: item.bgColor}"></p>
+                  {{ item.text }}
+                </div>
+              </nut-radio>
 
-<!--           <nut-radio label="白色系" ><span style="border: 1px solid black;background:#FFFFFF">白色</span></nut-radio>-->
-<!--           <nut-radio label="红色系" >-->
-<!--           <div  style="display: flex;align-items: center">  <p class="radio-span" style="background: #ff0000; color: #ff0000"></p>红色</div>-->
-<!--&lt;!&ndash;             <span style="border: 1px solid black;background:#FF0000">红色</span>&ndash;&gt;-->
-<!--           </nut-radio>-->
-<!--           <nut-radio label="粉红色" ><span style="border: 1px solid black;background:#FFC0CB">粉红色</span></nut-radio>-->
-<!--           <nut-radio label="橙红色" ><span style="border: 1px solid black;background:#FF4500">橙红色</span></nut-radio>-->
-<!--           <nut-radio label="蓝色系" ><span style="border: 1px solid black;background:#0000FF">蓝色</span></nut-radio>-->
-<!--           <nut-radio label="湖蓝色" ><span style="border: 1px solid black;background:#00FFFF">湖蓝色</span></nut-radio>-->
-<!--           <nut-radio label="宝蓝色" ><span style="border: 1px solid black;background:#4169E1">宝蓝色</span></nut-radio>-->
-<!--           <nut-radio label="绿色" ><span style="border: 1px solid black;background:#008000">绿色</span></nut-radio>-->
-<!--           <nut-radio label="草绿色" ><span style="border: 1px solid black;background:#7CFC00">草绿色</span></nut-radio>-->
-<!--           <nut-radio label="橄榄绿色" ><span style="border: 1px solid black;background:#808000">橄榄绿色</span></nut-radio>-->
-<!--           <nut-radio label="黄色" ><span style="border: 1px solid black;background:#FFFF00">黄色</span></nut-radio>-->
-<!--           <nut-radio label="柠檬黄" ><span style="border: 1px solid black;background:#FFFACD">柠檬黄</span></nut-radio>-->
-<!--           <nut-radio label="金黄色" ><span style="border: 1px solid black;background:#FFD700">金黄色</span></nut-radio>-->
-<!--           <nut-radio label="紫色" ><span style="border: 1px solid black;background:#800080">紫色</span></nut-radio>-->
-<!--           <nut-radio label="浅紫色" ><span style="border: 1px solid black;background:#BA55D3">浅紫色</span></nut-radio>-->
-<!--           <nut-radio label="深紫色" ><span style="border: 1px solid black;background:#4B0082">深紫色</span></nut-radio>-->
-<!--           <nut-radio label="灰色" ><span style="border: 1px solid black;background:#808080">灰色</span></nut-radio>-->
-<!--           <nut-radio label="浅灰色" ><span style="border: 1px solid black;background:#D3D3D3">浅灰色</span></nut-radio>-->
-<!--           <nut-radio label="深灰色" ><span style="border: 1px solid black;background:#A9A9A9">深灰色</span></nut-radio>-->
-<!--           <nut-radio label="棕色" ><span style="border: 1px solid black;background:#A52A2A">棕色</span></nut-radio>-->
-<!--           <nut-radio label="浅棕色" ><span style="border: 1px solid black;background:#D2691E">浅棕色</span></nut-radio>-->
-<!--           <nut-radio label="深棕色" ><span style="border: 1px solid black;background:#8B4513">深棕色</span></nut-radio>-->
-         </nut-radio-group>
-       </nut-cell>
-     </nut-cell-group>
-   </view>
+            </nut-radio-group>
+          </nut-cell>
+        </nut-cell-group>
+      </view>
     </scroll-view>
   </nut-popup>
 
@@ -120,6 +96,7 @@ const popupShow=ref(false)
   border: 2px solid black;
   background-color: red;
 }
+
 .radio-text {
   font-size: 15px;
   color: #333;
