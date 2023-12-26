@@ -10,6 +10,7 @@ import {closetModel} from "@/types/closet/closetModel";
 import {request} from "../../service/request";
 import Taro from "@tarojs/taro";
 import {useTokenStore} from "../../store/wechat";
+import {closetDelete} from "../../api/closetApi";
 
 const dynamicRefForm: any = ref(null);
 const dynamicForm = {
@@ -69,6 +70,29 @@ const dynamicForm = {
       console.log(dynamicRefForm.value)
       dynamicRefForm.value.reset();
     },
+    delete(id:string){
+      Taro.showModal({
+        title: '提示',
+        content: '是否删除？',
+        success: function (res) {
+          if (res.confirm) {
+            request({
+              url:'/closet/'+id,
+              method:'DELETE',
+              success: function (res) {
+                Taro.navigateBack(/*{
+                delta: 2
+              }*/)
+
+              }
+            })
+            console.log('用户点击确定')
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+    },
     init() {
       let params = Taro.getCurrentInstance().router.params;
       console.log(params)
@@ -80,17 +104,17 @@ const dynamicForm = {
           success: function (res) {
             dynamicForm.state.value = res.data.data
             console.log(dynamicForm.state.value.images)
-            // for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
-            //   let img = dynamicForm.state.value.images[i];
-            //   uploadList.value.push({
-            //     uid: img.id,
-            //     url: img.url,
-            //     name: img.objectName,
-            //     status: 'success',
-            //     percentage: 100,
-            //     type: "image"
-            //   })
-            // }
+            for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
+              let img = dynamicForm.state.value.images[i];
+              uploadList.value.push({
+                uid: img.id,
+                url: img.url,
+                name: img.objectName,
+                status: 'success',
+                percentage: 100,
+                type: "image"
+              })
+            }
 
           }
         })
@@ -172,29 +196,31 @@ const clickImg = function (url) {
   showPreview.value = true
   showImg.value = []
   const imgArr=dynamicForm.state.value.images.map(image=>image.url)
-  console.log(imgArr)
-  // for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
-  //   showImg.value.push({src: dynamicForm.state.value.images[i].url})
-  // }
-  // showImg.value=[{src:url}]
+  for (let i = 0; i < imgArr.length; i++) {
+    showImg.value.push({src:imgArr[i]})
+  }
+  console.log( showImg.value)
 }
 const showPreview = ref(false)
 const showImg = ref([])
+const handleImg =function (){
+  console.log('handler click')
+}
 </script>
 <template>
   <view>
-    <nut-swiper :pagination-visible="true" pagination-color="#426543" v-if="dynamicForm.state.value.images"
-                :height="150">
-      <nut-swiper-item v-for="item in dynamicForm.state.value.images">
+<!--    <nut-swiper :pagination-visible="true" pagination-color="#426543" v-if="dynamicForm.state.value.images"-->
+<!--                :height="150">-->
+<!--      <nut-swiper-item v-for="item in dynamicForm.state.value.images">-->
         <view>
           <image
-              style="width: 300px;height: 100px;background: #fff;margin:0 auto;display:block" mode="aspectFit"
-              :src="item.thumbUrl?item.thumbUrl:item.url" :catchTap="clickImg(item.url)"
+              style="width: 300px;height: 100px;background: #fff;margin:0 auto;display:block" mode="aspectFit" v-if="dynamicForm.state.value.images"
+              :src="dynamicForm.state.value.images&&dynamicForm.state.value.images.length>0?dynamicForm.state.value.images[0].thumbUrl?dynamicForm.state.value.images[0].thumbUrl:dynamicForm.state.value.images[0].url:''" @click="handleImg" :onTap="clickImg"
           />
         </view>
         <!--        <img :src="item.thumbUrl?item.thumbUrl:item.url" alt=""   @click="clickImg(item.url)"/>-->
-      </nut-swiper-item>
-    </nut-swiper>
+<!--      </nut-swiper-item>-->
+<!--    </nut-swiper>-->
     <nut-form :model-value="dynamicForm.state.value" ref="dynamicRefForm">
 
       <nut-form-item label="名称" prop="name" :rules="[{ required: false, message: '请填写名称' }]">
@@ -252,6 +278,7 @@ const showImg = ref([])
         <nut-button type="primary" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">提交
         </nut-button>
         <nut-button size="small" @click="dynamicForm.methods.reset">重置提示状态</nut-button>
+        <nut-button size="small" type="danger" v-if="dynamicForm.state.value.id" @click="dynamicForm.methods.delete(dynamicForm.state.value.id)">删除</nut-button>
       </nut-cell>
     </nut-form>
 
@@ -269,6 +296,7 @@ const showImg = ref([])
     </nut-popup>
 
     <nut-image-preview :show="showPreview" :images="showImg" @close="hideFn"/>
+
   </view>
 
 </template>

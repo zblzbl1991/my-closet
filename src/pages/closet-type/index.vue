@@ -1,44 +1,30 @@
 <script setup lang="ts">
 import './index.scss'
-import {computed, ref, watchEffect} from "vue";
+import {computed, onMounted, ref, watchEffect} from "vue";
 import {IconFont} from "@nutui/icons-vue";
 import {closetModel} from "../../../types/closet/closetModel";
+import {request} from "../../service/request";
+import {closetTypes} from "../../api/closetApi";
 
 const props =defineProps({
   state:closetModel
 })
 
 const emit =defineEmits(['update:state'])
-const data = ref([
-  {
-    title: 'A',
-    list: [
-      {
-        name: 'Armani',
-        id: 1
-      }
-    ]
-  },
-  {
-    title: 'Y',
-    list: [
-      {
-        name: 'YSL',
-        id: 2
-      }
-    ]
-  },
-  {
-    title: '马',
-    list: [
-      {
-        name: '马赛克',
-        id: 3
-      },
 
-    ]
-  },
-]);
+const types=ref()
+onMounted(()=>{
+  request({
+    url:closetTypes,
+    success: function (res) {
+      // console.log('分类:',res.data)
+      // typeList.value=res.data.data
+      // getData()
+      console.log(res.data.data)
+      types.value=res.data.data
+    }
+  })
+})
 // 监听 依赖发生变化 更新
 watchEffect(() => {
   emit('update:state', props.state)
@@ -55,82 +41,13 @@ const popupShow=ref(false)
   <nut-popup position="bottom" v-model:visible="popupShow" :catch-move="true" style="height: 50%">
     <scroll-view class="scroll-view_H" :scroll-y="true">
       <view>
-        <nut-cell-group title="上装">
+        <nut-cell-group :title="key" v-for="(item,key) in types">
           <template #title>
-            <nut-tag>上装</nut-tag>
+            <nut-tag>{{key}}</nut-tag>
           </template>
           <nut-cell>
             <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
-              <nut-radio label="大衣">大衣</nut-radio>
-              <nut-radio label="羽绒服">羽绒服</nut-radio>
-              <nut-radio label="外套">外套</nut-radio>
-              <nut-radio label="针织开衫">针织开衫</nut-radio>
-              <nut-radio label="卫衣">卫衣</nut-radio>
-              <nut-radio label="毛衣">毛衣</nut-radio>
-              <nut-radio label="打底衫">打底衫</nut-radio>
-              <nut-radio label="衬衫">衬衫</nut-radio>
-              <nut-radio label="T恤">T恤</nut-radio>
-              <nut-radio label="夹克">夹克</nut-radio>
-
-            </nut-radio-group>
-          </nut-cell>
-        </nut-cell-group>
-        <nut-cell-group title="下装">
-          <template #title>
-            <nut-tag>下装</nut-tag>
-          </template>
-          <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
-              <nut-radio label="牛仔裤">牛仔裤</nut-radio>
-              <nut-radio label="运动裤">运动裤</nut-radio>
-              <nut-radio label="打底裤">打底裤</nut-radio>
-              <nut-radio label="长裙">长裙</nut-radio>
-              <nut-radio label="半裙">半裙</nut-radio>
-
-            </nut-radio-group>
-          </nut-cell>
-        </nut-cell-group>
-        <nut-cell-group title="鞋子">
-          <template #title>
-            <nut-tag>鞋子</nut-tag>
-          </template>
-          <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
-              <nut-radio label="皮鞋">皮鞋</nut-radio>
-              <nut-radio label="运动鞋">运动鞋</nut-radio>
-              <nut-radio label="帆布鞋">帆布鞋</nut-radio>
-
-            </nut-radio-group>
-          </nut-cell>
-        </nut-cell-group>
-        <nut-cell-group title="包包">
-          <template #title>
-            <nut-tag>包包</nut-tag>
-          </template>
-          <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
-              <nut-radio label="皮包">皮包</nut-radio>
-              <nut-radio label="帆布包">帆布包</nut-radio>
-              <nut-radio label="托特包">托特包</nut-radio>
-              <nut-radio label="钱包">钱包</nut-radio>
-              <nut-radio label="斜挎包">斜挎包</nut-radio>
-              <nut-radio label="手提包">手提包</nut-radio>
-              <nut-radio label="背包">背包</nut-radio>
-
-            </nut-radio-group>
-          </nut-cell>
-        </nut-cell-group>
-        <nut-cell-group title="配饰">
-          <template #title>
-            <nut-tag>配饰</nut-tag>
-          </template>
-          <nut-cell>
-            <nut-radio-group text-position="left" v-model="props.state.value.type" @change="onChange">
-              <nut-radio label="帽子">帽子</nut-radio>
-              <nut-radio label="围巾">围巾</nut-radio>
-              <nut-radio label="项链">项链</nut-radio>
-              <nut-radio label="墨镜">墨镜</nut-radio>
-              <nut-radio label="手表">手表</nut-radio>
+              <nut-radio :label="type" v-for="type in item">{{type}}</nut-radio>
 
             </nut-radio-group>
           </nut-cell>

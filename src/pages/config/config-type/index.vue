@@ -6,8 +6,8 @@ import {closetModel} from "@/types/closet/closetModel";
 import {configLocation} from "@/types/closet/configModel";
 import {request} from "../../../service/request";
 import Taro from "@tarojs/taro";
+import {closetConfigLocation, closetConfigTypes} from "../../../api/closetApi";
 
-console.log('config-type')
 const onClick = function (e) {
   console.log(e)
   showTop.value = true
@@ -21,7 +21,7 @@ onMounted(() => {
 })
 const getLocations = function () {
   request({
-    url: '/closet/config/location',
+    url: closetConfigLocation,
     method: "GET",
     data: {},
     success: function (res) {
@@ -32,7 +32,7 @@ const getLocations = function () {
 }
 const saveLocation = function () {
   request({
-    url: '/closet/config/location',
+    url: closetConfigLocation,
     method: "POST",
     data: {
       name: val.value
@@ -45,7 +45,7 @@ const saveLocation = function () {
 }
 const saveType=function (locationId){
   request({
-    url: '/closet/config/types',
+    url: closetConfigTypes,
     method: "POST",
     data: {
       name: typeVal.value,
@@ -62,6 +62,30 @@ const addType = function (types) {
   console.log(types)
   types.push({})
 }
+const deleteType=function (id){
+  console.log('id',id)
+  Taro.showModal({
+    title: '提示',
+    content: '是否删除？',
+    success: function (res) {
+      if (res.confirm) {
+        request({
+          url:closetConfigTypes+'/'+id,
+          method:'DELETE',
+          success: function (res) {
+            Taro.navigateBack(/*{
+                delta: 2
+              }*/)
+
+          }
+        })
+        console.log('用户点击确定')
+      } else if (res.cancel) {
+        console.log('用户点击取消')
+      }
+    }
+  })
+}
 </script>
 <template>
   <view v-for="item in locations">
@@ -73,13 +97,9 @@ const addType = function (types) {
       </template>
     </nut-cell>
     <nut-swipe v-if="item.types&&item.types.length>0" v-for="t in item.types">
-      <!--        <nut-cell v-for="type in item.types">{{ type }}</nut-cell>-->
-      <!--        <template #right>-->
-      <!--          <nut-button shape="square" style="height: 100%" type="danger">删除</nut-button>-->
-      <!--        </template>-->
       <nut-cell round-radius="0" style="height: 100%" :title="t.name" >
       <template #default>
-        <nut-input v-if="t.id" v-model="t.name"/>
+        <nut-input readonly v-if="t.id" v-model="t.name"/>
         <nut-input v-else v-model="typeVal" placeholder="输入分类">
           <template #right>
             <nut-button type="primary" size="small" @click="saveType(item.id)">确认</nut-button>
@@ -88,7 +108,7 @@ const addType = function (types) {
       </template>
       </nut-cell>
       <template #right>
-        <nut-button shape="square" style="height: 100%" type="danger">删除</nut-button>
+        <nut-button shape="square" style="height: 100%" type="danger" @click="deleteType(t.id)">删除</nut-button>
       </template>
     </nut-swipe>
   </view>
@@ -98,9 +118,6 @@ const addType = function (types) {
       <nut-button type="primary" size="small" @click="saveLocation">确认</nut-button>
     </template>
   </nut-input>
-  <!--  <nut-input v-model="val" placeholder="请输入分类" >-->
-  <!--    <template #right> <nut-button type="primary" size="small">新增</nut-button> </template>-->
-  <!--  </nut-input>-->
 </template>
 <style>
 .nut-navbar__right {

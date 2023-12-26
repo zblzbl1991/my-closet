@@ -1,4 +1,5 @@
 export interface closetModel {
+    id:string
     name:string
     type:string
     color:string
@@ -11,4 +12,8 @@ export interface closetModel {
     tag:string[]
     remarks:string
     images:string[]
+}
+
+export interface closetType {
+
 }

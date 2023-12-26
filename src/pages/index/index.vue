@@ -1,7 +1,11 @@
 <template>
 
   <nut-cell-group v-for="(item,key) in dataList">
-    <nut-cell :title="key"></nut-cell>
+    <nut-cell >
+      <template #title>
+      <span>  {{key}}  <b style="color: red"> {{item.length}}</b>个</span>
+      </template>
+    </nut-cell>
     <nut-row type="flex" wrap="nowrap"  justify="center">
       <scroll-view class="scroll-view_H" :scroll-x="true" @scroll="scroll" style="width: 100%">
 <!--        <view v-for="(closet,index) in item">-->
@@ -26,6 +30,7 @@ import Taro from "@tarojs/taro";
 import {request} from "../../service/request";
 import { useDidShow } from '@tarojs/taro'
 import {useOpenidStore, useSessionKeyStore, useTokenStore} from "../../store/wechat";
+import {closetTypes} from "../../api/closetApi";
 
 const scroll=function (e){
    console.log('scroll:', e)
@@ -60,7 +65,7 @@ const getData = () => {
 
  const getTypes=()=>{
    request({
-     url:'/closet/types',
+     url:closetTypes,
      success: function (res) {
        // console.log('分类:',res.data)
        typeList.value=res.data.data

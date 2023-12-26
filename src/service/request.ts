@@ -19,7 +19,7 @@ const interceptor = function (chain) {
 
 
 export function request(options){
-    Taro.addInterceptor(interceptor)
+    // Taro.addInterceptor(interceptor)
     options.url=process.env.TARO_APP_API+options.url
     var tokenValue = useTokenStore.val;
     if(!options.header){
@@ -34,6 +34,9 @@ export function request(options){
             icon: 'error',
             duration: 2000
         })
+    })
+    options.complete=(res=>{
+        console.log(res)
     })
     Taro.request(options)
 }
