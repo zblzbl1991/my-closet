@@ -16,7 +16,7 @@
   </nut-grid>
   <nut-cell title="分类配置" @click="click('type')"></nut-cell>
   <nut-cell title="颜色配置" @click="click"></nut-cell>
-  <nut-cell title="品牌配置" @click="click"></nut-cell>
+  <nut-cell title="品牌配置" @click="click('brand')"></nut-cell>
   <nut-cell title="尺码配置" @click="click"></nut-cell>
   <Tabbar></Tabbar>
 </template>

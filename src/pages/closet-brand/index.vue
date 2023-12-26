@@ -3,12 +3,28 @@ import './index.scss'
 import {computed, ref, watchEffect} from "vue";
 import {IconFont} from "@nutui/icons-vue";
 import {closetModel} from "../../../types/closet/closetModel";
+import {request} from "../../service/request";
+import {closetConfigBrands, closetConfigBrandsGroup} from "../../api/closetApi";
 
 const props = defineProps({
   state: closetModel
 })
 
 const emit = defineEmits(['update:state'])
+const brands=ref([])
+const getBrands=function (){
+  request({
+    url: closetConfigBrandsGroup,
+    method: "GET",
+    data: {
+    },
+    success: function (res) {
+      console.log(res.data.data)
+      brands.value=res.data.data
+      console.log('brands',brands)
+    }
+  })
+}
 const data = ref([
   {
     title: 'A',

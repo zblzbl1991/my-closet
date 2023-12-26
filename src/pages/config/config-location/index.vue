@@ -6,6 +6,7 @@ import {closetModel} from "@/types/closet/closetModel";
 import {configLocation} from "@/types/closet/configModel";
 import {request} from "../../../service/request";
 import Taro from "@tarojs/taro";
+import {closetConfigLocation} from "../../../api/closetApi";
 
 console.log('config-type')
 const onClick =function (e){
@@ -19,7 +20,7 @@ const val =ref('')
 const locations:configLocation[] =ref([])
 onMounted(()=>{
   request({
-    url: '/closet/config/location',
+    url: closetConfigLocation,
     method: "GET",
     data: {},
     success: function (res) {
