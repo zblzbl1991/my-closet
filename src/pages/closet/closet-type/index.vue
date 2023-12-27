@@ -2,9 +2,9 @@
 import './index.scss'
 import {computed, onMounted, ref, watchEffect} from "vue";
 import {IconFont} from "@nutui/icons-vue";
-import {closetModel} from "../../../types/closet/closetModel";
-import {request} from "../../service/request";
-import {closetTypes} from "../../api/closetApi";
+import {closetModel} from "@/types/closet/closetModel";
+import {request} from "../../../service/request";
+import {closetTypes} from "../../../api/closetApi";
 
 const props =defineProps({
   state:closetModel

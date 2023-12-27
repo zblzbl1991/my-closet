@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import {onMounted, reactive, ref} from 'vue';
 import './index.scss'
-import closetSeason from '../closet-season'
-import closetColor from '@/pages/closet-color'
-import closetBrand from '@/pages/closet-brand'
-import closetType from '@/pages/closet-type'
-import closetTag from '@/pages/closet-tag'
+import closetSeason from './closet-season'
+import closetColor from './closet-color'
+import closetBrand from '@/pages/closet/closet-brand'
+import closetSize from '@/pages/closet/closet-size'
+import closetType from '@/pages/closet/closet-type'
+import closetTag from '@/pages/closet/closet-tag'
 import {closetModel} from "@/types/closet/closetModel";
 import {request} from "../../service/request";
 import Taro from "@tarojs/taro";
-import {useTokenStore} from "../../store/wechat";
 import {beforeUpload} from "@/pages/closet/index";
 
 const dynamicRefForm: any = ref(null);
@@ -216,9 +216,10 @@ const handleImg =function (){
                              @close="priceShow=false"></nut-number-keyboard>
       </nut-form-item>
       <nut-form-item label="尺码" prop="size" :rules="[{ required: false, message: '请填写尺码' }]">
-        <nut-input class="nut-input-text" v-model="dynamicForm.state.value.size"
+<!--        <nut-input class="nut-input-text" v-model="dynamicForm.state.value.size"-->
 
-                   placeholder="请输入尺码"/>
+<!--                   placeholder="请输入尺码"/>-->
+        <closetSize v-model:state="dynamicForm.state"></closetSize>
         <!--        <nut-number-keyboard v-model:visible="sizeShow" :custom-key="customSizeKey" type="rightColumn" :title="dynamicForm.state.size" v-model="dynamicForm.state.size" maxlength="6" @close="sizeShow=false"> </nut-number-keyboard>-->
       </nut-form-item>
       <nut-form-item label="购买日期" prop="purchaseDate"

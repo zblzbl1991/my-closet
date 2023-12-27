@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import './index.scss'
 import {ref, watchEffect} from "vue";
-import {IconFont} from "@nutui/icons-vue";
 import {closetModel} from "@/types/closet/closetModel";
 
 const props = defineProps({
