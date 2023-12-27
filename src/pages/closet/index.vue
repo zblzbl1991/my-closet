@@ -10,7 +10,7 @@ import {closetModel} from "@/types/closet/closetModel";
 import {request} from "../../service/request";
 import Taro from "@tarojs/taro";
 import {useTokenStore} from "../../store/wechat";
-import {closetDelete} from "../../api/closetApi";
+import {beforeUpload} from "@/pages/closet/index";
 
 const dynamicRefForm: any = ref(null);
 const dynamicForm = {
@@ -130,39 +130,8 @@ const confirm = ({selectedValue, selectedOptions}) => {
   checkDateShow.value = false
 }
 const beforeXhrUpload = (taroUploadFile, options) => {
-  //taroUploadFile  是 Taro.uploadFile ， 你也可以自定义设置其它函数
-  options.url = process.env.TARO_APP_API + '/closet/uploadImg'
-  console.log('options', options)
-  const uploadTask = taroUploadFile({
-    url: options.url,
-    filePath: options.taroFilePath,
-    fileType: options.fileType,
-    timeout: 100000,
-    header: {
-      'Content-Type': 'multipart/form-data',
-      'satoken': useTokenStore.val,
-      ...options.headers
-    }, //
-    formData: options.formData,
-    name: options.name,
-    success(response: { errMsg; statusCode; data }) {
-      if (options.xhrState == response.statusCode) {
-        options.onSuccess?.(response, options);
-        let imgUrl = JSON.parse(response.data).data;
-        dynamicForm.state.value.images.push(imgUrl)
-        console.log(uploadList.value)
-      } else {
-        options.onFailure?.(response, options);
-      }
-    },
-    fail(e) {
-      options.onFailure?.(e, options);
-    }
-  });
-  options.onStart?.(options);
-  uploadTask.progress((res) => {
-    options.onProgress?.(res, options);
-  });
+  beforeUpload(taroUploadFile,options,dynamicForm)
+
   // uploadTask.abort(); // 取消上传任务
 };
 const checkDateShow = ref(false)
@@ -209,18 +178,12 @@ const handleImg =function (){
 </script>
 <template>
   <view>
-<!--    <nut-swiper :pagination-visible="true" pagination-color="#426543" v-if="dynamicForm.state.value.images"-->
-<!--                :height="150">-->
-<!--      <nut-swiper-item v-for="item in dynamicForm.state.value.images">-->
         <view>
           <image
               style="width: 300px;height: 100px;background: #fff;margin:0 auto;display:block" mode="aspectFit" v-if="dynamicForm.state.value.images"
               :src="dynamicForm.state.value.images&&dynamicForm.state.value.images.length>0?dynamicForm.state.value.images[0].thumbUrl?dynamicForm.state.value.images[0].thumbUrl:dynamicForm.state.value.images[0].url:''" @click="handleImg" :onTap="clickImg"
           />
         </view>
-        <!--        <img :src="item.thumbUrl?item.thumbUrl:item.url" alt=""   @click="clickImg(item.url)"/>-->
-<!--      </nut-swiper-item>-->
-<!--    </nut-swiper>-->
     <nut-form :model-value="dynamicForm.state.value" ref="dynamicRefForm">
 
       <nut-form-item label="名称" prop="name" :rules="[{ required: false, message: '请填写名称' }]">
@@ -275,9 +238,9 @@ const handleImg =function (){
       <nut-uploader :before-xhr-upload="beforeXhrUpload" v-model:file-list="uploadList"
                     @delete="onDelete"></nut-uploader>
       <nut-cell>
-        <nut-button type="primary" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">提交
+        <nut-button type="info" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">提交
         </nut-button>
-        <nut-button size="small" @click="dynamicForm.methods.reset">重置提示状态</nut-button>
+<!--        <nut-button size="small" @click="dynamicForm.methods.reset">重置提示状态</nut-button>-->
         <nut-button size="small" type="danger" v-if="dynamicForm.state.value.id" @click="dynamicForm.methods.delete(dynamicForm.state.value.id)">删除</nut-button>
       </nut-cell>
     </nut-form>
