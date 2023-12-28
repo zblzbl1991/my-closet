@@ -55,6 +55,7 @@ const clickItem = (key, item) => {
 const clickIndex = (key) => {
   console.log(key);
 };
+
 const popupShow = ref(false)
 </script>
 <template>
@@ -62,14 +63,12 @@ const popupShow = ref(false)
              placeholder="请输入品牌" type="text"/>
   <nut-popup position="bottom" v-model:visible="popupShow" style="height: 50%">
     <scroll-view class="scroll-view_H" :scroll-y="true"  v-if="brands">
-      <view  >
-        <nut-elevator :index-list="data" height="260px"  @click-item="clickItem" @click-index="clickIndex">
+        <nut-elevator :index-list="data"  height="250" @click-item="clickItem" @click-index="clickIndex">
           <template #default="slotProps">
             <!--              <Jd width="12px"></Jd>-->
             <span :style="{ marginLeft: '15px' }">{{ slotProps.item.name }}</span>
           </template>
         </nut-elevator>
-      </view>
     </scroll-view>
   </nut-popup>
 

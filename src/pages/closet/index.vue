@@ -6,6 +6,7 @@ import closetColor from './closet-color'
 import closetBrand from '@/pages/closet/closet-brand'
 import closetSize from '@/pages/closet/closet-size'
 import closetType from '@/pages/closet/closet-type'
+import closetDate from '@/pages/closet/closet-date'
 import closetTag from '@/pages/closet/closet-tag'
 import {closetModel} from "@/types/closet/closetModel";
 import {request} from "../../service/request";
@@ -66,19 +67,22 @@ const dynamicForm = {
         }
       });
     },
+    statistic(){
+
+    },
     reset() {
       console.log(dynamicRefForm.value)
       dynamicRefForm.value.reset();
     },
-    delete(id:string){
+    delete(id: string) {
       Taro.showModal({
         title: '提示',
         content: '是否删除？',
         success: function (res) {
           if (res.confirm) {
             request({
-              url:'/closet/'+id,
-              method:'DELETE',
+              url: '/closet/' + id,
+              method: 'DELETE',
               success: function (res) {
                 Taro.navigateBack(/*{
                 delta: 2
@@ -125,12 +129,9 @@ const dynamicForm = {
 const show = ref(false);
 // const desc = ref('2022年05月10日');
 
-const confirm = ({selectedValue, selectedOptions}) => {
-  dynamicForm.state.value.purchaseDate = selectedOptions.map((option) => option.text).join('');
-  checkDateShow.value = false
-}
+
 const beforeXhrUpload = (taroUploadFile, options) => {
-  beforeUpload(taroUploadFile,options,dynamicForm)
+  beforeUpload(taroUploadFile, options, dynamicForm)
 
   // uploadTask.abort(); // 取消上传任务
 };
@@ -154,9 +155,7 @@ const showFn = () => {
 const hideFn = () => {
   showPreview.value = false;
 };
-const minDate = new Date(2010, 0, 1);
-const maxDate = new Date(2025, 10, 1);
-const currentDate = new Date(2023, 5, 10, 10, 10);
+
 onMounted(() => {
   dynamicForm.methods.init()
 })
@@ -164,26 +163,28 @@ const clickImg = function (url) {
   console.log('click', url)
   showPreview.value = true
   showImg.value = []
-  const imgArr=dynamicForm.state.value.images.map(image=>image.url)
+  const imgArr = dynamicForm.state.value.images.map(image => image.url)
   for (let i = 0; i < imgArr.length; i++) {
-    showImg.value.push({src:imgArr[i]})
+    showImg.value.push({src: imgArr[i]})
   }
-  console.log( showImg.value)
+  console.log(showImg.value)
 }
 const showPreview = ref(false)
 const showImg = ref([])
-const handleImg =function (){
+const handleImg = function () {
   console.log('handler click')
 }
 </script>
 <template>
   <view>
-        <view>
-          <image
-              style="width: 300px;height: 100px;background: #fff;margin:0 auto;display:block" mode="aspectFit" v-if="dynamicForm.state.value.images"
-              :src="dynamicForm.state.value.images&&dynamicForm.state.value.images.length>0?dynamicForm.state.value.images[0].thumbUrl?dynamicForm.state.value.images[0].thumbUrl:dynamicForm.state.value.images[0].url:''" @click="handleImg" :onTap="clickImg"
-          />
-        </view>
+    <view>
+      <image
+          style="width: 300px;height: 100px;background: #fff;margin:0 auto;display:block" mode="aspectFit"
+          v-if="dynamicForm.state.value.images"
+          :src="dynamicForm.state.value.images&&dynamicForm.state.value.images.length>0?dynamicForm.state.value.images[0].thumbUrl?dynamicForm.state.value.images[0].thumbUrl:dynamicForm.state.value.images[0].url:''"
+          @click="handleImg" :onTap="clickImg"
+      />
+    </view>
     <nut-form :model-value="dynamicForm.state.value" ref="dynamicRefForm">
 
       <nut-form-item label="名称" prop="name" :rules="[{ required: false, message: '请填写名称' }]">
@@ -216,18 +217,18 @@ const handleImg =function (){
                              @close="priceShow=false"></nut-number-keyboard>
       </nut-form-item>
       <nut-form-item label="尺码" prop="size" :rules="[{ required: false, message: '请填写尺码' }]">
-<!--        <nut-input class="nut-input-text" v-model="dynamicForm.state.value.size"-->
+        <!--        <nut-input class="nut-input-text" v-model="dynamicForm.state.value.size"-->
 
-<!--                   placeholder="请输入尺码"/>-->
+        <!--                   placeholder="请输入尺码"/>-->
         <closetSize v-model:state="dynamicForm.state"></closetSize>
         <!--        <nut-number-keyboard v-model:visible="sizeShow" :custom-key="customSizeKey" type="rightColumn" :title="dynamicForm.state.size" v-model="dynamicForm.state.size" maxlength="6" @close="sizeShow=false"> </nut-number-keyboard>-->
       </nut-form-item>
       <nut-form-item label="购买日期" prop="purchaseDate"
                      :rules="[{ required: false, message: '请填写购买日期' }]">
-        <nut-input class="nut-input-text" v-model="dynamicForm.state.value.purchaseDate" @click="checkDateShow =true"
-                   readonly
-                   placeholder="请选择购买日期"/>
-
+<!--        <nut-input class="nut-input-text" v-model="dynamicForm.state.value.purchaseDate" @click="checkDateShow =true"-->
+        <!--                   readonly-->
+        <!--                   placeholder="请选择购买日期"/>-->
+  <closetDate v-model:state="dynamicForm.state"></closetDate>
       </nut-form-item>
       <nut-form-item label="标签" prop="tag" :rules="[{ required: false, message: '请填写标签' }]">
         <closetTag v-model:state="dynamicForm.state"></closetTag>
@@ -237,34 +238,39 @@ const handleImg =function (){
                    type="text"/>
       </nut-form-item>
       <nut-uploader :before-xhr-upload="beforeXhrUpload" v-model:file-list="uploadList"
-                    @delete="onDelete"></nut-uploader>
-      <nut-cell>
+                    @delete="onDelete" ></nut-uploader>
+      <nut-cell style="height:0px"></nut-cell>
+      <nut-cell class="r">
         <nut-button type="info" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">提交
         </nut-button>
-<!--        <nut-button size="small" @click="dynamicForm.methods.reset">重置提示状态</nut-button>-->
-        <nut-button size="small" type="danger" v-if="dynamicForm.state.value.id" @click="dynamicForm.methods.delete(dynamicForm.state.value.id)">删除</nut-button>
+        <nut-button type="info" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">统计
+        </nut-button>
+        <!--        <nut-button size="small" @click="dynamicForm.methods.reset">重置提示状态</nut-button>-->
+        <nut-button size="small" type="danger" v-if="dynamicForm.state.value.id"
+                    @click="dynamicForm.methods.delete(dynamicForm.state.value.id)">删除
+        </nut-button>
       </nut-cell>
+      <!--      <nut-navbar title="Title" left-show @click-back="dynamicForm.methods.submit" @click-right="dynamicForm.methods.delete(dynamicForm.state.value.id)"></nut-navbar>-->
     </nut-form>
 
 
-    <nut-popup position="bottom" v-model:visible="checkDateShow">
-      <nut-date-picker
-          v-model="currentDate"
-          v-model:visible="show"
-          :min-date="minDate"
-          :max-date="maxDate"
-          :is-show-chinese="true"
-          :three-dimensional="false"
-          @confirm="confirm"
-      ></nut-date-picker>
-    </nut-popup>
+
 
     <nut-image-preview :show="showPreview" :images="showImg" @close="hideFn"/>
 
   </view>
 
 </template>
-
+<style>
+.r {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+}
+.nut-cell-group{
+  padding-bottom: 40px;
+}
+</style>
 <style scoped lang="scss">
 
 </style>

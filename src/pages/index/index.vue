@@ -1,18 +1,28 @@
 <template>
 
-  <nut-cell-group v-for="(item,key) in dataList">
+  <nut-cell-group v-for="(item,key) in dataList" >
     <nut-cell >
       <template #title>
-      <span>  {{key}}  <b style="color: red"> {{item.length}}</b>个</span>
+      <span>  {{key}}  <b style="color: red"> {{computedLength(item)}}</b>个</span>
       </template>
     </nut-cell>
     <nut-row type="flex" wrap="nowrap"  justify="center">
-      <scroll-view class="scroll-view_H" :scroll-x="true" @scroll="scroll" style="width: 100%">
+      <scroll-view class="scroll-view_H" :scroll-y="true" @scroll="scroll" style="width: 100%">
+        <nut-collapse>
+          <nut-collapse-item :name="index" :title="index" v-for="(closet,index) in item">
+            <nut-grid :column-num="3" direction="horizontal" :square="true" gutter="2">
+              <nut-grid-item  v-for="(c,cKey) in closet">
+                            <image   :onTap="click" :id="c.id"
+                                   style="width: 100px;height: 80px;background: #fff;margin-right: 10px"
+                                   :src="c.images[0]?c.images[0].thumbUrl?c.images[0].thumbUrl:c.images[0].url:'../'"></image>
+              </nut-grid-item>
+            </nut-grid>
+          </nut-collapse-item>
 <!--        <view v-for="(closet,index) in item">-->
-          <image  v-for="(closet,index) in item" :onTap="click" :id="closet.id"
-                 style="width: 150px;height: 100px;background: #fff;margin-right: 10px"
-                 :src="closet.images[0]?closet.images[0].thumbUrl?closet.images[0].thumbUrl:closet.images[0].url:'../'"
-          />
+<!--          <image  v-for="(closet,index) in item" :onTap="click" :id="closet.id"-->
+<!--                 style="width: 150px;height: 100px;background: #fff;margin-right: 10px"-->
+<!--                 :src="closet.images[0]?closet.images[0].thumbUrl?closet.images[0].thumbUrl:closet.images[0].url:'../'"-->
+        </nut-collapse>
       </scroll-view>
     </nut-row>
   </nut-cell-group>
@@ -25,13 +35,32 @@
 </template>
 <script setup>
 import Tabbar from "../../component/index.vue";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import Taro from "@tarojs/taro";
 import {request} from "../../service/request";
 import { useDidShow } from '@tarojs/taro'
 import {useOpenidStore, useSessionKeyStore, useTokenStore} from "../../store/wechat";
 import {closetTypes} from "../../api/closetApi";
 
+const onTap =function () {
+  console.log('onTap')
+}
+const onLongTap=function () {
+  console.log('onLongTap')
+}
+const computedLength=computed(()=>(item)=>{
+  console.log('item',item)
+  // for (let i = 0; i < item.length; i++) {
+  //   console.log(item[i])
+  // }
+  let arrLength=0
+  for (var val in item) {
+    let itemElement = item[val];
+    console.log(val + " " + itemElement);//输出如:name
+    arrLength+=  itemElement.length
+  }
+  return arrLength;
+})
 
 const scroll=function (e){
    console.log('scroll:', e)
@@ -114,20 +143,6 @@ useDidShow(() => {
 <style>
 .scroll-view_H{
   white-space: nowrap;
-}
-.float-button {
-  position: fixed;
-  bottom: 150px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
 }
 .add-button {
   position: fixed;

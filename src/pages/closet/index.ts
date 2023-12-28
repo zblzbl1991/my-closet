@@ -22,7 +22,6 @@ export const beforeUpload=(taroUploadFile,options,dynamicForm)=>{
                 options.onSuccess?.(response, options);
                 let imgUrl = JSON.parse(response.data).data;
                 dynamicForm.state.value.images.push(imgUrl)
-                console.log(uploadList.value)
             } else {
                 options.onFailure?.(response, options);
             }
