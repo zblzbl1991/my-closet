@@ -9,7 +9,7 @@
     <nut-row type="flex" wrap="nowrap"  justify="center">
       <scroll-view class="scroll-view_H" :scroll-y="true" @scroll="scroll" style="width: 100%">
         <nut-collapse>
-          <nut-collapse-item :name="index" :title="index" v-for="(closet,index) in item">
+          <nut-collapse-item :name="index" :title="computedCollapseName(index,closet.length)" v-for="(closet,index) in item">
             <nut-grid :column-num="3" direction="horizontal" :square="true" gutter="2">
               <nut-grid-item  v-for="(c,cKey) in closet">
                             <image   :onTap="click" :id="c.id"
@@ -50,18 +50,16 @@ const onLongTap=function () {
 }
 const computedLength=computed(()=>(item)=>{
   console.log('item',item)
-  // for (let i = 0; i < item.length; i++) {
-  //   console.log(item[i])
-  // }
   let arrLength=0
   for (var val in item) {
     let itemElement = item[val];
-    console.log(val + " " + itemElement);//输出如:name
     arrLength+=  itemElement.length
   }
   return arrLength;
 })
-
+const computedCollapseName=computed(()=>(item,length)=>{
+  return item+' '+length+'个'
+})
 const scroll=function (e){
    console.log('scroll:', e)
  }
@@ -87,7 +85,6 @@ const getData = () => {
   request({
     url:'/closet/',
     success: function (res) {
-      console.log('dataList',res.data.data)
       dataList.value=res.data.data
     }
   })
@@ -119,7 +116,6 @@ const login=function () {
             code: res.code
           },success:function (res) {
             let data = res.data;
-            console.log(data.data)
 
             useOpenidStore.val=data.data.openid
             useSessionKeyStore.val=data.data.sessionKey

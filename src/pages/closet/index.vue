@@ -12,6 +12,7 @@ import {closetModel} from "@/types/closet/closetModel";
 import {request} from "../../service/request";
 import Taro from "@tarojs/taro";
 import {beforeUpload} from "@/pages/closet/index";
+import {closetRecords} from "../../api/closetApi";
 
 const dynamicRefForm: any = ref(null);
 const dynamicForm = {
@@ -68,7 +69,7 @@ const dynamicForm = {
       });
     },
     statistic(){
-
+      state.isVisible=true
     },
     reset() {
       console.log(dynamicRefForm.value)
@@ -122,14 +123,46 @@ const dynamicForm = {
 
           }
         })
+        request({
+          url: closetRecords,
+
+          method: 'GET',
+          success: function (res) {
+       const arr =     res.data.data.map(item=>{
+              return item.dateStr;
+            })
+            state.date=arr
+          }
+        })
       }
     }
   }
 };
-const show = ref(false);
-// const desc = ref('2022年05月10日');
+
+const closeSwitch = (param) => {
+  state[`${param}`] = false;
+};
+const setChooseValue = (param) => {
+  // state.date = param[3];
+  // state.dateWeek = param[4];
+  let dateArr = param.map((item) => {
+    return item[3];
+  });
+  state.date = [...dateArr];
+  console.log('state',state)
+  request({
+    url: closetRecords,
+    data:{
+      closetId:dynamicForm.state.value.id,
+      closetDates:state.date
+    },
+    method: 'POST',
+    success: function (res) {
 
 
+    }
+  })
+};
 const beforeXhrUpload = (taroUploadFile, options) => {
   beforeUpload(taroUploadFile, options, dynamicForm)
 
@@ -174,6 +207,12 @@ const showImg = ref([])
 const handleImg = function () {
   console.log('handler click')
 }
+const state = reactive({
+  isVisible: false,
+  date: [],
+  dateWeek: '',
+  date7: [],
+});
 </script>
 <template>
   <view>
@@ -243,7 +282,7 @@ const handleImg = function () {
       <nut-cell class="r">
         <nut-button type="info" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">提交
         </nut-button>
-        <nut-button type="info" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">统计
+        <nut-button type="info" style="margin-right: 10px" v-if="dynamicForm.state.value.id" size="small" @click="dynamicForm.methods.statistic">统计
         </nut-button>
         <!--        <nut-button size="small" @click="dynamicForm.methods.reset">重置提示状态</nut-button>-->
         <nut-button size="small" type="danger" v-if="dynamicForm.state.value.id"
@@ -254,7 +293,16 @@ const handleImg = function () {
     </nut-form>
 
 
-
+    <nut-calendar
+        v-model:visible="state.isVisible"
+        :default-value="state.date"
+        @close="closeSwitch('isVisible')"
+        @choose="setChooseValue"
+        :start-date="`2000-01-11`"
+        :end-date="`2024-12-31`"
+        type="multiple"
+    >
+    </nut-calendar>
 
     <nut-image-preview :show="showPreview" :images="showImg" @close="hideFn"/>
 
