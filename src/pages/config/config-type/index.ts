@@ -2,7 +2,7 @@ import Taro from "@tarojs/taro";
 import {request} from "../../../service/request";
 import {closetConfigLocation, closetConfigTypes} from "../../../api/closetApi";
 
-export const deleteType=function (id){
+export const deleteType=function (id,locations){
     console.log('id',id)
     Taro.showModal({
         title: '提示',
@@ -13,10 +13,7 @@ export const deleteType=function (id){
                     url:closetConfigTypes+'/'+id,
                     method:'DELETE',
                     success: function (res) {
-                        Taro.navigateBack(/*{
-                delta: 2
-              }*/)
-
+                        // getLocations(locations)
                     }
                 })
                 console.log('用户点击确定')
@@ -38,7 +35,11 @@ export const getLocations = function (locations) {
         data: {},
         success: function (res) {
             console.log(res)
-            locations.value = res.data.data
+            if(locations){
+
+                locations.value = res.data.data
+                console.log('当前部位：',locations)
+            }
         }
     })
 }
@@ -51,8 +52,33 @@ export const saveLocation = function (val,locations) {
             name: val
         },
         success: function (res) {
-            console.log(res)
-            getLocations(locations)
+            console.log(res,locations)
+            // getLocations(locations)
         }
     })
+}
+export const deleteLocation = function (id,locations) {
+    Taro.showModal({
+        title: '提示',
+        content: '是否删除？',
+        success: function (res) {
+            if (res.confirm) {
+                request({
+                    url: `${closetConfigLocation}/${id}`,
+                    method: "DELETE",
+                    data: {
+                        name: id
+                    },
+                    success: function (res) {
+                        console.log(locations)
+                        // getLocations(locations)
+                    }
+                })
+                console.log('用户点击确定')
+            } else if (res.cancel) {
+                console.log('用户点击取消')
+            }
+        }
+    })
+
 }

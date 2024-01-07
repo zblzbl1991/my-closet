@@ -7,7 +7,7 @@ import {configLocation} from "@/types/closet/configModel";
 import {request} from "../../../service/request";
 import Taro from "@tarojs/taro";
 import {closetConfigLocation, closetConfigTypes} from "../../../api/closetApi";
-import {addType, deleteType, getLocations, saveLocation} from "@/pages/config/config-type/index";
+import {addType, deleteLocation, deleteType, getLocations, saveLocation} from "@/pages/config/config-type/index";
 
 const onClick = function (e) {
   console.log(e)
@@ -43,28 +43,27 @@ const saveType = function (locationId) {
   <view v-for="item in locations">
     <nut-cell :title="item.name">
       <template #link>
-        <nut-button type="primary" size="small" @click="addType(item.types)">新增</nut-button>
-
-
+        <nut-button type="info" size="small" @click="addType(item.types)">新增</nut-button>
+        <nut-button type="danger" size="small" @click="deleteLocation(item.id,locations)">删除</nut-button>
       </template>
     </nut-cell>
-    <nut-swipe-group lock>
-      <nut-swipe v-if="item.types&&item.types.length>0" v-for="t in item.types">
-        <nut-cell round-radius="0" style="height: 100%" :title="t.name">
-          <template #default>
-            <nut-input readonly v-if="t.id" v-model="t.name"/>
+<!--    <nut-swipe-group lock>-->
+<!--      <nut-swipe v-if="item.types&&item.types.length>0" v-for="t in item.types">-->
+        <view  v-if="item.types&&item.types.length>0" v-for="t in item.types">
+          <nut-input readonly v-if="t.id" v-model="t.name">
+            <template #right> <nut-button type="primary" size="small" @click="deleteType(t.id)">删除</nut-button> </template>
+          </nut-input>
             <nut-input v-else v-model="typeVal" placeholder="输入分类">
               <template #right>
                 <nut-button type="primary" size="small" @click="saveType(item.id)">确认</nut-button>
               </template>
             </nut-input>
-          </template>
-        </nut-cell>
-        <template #right>
-          <nut-button shape="square" style="height: 100%" type="danger" @click="deleteType(t.id)">删除</nut-button>
-        </template>
-      </nut-swipe>
-    </nut-swipe-group>
+        </view>
+<!--        <template #right>-->
+<!--          <nut-button shape="square" style="height: 100%" type="danger" @click="deleteType(t.id)">删除</nut-button>-->
+<!--        </template>-->
+<!--      </nut-swipe>-->
+<!--    </nut-swipe-group>-->
   </view>
 
   <nut-input v-model="val" placeholder="输入部位">
@@ -77,7 +76,9 @@ const saveType = function (locationId) {
 .nut-navbar__right {
   color: black;
 }
-
+:root{
+  --nut-cell-line-height: 15px
+}
 .overlay-body {
   display: flex;
   height: 100%;
