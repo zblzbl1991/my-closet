@@ -52,9 +52,8 @@ const popupShow = ref(false)
              readonly
              placeholder="请选择颜色"/>
 
-  <nut-popup position="bottom" v-model:visible="popupShow" :catch-move="true" style="height: 50%">
-    <scroll-view class="scroll-view_H" :scroll-y="true">
-      <view>
+  <nut-popup position="bottom" v-model:visible="popupShow"  style="height: 50%">
+    <scroll-view class="scroll-view_H" :scroll-y="true" >
 
         <nut-cell-group>
           <nut-cell>
@@ -69,7 +68,6 @@ const popupShow = ref(false)
             </nut-radio-group>
           </nut-cell>
         </nut-cell-group>
-      </view>
     </scroll-view>
   </nut-popup>
 

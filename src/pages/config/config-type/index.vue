@@ -8,6 +8,7 @@ import {request} from "../../../service/request";
 import Taro from "@tarojs/taro";
 import {closetConfigLocation, closetConfigTypes} from "../../../api/closetApi";
 import {addType, deleteLocation, deleteType, getLocations, saveLocation} from "@/pages/config/config-type/index";
+import {useLocationsStore} from "../../../store/closet";
 
 const onClick = function (e) {
   console.log(e)
@@ -18,6 +19,7 @@ const val = ref('')
 const typeVal = ref('')
 const locations: configLocation[] = ref([])
 onMounted(() => {
+  useLocationsStore.val=locations
   getLocations(locations)
 })
 
@@ -44,7 +46,7 @@ const saveType = function (locationId) {
     <nut-cell :title="item.name">
       <template #link>
         <nut-button type="info" size="small" @click="addType(item.types)">新增</nut-button>
-        <nut-button type="danger" size="small" @click="deleteLocation(item.id,locations)">删除</nut-button>
+        <nut-button type="danger" size="small" @click="deleteLocation(item.id)">删除</nut-button>
       </template>
     </nut-cell>
 <!--    <nut-swipe-group lock>-->

@@ -139,6 +139,7 @@ useDidShow(() => {
 <style>
 .scroll-view_H{
   white-space: nowrap;
+  height: 100%;
 }
 .add-button {
   position: fixed;

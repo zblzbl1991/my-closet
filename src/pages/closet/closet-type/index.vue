@@ -38,7 +38,7 @@ const popupShow=ref(false)
   <nut-input class="nut-input-text" v-model="props.state.value.type" @click="popupShow =true"
              readonly
              placeholder="请选择分类"/>
-  <nut-popup position="bottom" v-model:visible="popupShow" :catch-move="true" style="height: 50%">
+  <nut-popup position="bottom" v-model:visible="popupShow"  style="height: 50%">
     <scroll-view class="scroll-view_H" :scroll-y="true">
       <view>
         <nut-cell-group :title="key" v-for="(item,key) in types">

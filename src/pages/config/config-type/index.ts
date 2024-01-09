@@ -1,6 +1,8 @@
 import Taro from "@tarojs/taro";
 import {request} from "../../../service/request";
 import {closetConfigLocation, closetConfigTypes} from "../../../api/closetApi";
+import {toRef} from "vue";
+import {useLocationsStore} from "../../../store/closet";
 
 export const deleteType=function (id,locations){
     console.log('id',id)
@@ -13,7 +15,8 @@ export const deleteType=function (id,locations){
                     url:closetConfigTypes+'/'+id,
                     method:'DELETE',
                     success: function (res) {
-                        // getLocations(locations)
+                        console.log('useLocationsStore.val',useLocationsStore.val)
+                        getLocations(useLocationsStore.val)
                     }
                 })
                 console.log('用户点击确定')
@@ -57,7 +60,7 @@ export const saveLocation = function (val,locations) {
         }
     })
 }
-export const deleteLocation = function (id,locations) {
+export const deleteLocation = function (id) {
     Taro.showModal({
         title: '提示',
         content: '是否删除？',
@@ -70,7 +73,8 @@ export const deleteLocation = function (id,locations) {
                         name: id
                     },
                     success: function (res) {
-                        console.log(locations)
+                        console.log('useLocationsStore.val',useLocationsStore.val)
+                        getLocations(useLocationsStore.val)
                         // getLocations(locations)
                     }
                 })
