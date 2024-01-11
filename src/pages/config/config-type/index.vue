@@ -61,14 +61,9 @@ const saveType = function (locationId) {
               </template>
             </nut-input>
         </view>
-<!--        <template #right>-->
-<!--          <nut-button shape="square" style="height: 100%" type="danger" @click="deleteType(t.id)">删除</nut-button>-->
-<!--        </template>-->
-<!--      </nut-swipe>-->
-<!--    </nut-swipe-group>-->
   </view>
 
-  <nut-input v-model="val" placeholder="输入部位">
+  <nut-input v-model="val"  placeholder="输入部位">
     <template #right>
       <nut-button type="primary" size="small" @click="saveLocation(val,locations)">确认</nut-button>
     </template>

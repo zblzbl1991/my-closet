@@ -62,8 +62,8 @@ const popupShow = ref(false)
   <nut-input class="nut-input-text" readonly @click="popupShow =true" v-model="props.state.value.brand"
              placeholder="请输入品牌" type="text"/>
   <nut-popup position="bottom" v-model:visible="popupShow" style="height: 50%">
-    <scroll-view class="scroll-view_H" :scroll-y="true"  v-if="brands">
-        <nut-elevator :index-list="data"  height="250" @click-item="clickItem" @click-index="clickIndex">
+    <scroll-view class="scroll-view_H" :scroll-y="true"  >
+        <nut-elevator :index-list="data" height="100%"  @click-item="clickItem" @click-index="clickIndex">
           <template #default="slotProps">
             <!--              <Jd width="12px"></Jd>-->
             <span :style="{ marginLeft: '15px' }">{{ slotProps.item.name }}</span>

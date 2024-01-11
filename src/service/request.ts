@@ -29,14 +29,22 @@ export function request(options){
     options.header['satoken']=tokenValue
 
     options.fail=(res=>{
+        console.log(res)
         Taro.showToast({
             title: res,
-            icon: 'error',
+            icon: 'none',
             duration: 2000
         })
     })
     options.complete=(res=>{
         console.log(res)
+        if(res.statusCode!==200){
+            Taro.showToast({
+                title: '服务器出现一点小问题，请稍后再试',
+                icon: 'none',
+                duration: 2000
+            })
+        }
     })
     Taro.request(options)
 }

@@ -55,7 +55,8 @@ export const saveLocation = function (val,locations) {
             name: val
         },
         success: function (res) {
-            console.log(res,locations)
+            console.log(val)
+            getLocations(useLocationsStore.val)
             // getLocations(locations)
         }
     })
