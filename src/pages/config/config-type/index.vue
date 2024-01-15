@@ -39,6 +39,21 @@ const saveType = function (locationId) {
     }
   })
 }
+const deleteBrand =function (brandId) {
+  request({
+    url: closetConfigTypes,
+    method: "POST",
+    data: {
+      name: typeVal.value,
+      locationId: locationId
+    },
+    success: function (res) {
+      console.log(res)
+      getLocations(locations)
+      typeVal.value = ''
+    }
+  })
+}
 
 </script>
 <template>
@@ -53,7 +68,7 @@ const saveType = function (locationId) {
 <!--      <nut-swipe v-if="item.types&&item.types.length>0" v-for="t in item.types">-->
         <view  v-if="item.types&&item.types.length>0" v-for="t in item.types">
           <nut-input readonly v-if="t.id" v-model="t.name">
-            <template #right> <nut-button type="primary" size="small" @click="deleteType(t.id)">删除</nut-button> </template>
+            <template #right> <nut-button type="primary" size="small" @click="deleteBrand(t.id)">删除</nut-button> </template>
           </nut-input>
             <nut-input v-else v-model="typeVal" placeholder="输入分类">
               <template #right>

@@ -5,6 +5,7 @@ import {request} from "../../../service/request";
 import {closetConfigBrand, closetConfigBrands} from "../../../api/closetApi";
 import Taro from "@tarojs/taro";
 import {onMounted, ref} from "vue";
+import {deleteType} from "@/pages/config/config-type/index";
 
 const onClick =function (e){
   console.log(e)
@@ -57,10 +58,7 @@ const deleteBrand=function (id){
           url:closetConfigBrand+'/'+id,
           method:'DELETE',
           success: function (res) {
-            Taro.navigateBack(/*{
-                delta: 2
-              }*/)
-
+            getBrands()
           }
         })
         console.log('用户点击确定')
@@ -72,31 +70,16 @@ const deleteBrand=function (id){
 }
 </script>
 <template>
-<!--  <nut-overlay v-model:visible="show">-->
-<!--    <div class="overlay-body">-->
-<!--      <div class="overlay-content">text</div>-->
-<!--    </div>-->
-<!--  </nut-overlay>-->
-<!--  <nut-navbar title="品牌" @click-right="addBrand(brands)">-->
-<!--    <template #right>-->
-<!--     <p style="color: black">新增</p>-->
-<!--    </template>-->
-<!--  </nut-navbar>-->
-<!--  <nut-swipe v-if="brands&&brands.length>0" v-for="t in brands">-->
-    <nut-cell round-radius="0" style="height: 100%" :title="t.name" v-for="t in brands" >
-      <template #default>
-        <nut-input readonly v-if="t.id" v-model="t.name"/>
-<!--        <nut-input v-else v-model="typeVal" placeholder="输入品牌">-->
-<!--          <template #right>-->
-<!--            <nut-button type="primary" size="small" @click="saveBrand">确认</nut-button>-->
-<!--          </template>-->
-<!--        </nut-input>-->
-      </template>
-    </nut-cell>
-<!--    <template #right>-->
-<!--      <nut-button shape="square" style="height: 100%" type="danger" @click="deleteBrand(t.id)">删除</nut-button>-->
-<!--    </template>-->
-<!--  </nut-swipe>-->
+<!--    <nut-cell round-radius="0" :title="t.name" v-for="t in brands" >-->
+      <view v-for="t in brands">
+        <nut-input readonly v-if="t.id" v-model="t.name">
+          <template #right> <nut-button type="primary" size="small" @click="deleteBrand(t.id)">删除</nut-button> </template>
+        </nut-input>
+      </view>
+  <nut-popup :style="{ padding: '30px 50px' }" v-model:visible="show">正文</nut-popup>
+<!--      <template #default>-->
+<!--      </template>-->
+<!--    </nut-cell>-->
   <nut-cell class="r">
     <nut-input v-model="typeVal" placeholder="输入品牌">
       <template #right>

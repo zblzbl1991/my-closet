@@ -106,6 +106,9 @@ login()
 })
 
 const login=function () {
+  Taro.showLoading({
+    title: '加载中',
+  })
   Taro.login({
     success: function (res) {
       if (res.code) {
@@ -115,6 +118,7 @@ const login=function () {
           data: {
             code: res.code
           },success:function (res) {
+            Taro.hideLoading()
             let data = res.data;
 
             useOpenidStore.val=data.data.openid
@@ -132,7 +136,10 @@ const login=function () {
 }
 useDidShow(() => {
   console.log('onShow')
-  getTypes()
+  if(useOpenidStore.val){
+    getTypes()
+  }
+
 })
 
 </script>

@@ -30,24 +30,24 @@ onMounted(()=>{
 })
 </script>
 <template>
-  <nut-navbar   @click-right="onClick">
-    <template #right>
-     新增部位
-    </template>
-  </nut-navbar>
-  <nut-cell :title="item.name" v-for="item in locations">
-    <template #link>
-      <nut-switch v-model="checked" />
-    </template>
-  </nut-cell>
-  <nut-overlay v-model:visible="showTop">
-    <div class="overlay-body">
-      <nut-input v-model="val" placeholder="输入部位" >
-        <template #right> <nut-button type="primary" size="small">确认</nut-button> </template>
-      </nut-input>
-    </div>
+<!--  <nut-navbar   @click-right="onClick">-->
+<!--    <template #right>-->
+<!--     新增部位-->
+<!--    </template>-->
+<!--  </nut-navbar>-->
+<!--  <nut-cell :title="item.name" v-for="item in locations">-->
+<!--    <template #link>-->
+<!--      <nut-switch v-model="checked" />-->
+<!--    </template>-->
+<!--  </nut-cell>-->
+<!--  <nut-overlay v-model:visible="showTop">-->
+<!--    <div class="overlay-body">-->
+<!--      <nut-input v-model="val" placeholder="输入部位" >-->
+<!--        <template #right> <nut-button type="primary" size="small">确认</nut-button> </template>-->
+<!--      </nut-input>-->
+<!--    </div>-->
 
-  </nut-overlay>
+<!--  </nut-overlay>-->
 <!--  <nut-input v-model="val" placeholder="请输入分类" >-->
 <!--    <template #right> <nut-button type="primary" size="small">新增</nut-button> </template>-->
 <!--  </nut-input>-->
