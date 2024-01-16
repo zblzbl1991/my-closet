@@ -18,34 +18,6 @@ const onChange = function () {
   popupShow.value = false
 }
 
-const colorList = ref([
-  {text: '黑色', vaule: '1', bgColor: '#000000', color: '#fff'},
-  {text: '白色', vaule: '2', bgColor: '#ffffff', color: '#333'},
-  {text: '红色', vaule: '3', bgColor: '#ff0000', color: '#fff'},
-  {text: '粉色', vaule: '4', bgColor: '#ff00ff', color: '#333'},
-  {text: '粉红色', vaule: '5', bgColor: '#FFC0CB', color: '#FFC0CB'},
-  {text: '橙红色', vaule: '5', bgColor: '#FF4500', color: '#fff'},
-  {text: '蓝色', vaule: '5', bgColor: '#0000ff', color: '#fff'},
-  {text: '湖蓝色', vaule: '5', bgColor: '#00FFFF', color: '#fff'},
-  {text: '宝蓝色', vaule: '5', bgColor: '#4169E1', color: '#fff'},
-  {text: '绿色', vaule: '5', bgColor: '#008000', color: '#fff'},
-  {text: '草绿色', vaule: '5', bgColor: '#7CFC00', color: '#fff'},
-  {text: '橄榄绿色', vaule: '5', bgColor: '#808000', color: '#fff'},
-  {text: '黄色', vaule: '5', bgColor: '#FFFF00', color: '#fff'},
-  {text: '柠檬黄', vaule: '5', bgColor: '#FFFACD', color: '#fff'},
-  {text: '金黄色', vaule: '5', bgColor: '#FFD700', color: '#fff'},
-  {text: '紫色', vaule: '5', bgColor: '#800080', color: '#fff'},
-  {text: '浅紫色', vaule: '5', bgColor: '#BA55D3', color: '#fff'},
-  {text: '深紫色', vaule: '5', bgColor: '#4B0082', color: '#fff'},
-  {text: '深紫色', vaule: '5', bgColor: '#4B0082', color: '#fff'},
-  {text: '灰色', vaule: '5', bgColor: '#808080', color: '#fff'},
-  {text: '浅灰色', vaule: '5', bgColor: '#D3D3D3', color: '#fff'},
-  {text: '深灰色', vaule: '5', bgColor: '#A9A9A9', color: '#fff'},
-  {text: '棕色', vaule: '5', bgColor: '#A52A2A', color: '#fff'},
-  {text: '浅棕色', vaule: '5', bgColor: '#D2691E', color: '#fff'},
-  {text: '深棕色', vaule: '5', bgColor: '#8B4513', color: '#fff'},
-])
-
 const sizeList=ref([
   {text:'S'},
   {text:'M'},
