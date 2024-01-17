@@ -2,7 +2,7 @@ export interface closetModel {
     id:string
     name:string
     type:string
-    color:string
+    color:string[]
     position:string
     season:string[]
     brand:string

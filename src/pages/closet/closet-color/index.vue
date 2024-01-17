@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import './index.scss'
-import {ref, watchEffect} from "vue";
+import {computed, ref, watchEffect} from "vue";
 import {closetModel} from "@/types/closet/closetModel";
 
 const props = defineProps({
@@ -20,6 +20,11 @@ const onChange = function () {
 const colorList = ref([
   {text: '黑色', vaule: '1', bgColor: '#000000', color: '#fff'},
   {text: '白色', vaule: '2', bgColor: '#ffffff', color: '#333'},
+  {text: '象牙色', vaule: '2', bgColor: '#f2eada', color: '#f2eada'},
+  {text: '石竹色', vaule: '2', bgColor: '#d1c7b7', color: '#333'},
+  {text: '乳白色', vaule: '2', bgColor: '#d3d7d4', color: '#333'},
+  {text: '灰白', vaule: '2', bgColor: '#d9d6c3', color: '#333'},
+  {text: '生成色', vaule: '2', bgColor: '#f6f5ec', color: '#333'},
   {text: '红色', vaule: '3', bgColor: '#ff0000', color: '#fff'},
   {text: '粉色', vaule: '4', bgColor: '#ff00ff', color: '#333'},
   {text: '粉红色', vaule: '5', bgColor: '#FFC0CB', color: '#FFC0CB'},
@@ -45,10 +50,18 @@ const colorList = ref([
   {text: '深棕色', vaule: '5', bgColor: '#8B4513', color: '#fff'},
 ])
 const popupShow = ref(false)
+const colorComputed = computed(() => {
+  if(props.state.value.color){
+    return props.state.value.color.map((val) => val).join(',');
+  }else{
+    return ''
+  }
+
+})
 </script>
 <template>
 
-  <nut-input class="nut-input-text" v-model="props.state.value.color" @click="popupShow =true"
+  <nut-input class="nut-input-text" v-model="colorComputed" @click="popupShow =true"
              readonly
              placeholder="请选择颜色"/>
 
@@ -57,15 +70,24 @@ const popupShow = ref(false)
 
         <nut-cell-group>
           <nut-cell>
-            <nut-radio-group v-model="props.state.value.color" @change="onChange">
-              <nut-radio :label="item.text" v-for="item in colorList">
+            <nut-checkbox-group v-model="props.state.value.color">
+              <nut-checkbox :label="item.text" v-for="item in colorList"   shape="button">
                 <div style="display: flex;align-items: center"><p class="radio-span"
                                                                   :style="{background: item.bgColor}"></p>
                   {{ item.text }}
                 </div>
-              </nut-radio>
+              </nut-checkbox>
+<!--              <nut-checkbox label="性价比高" shape="button">性价比高</nut-checkbox>-->
+            </nut-checkbox-group>
+<!--            <nut-radio-group v-model="props.state.value.color" @change="onChange">-->
+<!--              <nut-radio :label="item.text" v-for="item in colorList">-->
+<!--                <div style="display: flex;align-items: center"><p class="radio-span"-->
+<!--                                                                  :style="{background: item.bgColor}"></p>-->
+<!--                  {{ item.text }}-->
+<!--                </div>-->
+<!--              </nut-radio>-->
 
-            </nut-radio-group>
+<!--            </nut-radio-group>-->
           </nut-cell>
         </nut-cell-group>
     </scroll-view>

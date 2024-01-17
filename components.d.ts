@@ -27,7 +27,6 @@ declare module 'vue' {
     NutImagePreview: typeof import('@nutui/nutui-taro')['ImagePreview']
     NutInput: typeof import('@nutui/nutui-taro')['Input']
     NutNavbar: typeof import('@nutui/nutui-taro')['Navbar']
-    NutNumberKeyboard: typeof import('@nutui/nutui-taro')['NumberKeyboard']
     NutPopup: typeof import('@nutui/nutui-taro')['Popup']
     NutRadio: typeof import('@nutui/nutui-taro')['Radio']
     NutRadioGroup: typeof import('@nutui/nutui-taro')['RadioGroup']
