@@ -39,20 +39,30 @@ const saveType = function (locationId) {
     }
   })
 }
-const deleteBrand =function (brandId) {
-  request({
-    url: closetConfigTypes,
-    method: "POST",
-    data: {
-      name: typeVal.value,
-      locationId: locationId
-    },
+const deleteType =function (typeId) {
+  Taro.showModal({
+    title: '提示',
+    content: '是否删除？',
     success: function (res) {
-      console.log(res)
-      getLocations(locations)
-      typeVal.value = ''
+      if (res.confirm) {
+        request({
+          url: `${closetConfigTypes}/${typeId}`,
+          method: "DELETE",
+          data: {
+            name: typeVal.value,
+          },
+          success: function (res) {
+            console.log(res)
+            getLocations(locations)
+          }
+        })
+        console.log('用户点击确定')
+      } else if (res.cancel) {
+        console.log('用户点击取消')
+      }
     }
   })
+
 }
 
 </script>
@@ -68,7 +78,7 @@ const deleteBrand =function (brandId) {
 <!--      <nut-swipe v-if="item.types&&item.types.length>0" v-for="t in item.types">-->
         <view  v-if="item.types&&item.types.length>0" v-for="t in item.types">
           <nut-input readonly v-if="t.id" v-model="t.name">
-            <template #right> <nut-button type="primary" size="small" @click="deleteBrand(t.id)">删除</nut-button> </template>
+            <template #right> <nut-button type="primary" size="small" @click="deleteType(t.id)">删除</nut-button> </template>
           </nut-input>
             <nut-input v-else v-model="typeVal" placeholder="输入分类">
               <template #right>
