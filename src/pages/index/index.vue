@@ -49,7 +49,6 @@ const onLongTap=function () {
   console.log('onLongTap')
 }
 const computedLength=computed(()=>(item)=>{
-  console.log('item',item)
   let arrLength=0
   for (var val in item) {
     let itemElement = item[val];
@@ -61,11 +60,9 @@ const computedCollapseName=computed(()=>(item,length)=>{
   return item+' '+length+'个'
 })
 const scroll=function (e){
-   console.log('scroll:', e)
  }
  const click =function (e){
    let id = e.mpEvent.target.id;
-   console.log(id)
    Taro.navigateTo({
      url: '/pages/closet/index?id='+id,
    })

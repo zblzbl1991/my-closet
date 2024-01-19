@@ -11,7 +11,6 @@ import {addType, deleteLocation, deleteType, getLocations, saveLocation} from "@
 import {useLocationsStore} from "../../../store/closet";
 
 const onClick = function (e) {
-  console.log(e)
   showTop.value = true
 }
 const showTop = ref(false)
@@ -33,7 +32,6 @@ const saveType = function (locationId) {
       locationId: locationId
     },
     success: function (res) {
-      console.log(res)
       getLocations(locations)
       typeVal.value = ''
     }
@@ -52,7 +50,6 @@ const deleteType =function (typeId) {
             name: typeVal.value,
           },
           success: function (res) {
-            console.log(res)
             getLocations(locations)
           }
         })

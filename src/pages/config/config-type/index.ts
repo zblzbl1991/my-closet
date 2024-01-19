@@ -15,7 +15,6 @@ export const deleteType=function (id,locations){
                     url:closetConfigTypes+'/'+id,
                     method:'DELETE',
                     success: function (res) {
-                        console.log('useLocationsStore.val',useLocationsStore.val)
                         getLocations(useLocationsStore.val)
                     }
                 })
@@ -27,7 +26,6 @@ export const deleteType=function (id,locations){
     })
 }
 export const addType = function (types) {
-    console.log(types)
     types.push({})
 }
 
@@ -37,17 +35,14 @@ export const getLocations = function (locations) {
         method: "GET",
         data: {},
         success: function (res) {
-            console.log(res)
             if(locations){
 
                 locations.value = res.data.data
-                console.log('当前部位：',locations)
             }
         }
     })
 }
 export const saveLocation = function (val,locations) {
-    console.log(val,locations)
     request({
         url: closetConfigLocation,
         method: "POST",
@@ -55,7 +50,6 @@ export const saveLocation = function (val,locations) {
             name: val
         },
         success: function (res) {
-            console.log(val)
             getLocations(useLocationsStore.val)
             // getLocations(locations)
         }
@@ -74,7 +68,6 @@ export const deleteLocation = function (id) {
                         name: id
                     },
                     success: function (res) {
-                        console.log('useLocationsStore.val',useLocationsStore.val)
                         getLocations(useLocationsStore.val)
                         // getLocations(locations)
                     }

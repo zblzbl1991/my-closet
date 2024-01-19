@@ -32,7 +32,6 @@ const getBrands = function () {
         brand.originName=brand.name
       })
 
-      console.log(brands)
     }
   })
 }
@@ -45,7 +44,6 @@ const saveBrand = function (locationId) {
       // locationId:locationId
     },
     success: function (res) {
-      console.log(res)
       getBrands()
       typeVal.value = ''
     }
@@ -83,7 +81,6 @@ const updateBrand =function (t){
       // locationId:locationId
     },
     success: function (res) {
-      console.log(res)
       getBrands()
       // typeVal.value = ''
     }

@@ -86,11 +86,9 @@ const dynamicForm = {
       if (params.id) {
         request({
           url: '/closet/' + params.id,
-          // method: "GET",
-          // data: dynamicForm.state,
           success: function (res) {
             dynamicForm.state.value = res.data.data
-            console.log(dynamicForm.state.value.images)
+
             for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
               let img = dynamicForm.state.value.images[i];
               uploadList.value.push({
@@ -103,6 +101,8 @@ const dynamicForm = {
               })
             }
 
+            console.log(dynamicForm.state.value)
+
           }
         })
         request({
@@ -113,7 +113,8 @@ const dynamicForm = {
             const arr = res.data.data.map(item => {
               return item.dateStr;
             })
-            state.date = arr
+            console.log('arr',arr)
+            state.date.concat(arr)
           }
         })
       }
@@ -158,7 +159,6 @@ const uploadList = ref([])
 
 const onDelete = (obj) => {
   dynamicForm.state.value.images.splice(obj.index, 1);
-  console.log('delete 事件触发', obj);
 };
 const hideFn = () => {
   showPreview.value = false;
@@ -168,14 +168,12 @@ onMounted(() => {
   dynamicForm.methods.init()
 })
 const clickImg = function (url) {
-  console.log('click', url)
   showPreview.value = true
   showImg.value = []
   const imgArr = dynamicForm.state.value.images.map(image => image.url)
   for (let i = 0; i < imgArr.length; i++) {
     showImg.value.push({src: imgArr[i]})
   }
-  console.log(showImg.value)
 }
 const showPreview = ref(false)
 const showImg = ref([])
@@ -195,11 +193,11 @@ const date = ref([startDate, endDate])
 
 const calendarRef = ref(null);
 
-const computedTotalPrice=computed(()=>{
-  console.log(state.date,dynamicForm.state.value.price)
-  if(state.date&&dynamicForm.state.value.price){
-   return  state.date.length*dynamicForm.state.value.price
-  }else{
+const computedTotalPrice = computed(() => {
+  console.log(state.date, dynamicForm.state.value.price)
+  if (state.date && dynamicForm.state.value.price) {
+    return dynamicForm.state.value.price / state.date.length
+  } else {
     return '--'
   }
 })
@@ -255,10 +253,10 @@ const computedTotalPrice=computed(()=>{
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.remarks" placeholder="请输入备注"
                    type="text"/>
       </nut-form-item>
-      <nut-form-item label="总价值(￥)" prop="totalPrice">
+      <nut-form-item label="性价比(￥)" prop="totalPrice">
         <nut-input class="nut-input-text" v-model="computedTotalPrice" readonly
 
-                  />
+        />
       </nut-form-item>
       <nut-uploader :before-xhr-upload="beforeXhrUpload" v-model:file-list="uploadList"
                     @delete="onDelete"></nut-uploader>
