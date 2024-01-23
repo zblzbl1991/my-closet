@@ -52,7 +52,10 @@ const colorList = ref([
 const popupShow = ref(false)
 const colorComputed = computed(() => {
   if(props.state.value.color){
-    return props.state.value.color.map((val) => val).join(',');
+    if(Array.isArray(props.state.value.color)){
+      return props.state.value.color.map((val) => val).join(',');
+    }
+    return ''
   }else{
     return ''
   }
