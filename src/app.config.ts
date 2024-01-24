@@ -2,7 +2,7 @@ export default defineAppConfig({
   pages: [
     'pages/index/index',
     'pages/my-closet/index',
-    'pages/my-fashion/index',
+    'pages/my-clock/index',
     'pages/closet/index',
     'pages/personal/index',
     'pages/config/config-type/index',
@@ -32,13 +32,13 @@ export default defineAppConfig({
         pagePath: 'pages/my-closet/index',
         // selectedIconPath: 'images/tabbar_cate_on.png',
         // iconPath: 'images/tabbar_cate.png',
-        text: '我的衣橱'
+        text: '穿搭灵感'
       },
       {
-        pagePath: 'pages/my-fashion/index',
+        pagePath: 'pages/my-clock/index',
         // selectedIconPath: '../images/tabbar_cate_on.png',
         // iconPath: '../images/tabbar_cate.png',
-        text: '我的穿搭'
+        text: '打卡'
       },
       {
         pagePath: 'pages/personal/index',

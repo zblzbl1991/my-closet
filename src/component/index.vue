@@ -39,13 +39,13 @@ export default {
         pagePath: '/pages/my-closet/index',
         // selectedIconPath: '../images/tabbar_cate_on.png',
         // iconPath: '../images/tabbar_cate.png',
-        text: '我的衣橱'
+        text: '灵感穿搭'
       },
       {
-        pagePath: '/pages/my-fashion/index',
+        pagePath: '/pages/my-clock/index',
         // selectedIconPath: '../images/tabbar_cate_on.png',
         // iconPath: '../images/tabbar_cate.png',
-        text: '我的穿搭'
+        text: '打卡'
       },
       {
         pagePath: '/pages/personal/index',
