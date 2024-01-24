@@ -5,33 +5,37 @@ import {request} from "../../../service/request";
 import {closetConfigBrand, closetConfigBrands} from "../../../api/closetApi";
 import Taro from "@tarojs/taro";
 import {onMounted, ref} from "vue";
+import {deleteType} from "@/pages/config/config-type/index";
 
-const onClick =function (e){
+const onClick = function (e) {
   console.log(e)
 }
-const show =ref(false)
-onMounted(()=>{
+const show = ref(false)
+onMounted(() => {
   getBrands()
 })
-const brands=ref([])
-const typeVal =ref('')
+const brands = ref([])
+const typeVal = ref('')
 const addBrand = function (types) {
   console.log(types)
-  show.value=true
+  show.value = true
 }
-const getBrands=function (){
+const getBrands = function () {
   request({
     url: closetConfigBrands,
     method: "GET",
-    data: {
-    },
+    data: {},
     success: function (res) {
-      console.log(res.data.data)
-      brands.value=res.data.data
+      brands.value = res.data.data
+      brands.value.map(brand=>{
+        brand.update=false
+        brand.originName=brand.name
+      })
+
     }
   })
 }
-const saveBrand=function (locationId){
+const saveBrand = function (locationId) {
   request({
     url: closetConfigBrand,
     method: "POST",
@@ -40,27 +44,23 @@ const saveBrand=function (locationId){
       // locationId:locationId
     },
     success: function (res) {
-      console.log(res)
       getBrands()
-      typeVal.value=''
+      typeVal.value = ''
     }
   })
 }
-const deleteBrand=function (id){
-  console.log('id',id)
+const deleteBrand = function (id) {
+  console.log('id', id)
   Taro.showModal({
     title: '提示',
     content: '是否删除？',
     success: function (res) {
       if (res.confirm) {
         request({
-          url:closetConfigBrand+'/'+id,
-          method:'DELETE',
+          url: closetConfigBrand + '/' + id,
+          method: 'DELETE',
           success: function (res) {
-            Taro.navigateBack(/*{
-                delta: 2
-              }*/)
-
+            getBrands()
           }
         })
         console.log('用户点击确定')
@@ -70,33 +70,43 @@ const deleteBrand=function (id){
     }
   })
 }
+const updateBrand =function (t){
+  console.log(t)
+  request({
+    url: closetConfigBrand,
+    method: "POST",
+    data: {
+      name: t.name,
+      id: t.id,
+      // locationId:locationId
+    },
+    success: function (res) {
+      getBrands()
+      // typeVal.value = ''
+    }
+  })
+}
+const handleClick = function (t) {
+  console.log('t', t)
+}
+const handleUpdate=function ( val) {
+  console.log(val)
+}
 </script>
 <template>
-<!--  <nut-overlay v-model:visible="show">-->
-<!--    <div class="overlay-body">-->
-<!--      <div class="overlay-content">text</div>-->
-<!--    </div>-->
-<!--  </nut-overlay>-->
-<!--  <nut-navbar title="品牌" @click-right="addBrand(brands)">-->
-<!--    <template #right>-->
-<!--     <p style="color: black">新增</p>-->
-<!--    </template>-->
-<!--  </nut-navbar>-->
-<!--  <nut-swipe v-if="brands&&brands.length>0" v-for="t in brands">-->
-    <nut-cell round-radius="0" style="height: 100%" :title="t.name" v-for="t in brands" >
-      <template #default>
-        <nut-input readonly v-if="t.id" v-model="t.name"/>
-<!--        <nut-input v-else v-model="typeVal" placeholder="输入品牌">-->
-<!--          <template #right>-->
-<!--            <nut-button type="primary" size="small" @click="saveBrand">确认</nut-button>-->
-<!--          </template>-->
-<!--        </nut-input>-->
+  <!--    <nut-cell round-radius="0" :title="t.name" v-for="t in brands" >-->
+  <view v-for="t in brands">
+    <nut-input  v-if="t.id" v-model="t.name" @click="handleClick(t)" >
+      <template #right>
+        <nut-button type="success" size="small" v-if="t.name !=t.originName" @click="updateBrand(t)">保存</nut-button>
+        <nut-button type="primary" size="small" @click="deleteBrand(t.id)">删除</nut-button>
       </template>
-    </nut-cell>
-<!--    <template #right>-->
-<!--      <nut-button shape="square" style="height: 100%" type="danger" @click="deleteBrand(t.id)">删除</nut-button>-->
-<!--    </template>-->
-<!--  </nut-swipe>-->
+    </nut-input>
+  </view>
+  <nut-popup :style="{ padding: '30px 50px' }" v-model:visible="show">正文</nut-popup>
+  <!--      <template #default>-->
+  <!--      </template>-->
+  <!--    </nut-cell>-->
   <nut-cell class="r">
     <nut-input v-model="typeVal" placeholder="输入品牌">
       <template #right>

@@ -24,6 +24,7 @@ const getBrands=function (){
       console.log('brands',brands)
       console.log('data',data)
       data.value=res.data.data
+      // data.value.push(res.data.data)
     }
   })
 }
@@ -32,14 +33,14 @@ onMounted(()=>{
 })
 const data = ref([
   {
-    title: 'A',
-    list: [
-      {
-        name: 'Armani',
-        id: 1
-      }
-    ]
-  },
+    // title: 'A',
+    // list: [
+    //   {
+    //     name: 'Armani',
+    //     id: 1
+    //   }
+    // ]
+  }
 
 ]);
 // 监听 依赖发生变化 更新

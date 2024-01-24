@@ -1,4 +1,6 @@
 import {useTokenStore} from "../../store/wechat";
+import Taro from "@tarojs/taro";
+import {request} from "../../service/request";
 
 
 export const beforeUpload=(taroUploadFile,options,dynamicForm)=>{
@@ -34,4 +36,28 @@ export const beforeUpload=(taroUploadFile,options,dynamicForm)=>{
     uploadTask.progress((res) => {
         options.onProgress?.(res, options);
     });
+}
+
+export const deleteCloset=function (id:string){
+    Taro.showModal({
+        title: '提示',
+        content: '是否删除？',
+        success: function (res) {
+            if (res.confirm) {
+                request({
+                    url: '/closet/' + id,
+                    method: 'DELETE',
+                    success: function (res) {
+                        Taro.navigateBack(/*{
+                delta: 2
+              }*/)
+
+                    }
+                })
+                console.log('用户点击确定')
+            } else if (res.cancel) {
+                console.log('用户点击取消')
+            }
+        }
+    })
 }

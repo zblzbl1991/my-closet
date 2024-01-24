@@ -11,7 +11,6 @@ import {addType, deleteLocation, deleteType, getLocations, saveLocation} from "@
 import {useLocationsStore} from "../../../store/closet";
 
 const onClick = function (e) {
-  console.log(e)
   showTop.value = true
 }
 const showTop = ref(false)
@@ -33,11 +32,34 @@ const saveType = function (locationId) {
       locationId: locationId
     },
     success: function (res) {
-      console.log(res)
       getLocations(locations)
       typeVal.value = ''
     }
   })
+}
+const deleteType =function (typeId) {
+  Taro.showModal({
+    title: '提示',
+    content: '是否删除？',
+    success: function (res) {
+      if (res.confirm) {
+        request({
+          url: `${closetConfigTypes}/${typeId}`,
+          method: "DELETE",
+          data: {
+            name: typeVal.value,
+          },
+          success: function (res) {
+            getLocations(locations)
+          }
+        })
+        console.log('用户点击确定')
+      } else if (res.cancel) {
+        console.log('用户点击取消')
+      }
+    }
+  })
+
 }
 
 </script>

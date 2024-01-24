@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, reactive, ref} from 'vue';
+import {computed, onMounted, reactive, ref} from 'vue';
 import './index.scss'
 import closetSeason from './closet-season'
 import closetColor from './closet-color'
@@ -11,8 +11,9 @@ import closetTag from '@/pages/closet/closet-tag'
 import {closetModel} from "@/types/closet/closetModel";
 import {request} from "../../service/request";
 import Taro from "@tarojs/taro";
-import {beforeUpload} from "@/pages/closet/index";
+import {beforeUpload, deleteCloset} from "@/pages/closet/index";
 import {closetRecords} from "../../api/closetApi";
+import dayjs from "dayjs";
 
 const dynamicRefForm: any = ref(null);
 const dynamicForm = {
@@ -22,7 +23,7 @@ const dynamicForm = {
     name: '',
     //分类
     type: '',
-    color: '',
+    color: [],
     //收纳位置
     position: '',
     //季节
@@ -68,35 +69,16 @@ const dynamicForm = {
         }
       });
     },
-    statistic(){
-      state.isVisible=true
+    statistic() {
+      state.isVisible = true
+      // calendarRef.value.scrollToDate(endDate);
     },
     reset() {
       console.log(dynamicRefForm.value)
       dynamicRefForm.value.reset();
     },
     delete(id: string) {
-      Taro.showModal({
-        title: '提示',
-        content: '是否删除？',
-        success: function (res) {
-          if (res.confirm) {
-            request({
-              url: '/closet/' + id,
-              method: 'DELETE',
-              success: function (res) {
-                Taro.navigateBack(/*{
-                delta: 2
-              }*/)
-
-              }
-            })
-            console.log('用户点击确定')
-          } else if (res.cancel) {
-            console.log('用户点击取消')
-          }
-        }
-      })
+      deleteCloset(id)
     },
     init() {
       let params = Taro.getCurrentInstance().router.params;
@@ -104,11 +86,9 @@ const dynamicForm = {
       if (params.id) {
         request({
           url: '/closet/' + params.id,
-          // method: "GET",
-          // data: dynamicForm.state,
           success: function (res) {
             dynamicForm.state.value = res.data.data
-            console.log(dynamicForm.state.value.images)
+
             for (let i = 0; i < dynamicForm.state.value.images.length; i++) {
               let img = dynamicForm.state.value.images[i];
               uploadList.value.push({
@@ -121,6 +101,8 @@ const dynamicForm = {
               })
             }
 
+            console.log(dynamicForm.state.value)
+
           }
         })
         request({
@@ -128,10 +110,11 @@ const dynamicForm = {
 
           method: 'GET',
           success: function (res) {
-       const arr =     res.data.data.map(item=>{
+            const arr = res.data.data.map(item => {
               return item.dateStr;
             })
-            state.date=arr
+            console.log('arr',arr)
+            state.date.concat(arr)
           }
         })
       }
@@ -149,12 +132,12 @@ const setChooseValue = (param) => {
     return item[3];
   });
   state.date = [...dateArr];
-  console.log('state',state)
+  console.log('state', state)
   request({
     url: closetRecords,
-    data:{
-      closetId:dynamicForm.state.value.id,
-      closetDates:state.date
+    data: {
+      closetId: dynamicForm.state.value.id,
+      closetDates: state.date
     },
     method: 'POST',
     success: function (res) {
@@ -168,23 +151,15 @@ const beforeXhrUpload = (taroUploadFile, options) => {
 
   // uploadTask.abort(); // 取消上传任务
 };
-const checkDateShow = ref(false)
 
 const priceShow = ref(false)
 
-const customKey = reactive(['.']);
 
 const uploadList = ref([])
 
 const onDelete = (obj) => {
   dynamicForm.state.value.images.splice(obj.index, 1);
-  console.log('delete 事件触发', obj);
 };
-
-const showFn = () => {
-  showPreview.value = true;
-};
-
 const hideFn = () => {
   showPreview.value = false;
 };
@@ -193,14 +168,12 @@ onMounted(() => {
   dynamicForm.methods.init()
 })
 const clickImg = function (url) {
-  console.log('click', url)
   showPreview.value = true
   showImg.value = []
   const imgArr = dynamicForm.state.value.images.map(image => image.url)
   for (let i = 0; i < imgArr.length; i++) {
     showImg.value.push({src: imgArr[i]})
   }
-  console.log(showImg.value)
 }
 const showPreview = ref(false)
 const showImg = ref([])
@@ -213,6 +186,21 @@ const state = reactive({
   dateWeek: '',
   date7: [],
 });
+const endDate = dayjs().format('YYYY-MM-DD');
+const startDate = dayjs().subtract(1, 'month').format('YYYY-MM-DD');
+console.log(endDate)
+const date = ref([startDate, endDate])
+
+const calendarRef = ref(null);
+
+const computedTotalPrice = computed(() => {
+  console.log(state.date, dynamicForm.state.value.price)
+  if (state.date && dynamicForm.state.value.price) {
+    return dynamicForm.state.value.price / state.date.length
+  } else {
+    return '--'
+  }
+})
 </script>
 <template>
   <view>
@@ -248,26 +236,15 @@ const state = reactive({
       </nut-form-item>
       <nut-form-item label="价格(￥)" prop="price" :rules="[{ required: false, message: '请填写价格' }]">
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.price" @click="priceShow =true"
-                   readonly
+
                    placeholder="请输入价格" type="digit"/>
-        <nut-number-keyboard v-model:visible="priceShow" :custom-key="customKey" type="rightColumn"
-                             :title="dynamicForm.state.value.price" v-model="dynamicForm.state.value.price"
-                             maxlength="6"
-                             @close="priceShow=false"></nut-number-keyboard>
       </nut-form-item>
       <nut-form-item label="尺码" prop="size" :rules="[{ required: false, message: '请填写尺码' }]">
-        <!--        <nut-input class="nut-input-text" v-model="dynamicForm.state.value.size"-->
-
-        <!--                   placeholder="请输入尺码"/>-->
         <closetSize v-model:state="dynamicForm.state"></closetSize>
-        <!--        <nut-number-keyboard v-model:visible="sizeShow" :custom-key="customSizeKey" type="rightColumn" :title="dynamicForm.state.size" v-model="dynamicForm.state.size" maxlength="6" @close="sizeShow=false"> </nut-number-keyboard>-->
       </nut-form-item>
       <nut-form-item label="购买日期" prop="purchaseDate"
                      :rules="[{ required: false, message: '请填写购买日期' }]">
-<!--        <nut-input class="nut-input-text" v-model="dynamicForm.state.value.purchaseDate" @click="checkDateShow =true"-->
-        <!--                   readonly-->
-        <!--                   placeholder="请选择购买日期"/>-->
-  <closetDate v-model:state="dynamicForm.state"></closetDate>
+        <closetDate v-model:state="dynamicForm.state"></closetDate>
       </nut-form-item>
       <nut-form-item label="标签" prop="tag" :rules="[{ required: false, message: '请填写标签' }]">
         <closetTag v-model:state="dynamicForm.state"></closetTag>
@@ -276,13 +253,19 @@ const state = reactive({
         <nut-input class="nut-input-text" v-model="dynamicForm.state.value.remarks" placeholder="请输入备注"
                    type="text"/>
       </nut-form-item>
+      <nut-form-item label="性价比(￥)" prop="totalPrice">
+        <nut-input class="nut-input-text" v-model="computedTotalPrice" readonly
+
+        />
+      </nut-form-item>
       <nut-uploader :before-xhr-upload="beforeXhrUpload" v-model:file-list="uploadList"
-                    @delete="onDelete" ></nut-uploader>
+                    @delete="onDelete"></nut-uploader>
       <nut-cell style="height:0px"></nut-cell>
       <nut-cell class="r">
         <nut-button type="info" style="margin-right: 10px" size="small" @click="dynamicForm.methods.submit">提交
         </nut-button>
-        <nut-button type="info" style="margin-right: 10px" v-if="dynamicForm.state.value.id" size="small" @click="dynamicForm.methods.statistic">统计
+        <nut-button type="info" style="margin-right: 10px" v-if="dynamicForm.state.value.id" size="small"
+                    @click="dynamicForm.methods.statistic">统计
         </nut-button>
         <!--        <nut-button size="small" @click="dynamicForm.methods.reset">重置提示状态</nut-button>-->
         <nut-button size="small" type="danger" v-if="dynamicForm.state.value.id"
@@ -294,12 +277,13 @@ const state = reactive({
 
 
     <nut-calendar
+        ref="calendarRef"
         v-model:visible="state.isVisible"
         :default-value="state.date"
         @close="closeSwitch('isVisible')"
         @choose="setChooseValue"
-        :start-date="`2000-01-11`"
-        :end-date="`2024-12-31`"
+        :start-date="date[0]"
+        :end-date="date[1]"
         type="multiple"
     >
     </nut-calendar>
@@ -315,9 +299,7 @@ const state = reactive({
   bottom: 0;
   z-index: 100;
 }
-.nut-cell-group{
-  padding-bottom: 40px;
-}
+
 </style>
 <style scoped lang="scss">
 
