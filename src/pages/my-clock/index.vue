@@ -8,12 +8,12 @@ onMounted(() => {
 });
 
 const markers =ref( [{
-  iconPath: "https://avatars2.githubusercontent.com/u/1782542?s=460&u=d20514a52100ed1f82282bcfca6f49052793c889&v=4",
+  // iconPath: "https://avatars2.githubusercontent.com/u/1782542?s=460&u=d20514a52100ed1f82282bcfca6f49052793c889&v=4",
   id: 0,
   latitude: 23.099994,
   longitude: 113.324520,
-  width: 50,
-  height: 50
+  // width: 50,
+  // height: 50
 }])
 const polyline=ref([{
   points: [{
@@ -40,7 +40,7 @@ const markertap =function (e) {
 <template>
   <map
       id="map"
-      style="width: 100%; height: 300px;"
+      style="width: 100%; height: 100vh;"
       longitude="113.324520"
       latitude="23.099994"
       scale="14"
