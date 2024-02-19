@@ -1,4 +1,4 @@
 export default definePageConfig({
-    navigationBarTitleText: '我的穿搭',
+    navigationBarTitleText: '我的打卡',
     usingComponents: {},
 })

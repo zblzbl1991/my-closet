@@ -72,6 +72,7 @@ const dynamicForm = {
     statistic() {
       state.isVisible = true
       // calendarRef.value.scrollToDate(endDate);
+      calendarRef.value.scrollToDate(dayjs().format("YYYY-MM-DD"));
     },
     reset() {
       console.log(dynamicRefForm.value)
@@ -106,7 +107,7 @@ const dynamicForm = {
           }
         })
         request({
-          url: closetRecords,
+          url: `${closetRecords}/${params.id}`,
 
           method: 'GET',
           success: function (res) {
@@ -114,7 +115,9 @@ const dynamicForm = {
               return item.dateStr;
             })
             console.log('arr',arr)
-            state.date.concat(arr)
+            let concat = state.date.concat(arr);
+            state.date=concat
+            console.log('date',state.date)
           }
         })
       }
