@@ -5,6 +5,7 @@ export default defineAppConfig({
         'pages/my-clock/index',
         'pages/closet/index',
         'pages/personal/index',
+        'pages/statistics/index',
         'pages/config/config-type/index',
         'pages/config/config-color/index',
         'pages/config/config-size/index',
@@ -39,6 +40,12 @@ export default defineAppConfig({
                 // selectedIconPath: 'images/tabbar_cate_on.png',
                 // iconPath: 'images/tabbar_cate.png',
                 text: '穿搭灵感'
+            },
+            {
+                pagePath: 'pages/statistics/index',
+                // selectedIconPath: '../images/tabbar_cate_on.png',
+                // iconPath: '../images/tabbar_cate.png',
+                text: '统计'
             },
             {
                 pagePath: 'pages/my-clock/index',

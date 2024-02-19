@@ -42,6 +42,12 @@ export default {
         text: '灵感穿搭'
       },
       {
+        pagePath: '/pages/statistics/index',
+        // selectedIconPath: '../images/tabbar_cate_on.png',
+        // iconPath: '../images/tabbar_cate.png',
+        text: '统计'
+      },
+      {
         pagePath: '/pages/my-clock/index',
         // selectedIconPath: '../images/tabbar_cate_on.png',
         // iconPath: '../images/tabbar_cate.png',

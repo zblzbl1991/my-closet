@@ -12,7 +12,7 @@
           <nut-collapse-item :name="index" :title="computedCollapseName(index,closet.length)" v-for="(closet,index) in item">
             <nut-grid :column-num="3" direction="horizontal" :square="true" gutter="2">
               <nut-grid-item  v-for="(c,cKey) in closet">
-                            <image   :onTap="click" :id="c.id"
+                            <image   :onTap="click" :id="c.id" lazyLoad="true"
                                    style="width: 100px;height: 80px;background: #fff;margin-right: 10px"
                                    :src="c.images[0]?c.images[0].thumbUrl?c.images[0].thumbUrl:c.images[0].url:'../'"></image>
               </nut-grid-item>
