@@ -4,10 +4,10 @@
       <nut-cell v-for="item in tabList" :title="item.typeName" :desc="getResult(item)"></nut-cell>
     </nut-tab-pane>
     <nut-tab-pane title="按类型" pane-key="TYPE">
-      <nut-cell v-for="item in tabList" :title="item.typeName"></nut-cell>
+      <nut-cell v-for="item in tabList" :title="item.typeName" :desc="getResult(item)"></nut-cell>
     </nut-tab-pane>
     <nut-tab-pane title="按时间" pane-key="DATE">
-      <nut-cell v-for="item in tabList" :title="item.typeName"></nut-cell>
+      <nut-cell v-for="item in tabList" :title="item.typeName" :desc="getResult(item)"></nut-cell>
     </nut-tab-pane>
   </nut-tabs>
 
@@ -21,10 +21,10 @@ import {request} from "../../service/request";
 import {closetTypeGroup} from "../../api/closetApi";
 const value = ref('LOCATION');
 const click=function (suffix) {
-  console.log( '/pages/config/config-'+suffix)
-  Taro.navigateTo({
-    url: '/pages/config/config-'+suffix+'/index',
-  })
+  //跳转去明细页面
+  // Taro.navigateTo({
+  //   url: '/pages/config/config-'+suffix+'/index',
+  // })
 }
 const getResult =function (item) {
  const length= item.closetList.length
@@ -32,13 +32,10 @@ const getResult =function (item) {
   if(item.closetList.length>0){
     res = item.closetList.map(closet=>closet.price).reduce((total, num) => total + num);
   }
-
- console.log(res)
-
   return `${length} | ￥${res} >`
 }
 const handlerChange =function (res) {
-    console.log(res.paneKey)
+  tabList.value=[]
   getData(res.paneKey)
 
 }
