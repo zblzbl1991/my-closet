@@ -53,9 +53,13 @@ const regionchange=function (e) {
 const markertap =function (e) {
   console.log("markertap:", e.detail.markerId)
 }
+const onClick = () => {
+  console.log('[Navbar]: on click right');
+};
 </script>
 
 <template>
+  <nut-navbar title="Title" desc="Share" @click-right="onClick"></nut-navbar>
   <map
       id="map"
       style="width: 100%; height: 100vh;"
