@@ -44,8 +44,8 @@ const polyline=ref([{
 const getMarkers =function () {
 
 }
-const show =ref(true)
-
+const show =ref(false)
+//添加打卡位置
 const regionchange=function (e) {
   console.log(e.type)
 }

@@ -12,6 +12,7 @@ export interface closetModel {
     tag:string[]
     remarks:string
     images:string[]
+    days:string
 }
 
 export interface closetType {

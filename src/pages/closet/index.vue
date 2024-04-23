@@ -40,7 +40,9 @@ const dynamicForm = {
     tag: [],
     //备注
     remarks: '',
-    images: []
+    images: [],
+    //穿搭日
+    days:'',
   }),
   show: reactive({
     season: false
@@ -115,9 +117,10 @@ const dynamicForm = {
               return item.dateStr;
             })
             console.log('arr',arr)
-            let concat = state.date.concat(arr);
-            state.date=concat
-            console.log('date',state.date)
+            dynamicForm.state.value.days=arr
+            // let concat = state.date.concat(arr);
+            // state.days=concat
+            // console.log('date',state.date)
           }
         })
       }
@@ -260,6 +263,9 @@ const computedTotalPrice = computed(() => {
         <nut-input class="nut-input-text" v-model="computedTotalPrice" readonly
 
         />
+      </nut-form-item>
+      <nut-form-item label="穿搭日" prop="days" >
+        {{dynamicForm.state.value.days}}
       </nut-form-item>
       <nut-uploader :before-xhr-upload="beforeXhrUpload" v-model:file-list="uploadList"
                     @delete="onDelete"></nut-uploader>
