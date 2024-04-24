@@ -61,6 +61,23 @@ const deleteType =function (typeId) {
   })
 
 }
+const handleBlur =function (id,name,locationId) {
+  request({
+    url: closetConfigTypes,
+    method: "POST",
+    data: {
+      name: name,
+      id: id,
+      locationId:locationId
+
+    },
+    success: function (res) {
+      getLocations(locations)
+      typeVal.value = ''
+    }
+  })
+
+}
 
 </script>
 <template>
@@ -74,7 +91,7 @@ const deleteType =function (typeId) {
 <!--    <nut-swipe-group lock>-->
 <!--      <nut-swipe v-if="item.types&&item.types.length>0" v-for="t in item.types">-->
         <view  v-if="item.types&&item.types.length>0" v-for="t in item.types">
-          <nut-input readonly v-if="t.id" v-model="t.name">
+          <nut-input @blur="handleBlur(t.id,t.name,item.id)" v-if="t.id" v-model="t.name">
             <template #right> <nut-button type="primary" size="small" @click="deleteType(t.id)">删除</nut-button> </template>
           </nut-input>
             <nut-input v-else v-model="typeVal" placeholder="输入分类">

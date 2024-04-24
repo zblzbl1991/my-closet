@@ -149,14 +149,14 @@ useDidShow(() => {
   position: fixed;
   bottom: 150px;
   right: 20px;
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   background-color: #007bff;
   color: #fff;
   border-radius: 50%;
   text-align: center;
   line-height: 50px;
-  font-size: 40px;
+  font-size: 70px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 999;
