@@ -53,7 +53,6 @@ const deleteType =function (typeId) {
             getLocations(locations)
           }
         })
-        console.log('用户点击确定')
       } else if (res.cancel) {
         console.log('用户点击取消')
       }
@@ -74,6 +73,11 @@ const handleBlur =function (id,name,locationId) {
     success: function (res) {
       getLocations(locations)
       typeVal.value = ''
+      Taro.showToast({
+        title: '修改成功',
+        icon: 'none',
+        duration: 2000
+      })
     }
   })
 
@@ -108,25 +112,25 @@ const handleBlur =function (id,name,locationId) {
     </template>
   </nut-input>
 </template>
-<style>
-.nut-navbar__right {
-  color: black;
-}
-:root{
-  --nut-cell-line-height: 15px
-}
-.overlay-body {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-}
+<!--<style>-->
+<!--.nut-navbar__right {-->
+<!--  color: black;-->
+<!--}-->
+<!--:root{-->
+<!--  &#45;&#45;nut-cell-line-height: 15px-->
+<!--}-->
+<!--.overlay-body {-->
+<!--  display: flex;-->
+<!--  height: 100%;-->
+<!--  align-items: center;-->
+<!--  justify-content: center;-->
+<!--}-->
 
-.overlay-content {
-  display: flex;
-//width: 150px; height: 150px; background: #fff; border-radius: 8px; align-items: center; justify-content: center; color: red;
-}
-</style>
-<style scoped lang="scss">
+<!--.overlay-content {-->
+<!--  display: flex;-->
+<!--//width: 150px; height: 150px; background: #fff; border-radius: 8px; align-items: center; justify-content: center; color: red;-->
+<!--}-->
+<!--</style>-->
+<!--<style scoped lang="scss">-->
 
-</style>
+<!--</style>-->
