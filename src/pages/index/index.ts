@@ -1,6 +1,7 @@
 import Taro from "@tarojs/taro";
 import {request} from "../../service/request";
 import {useOpenidStore, useSessionKeyStore, useTokenStore} from "../../store/wechat";
+import {ref} from "vue";
 
 export function login(f: VoidFunction) {
     Taro.login({
@@ -28,3 +29,9 @@ export function login(f: VoidFunction) {
         }
     })
 }
+//排序
+export const options2 = ref([
+    {text: '默认排序', value: 'default'},
+    {text: '价格从高到低', value: 'priceDesc'},
+    {text: '价格从低到高', value: 'priceAsc'}
+])

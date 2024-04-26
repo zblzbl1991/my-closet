@@ -1,6 +1,13 @@
 <template>
   <nut-menu>
-    <nut-menu-item v-model="val2" :options="options2" @change="onChange"/>
+    <nut-menu-item v-model="params.sort" :options="options2" @change="onChange"/>
+    <nut-menu-item ref="item" title="搜索">
+      <div :style="{ display: 'flex', flex: 1, 'justify-content': 'space-between', 'align-items': 'center' }">
+<!--        <div :style="{ marginRight: '10px' }">自定义内容</div>-->
+        <nut-input v-model="params.search" :border="false" />
+        <nut-button @click="getData">确认</nut-button>
+      </div>
+    </nut-menu-item>
   </nut-menu>
   <nut-cell-group v-for="(item,key) in dataList" v-show="computedLength(item)>0">
     <nut-cell>
@@ -38,7 +45,7 @@
 </template>
 <script setup>
 import Tabbar from "../../component/index.vue";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import Taro from "@tarojs/taro";
 import {request} from "../../service/request";
 import {useDidShow} from '@tarojs/taro'
@@ -46,7 +53,7 @@ import {useOpenidStore, useSessionKeyStore, useTokenStore} from "../../store/wec
 import {closetTypes} from "../../api/closetApi";
 import './index.scss'
 import './index'
-import {login} from "@/pages/index/index";
+import {login, options2} from "@/pages/index/index";
 
 const computedLength = computed(() => (item) => {
   let arrLength = 0
@@ -70,17 +77,20 @@ const click = function (e) {
     url: '/pages/closet/index?id=' + id,
   })
 }
+
+const params=reactive({
+  sort:'default',
+  search:''
+})
 //菜单排序
-const options2 = ref([
-  {text: '默认排序', value: 'default'},
-  {text: '价格从高到低', value: 'priceDesc'},
-  {text: '价格从低到高', value: 'priceAsc'}
-])
-const val2 = ref('default')
+
 const onChange = (val) => {
   console.log('val', val)
   getData()
 }
+
+//搜索
+
 
 
 const handleClick = function () {
@@ -99,9 +109,7 @@ const typeList = ref();
 const getData = () => {
   request({
     url: '/closet/',
-    data:{
-      sort:val2.value
-    },
+    data:params,
     success: function (res) {
       dataList.value = res.data.data
     }
