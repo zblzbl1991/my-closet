@@ -20,36 +20,36 @@
         <!--        <nut-side-navbar>-->
         <!--          <nut-sub-side-navbar :name="index" :title="computedCollapseName(index,closet.length)"-->
         <!--                               v-for="(closet,index) in item">-->
-        <nut-space direction="vertical" fill v-for="(closet,index) in item">
-           {{ computedCollapseName(index, closet.length) }}
-          <!--        <nut-divider >{{computedCollapseName(index,closet.length)}} </nut-divider>-->
-          <nut-grid :column-num="3" direction="horizontal" :square="true" gutter="2">
-            <nut-grid-item v-for="(c,cKey) in closet">
-              <image :onTap="click" :id="c.id" lazyLoad="true"
-                     style="width: 100px;height: 80px;background: #fff;margin-right: 10px"
-                     :src="c.images&&c.images[0]?c.images[0].thumbUrl?c.images[0].thumbUrl:c.images[0].url:'../'"></image>
+<!--        <nut-space direction="vertical" fill v-for="(closet,index) in item">-->
+<!--           {{ computedCollapseName(index, closet.length) }}-->
+<!--          &lt;!&ndash;        <nut-divider >{{computedCollapseName(index,closet.length)}} </nut-divider>&ndash;&gt;-->
+<!--          <nut-grid :column-num="3" direction="horizontal" :square="true" gutter="2">-->
+<!--            <nut-grid-item v-for="(c,cKey) in closet">-->
+<!--              <image :onTap="click" :id="c.id" lazyLoad="true"-->
+<!--                     style="width: 100px;height: 80px;background: #fff;margin-right: 10px"-->
+<!--                     :src="c.images&&c.images[0]?c.images[0].thumbUrl?c.images[0].thumbUrl:c.images[0].url:'../'"></image>-->
 
-            </nut-grid-item>
-          </nut-grid>
-        </nut-space>
+<!--            </nut-grid-item>-->
+<!--          </nut-grid>-->
+<!--        </nut-space>-->
         <!--          </nut-sub-side-navbar>-->
         <!--        </nut-side-navbar>-->
-        <!--        <nut-collapse>-->
-        <!--          <nut-collapse-item :name="index" :title="computedCollapseName(index,closet.length)"-->
-        <!--                             v-for="(closet,index) in item">-->
-        <!--            <nut-grid :column-num="3" direction="horizontal" :square="true" gutter="2">-->
-        <!--              <nut-grid-item v-for="(c,cKey) in closet">-->
-        <!--                <image :onTap="click" :id="c.id" lazyLoad="true"-->
-        <!--                       style="width: 100px;height: 80px;background: #fff;margin-right: 10px"-->
-        <!--                       :src="c.images[0]?c.images[0].thumbUrl?c.images[0].thumbUrl:c.images[0].url:'../'"></image>-->
-        <!--              </nut-grid-item>-->
-        <!--            </nut-grid>-->
-        <!--          </nut-collapse-item>-->
-        <!--          &lt;!&ndash;        <view v-for="(closet,index) in item">&ndash;&gt;-->
-        <!--          &lt;!&ndash;          <image  v-for="(closet,index) in item" :onTap="click" :id="closet.id"&ndash;&gt;-->
-        <!--          &lt;!&ndash;                 style="width: 150px;height: 100px;background: #fff;margin-right: 10px"&ndash;&gt;-->
-        <!--          &lt;!&ndash;                 :src="closet.images[0]?closet.images[0].thumbUrl?closet.images[0].thumbUrl:closet.images[0].url:'../'"&ndash;&gt;-->
-        <!--        </nut-collapse>-->
+                <nut-collapse v-model="expandList">
+                  <nut-collapse-item :name="index" :title="computedCollapseName(index,closet.length)"
+                                     v-for="(closet,index) in item">
+                    <nut-grid :column-num="3" direction="horizontal" :square="true" gutter="2">
+                      <nut-grid-item v-for="(c,cKey) in closet">
+                        <image :onTap="click" :id="c.id" lazyLoad="true"
+                               style="width: 100px;height: 80px;background: #fff;margin-right: 10px"
+                               :src="computedImageUrl(c)"></image>
+                      </nut-grid-item>
+                    </nut-grid>
+                  </nut-collapse-item>
+                  <!--        <view v-for="(closet,index) in item">-->
+                  <!--          <image  v-for="(closet,index) in item" :onTap="click" :id="closet.id"-->
+                  <!--                 style="width: 150px;height: 100px;background: #fff;margin-right: 10px"-->
+                  <!--                 :src="closet.images[0]?closet.images[0].thumbUrl?closet.images[0].thumbUrl:closet.images[0].url:'../'"-->
+                </nut-collapse>
       </scroll-view>
     </nut-row>
   </nut-cell-group>
@@ -73,6 +73,7 @@ import './index'
 import {login, options2} from "@/pages/index/index";
 
 const computedLength = computed(() => (item) => {
+
   let arrLength = 0
   for (var val in item) {
     let itemElement = item[val];
@@ -86,6 +87,19 @@ const computedLength = computed(() => (item) => {
 const computedCollapseName = computed(() => (item, length) => {
   return item + ' ' + length + '个'
 })
+//c.images[0]?c.images[0].thumbUrl?c.images[0].thumbUrl:c.images[0].url:'../'
+const computedImageUrl = computed(() => (c) => {
+  let images = c.images;
+  if(images){
+    if(images.length>0){
+      return images[0]?images[0].thumbUrl?images[0].thumbUrl:images[0].url:'../'
+    }
+  }
+  return '../'
+
+})
+const expandList =ref([])
+
 const scroll = function (e) {
 }
 const click = function (e) {
@@ -132,6 +146,15 @@ const getData = () => {
     data: params,
     success: function (res) {
       dataList.value = res.data.data
+      for (const val in dataList.value) {
+        let valueElement = dataList.value[val];
+        for(const ele in valueElement){
+          expandList.value.push(ele)
+        }
+      }
+      // dataList.value.map(item=>{
+      //   console.log('dataList:',item)
+      // })
     }
   })
 };

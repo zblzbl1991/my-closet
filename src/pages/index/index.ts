@@ -4,6 +4,7 @@ import {useOpenidStore, useSessionKeyStore, useTokenStore} from "../../store/wec
 import {ref} from "vue";
 
 export function login(f: VoidFunction) {
+    let openid = Taro.getStorageSync('openid');
     Taro.login({
         success: function (res) {
             if (res.code) {
@@ -11,7 +12,8 @@ export function login(f: VoidFunction) {
                 request({
                     url: '/wx/user/wxc7a91a709ffd2852/login',
                     data: {
-                        code: res.code
+                        code: res.code,
+                        openid:openid
                     }, success: function (res) {
                         Taro.hideLoading()
                         let data = res.data;
@@ -19,6 +21,10 @@ export function login(f: VoidFunction) {
                         useOpenidStore.val = data.data.openid
                         useSessionKeyStore.val = data.data.sessionKey
                         useTokenStore.val = data.data.token
+                        Taro.setStorage({
+                            key:"openid",
+                            data:useOpenidStore.val
+                        })
 
                         f();
                     }

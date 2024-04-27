@@ -152,8 +152,7 @@ const setChooseValue = (param) => {
     },
     method: 'POST',
     success: function (res) {
-      params = Taro.getCurrentInstance().router.params
-      getClosetDays(params.id);
+      dynamicForm.methods.init()
     }
   })
 };
