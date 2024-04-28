@@ -39,5 +39,7 @@ export function login(f: VoidFunction) {
 export const options2 = ref([
     {text: '默认排序', value: 'default'},
     {text: '价格从高到低', value: 'priceDesc'},
-    {text: '价格从低到高', value: 'priceAsc'}
+    {text: '价格从低到高', value: 'priceAsc'},
+    {text:'穿搭次数从低到高',value: "countAsc"},
+    {text:'穿搭次数从高到低',value: "countDesc"}
 ])
