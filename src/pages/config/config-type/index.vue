@@ -53,10 +53,31 @@ const deleteType =function (typeId) {
             getLocations(locations)
           }
         })
-        console.log('用户点击确定')
       } else if (res.cancel) {
         console.log('用户点击取消')
       }
+    }
+  })
+
+}
+const handleBlur =function (id,name,locationId) {
+  request({
+    url: closetConfigTypes,
+    method: "POST",
+    data: {
+      name: name,
+      id: id,
+      locationId:locationId
+
+    },
+    success: function (res) {
+      getLocations(locations)
+      typeVal.value = ''
+      Taro.showToast({
+        title: '修改成功',
+        icon: 'none',
+        duration: 2000
+      })
     }
   })
 
@@ -74,7 +95,7 @@ const deleteType =function (typeId) {
 <!--    <nut-swipe-group lock>-->
 <!--      <nut-swipe v-if="item.types&&item.types.length>0" v-for="t in item.types">-->
         <view  v-if="item.types&&item.types.length>0" v-for="t in item.types">
-          <nut-input readonly v-if="t.id" v-model="t.name">
+          <nut-input @blur="handleBlur(t.id,t.name,item.id)" v-if="t.id" v-model="t.name">
             <template #right> <nut-button type="primary" size="small" @click="deleteType(t.id)">删除</nut-button> </template>
           </nut-input>
             <nut-input v-else v-model="typeVal" placeholder="输入分类">
@@ -91,25 +112,25 @@ const deleteType =function (typeId) {
     </template>
   </nut-input>
 </template>
-<style>
-.nut-navbar__right {
-  color: black;
-}
-:root{
-  --nut-cell-line-height: 15px
-}
-.overlay-body {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-}
+<!--<style>-->
+<!--.nut-navbar__right {-->
+<!--  color: black;-->
+<!--}-->
+<!--:root{-->
+<!--  &#45;&#45;nut-cell-line-height: 15px-->
+<!--}-->
+<!--.overlay-body {-->
+<!--  display: flex;-->
+<!--  height: 100%;-->
+<!--  align-items: center;-->
+<!--  justify-content: center;-->
+<!--}-->
 
-.overlay-content {
-  display: flex;
-//width: 150px; height: 150px; background: #fff; border-radius: 8px; align-items: center; justify-content: center; color: red;
-}
-</style>
-<style scoped lang="scss">
+<!--.overlay-content {-->
+<!--  display: flex;-->
+<!--//width: 150px; height: 150px; background: #fff; border-radius: 8px; align-items: center; justify-content: center; color: red;-->
+<!--}-->
+<!--</style>-->
+<!--<style scoped lang="scss">-->
 
-</style>
+<!--</style>-->

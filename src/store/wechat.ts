@@ -1,5 +1,6 @@
 // stores/counter.js
 import { defineStore } from 'pinia'
+import {Ref, ref} from "vue";
 
 export const useOpenidStore = defineStore('openid', () => {
     const val = ref()
@@ -11,7 +12,7 @@ export const useOpenidStore = defineStore('openid', () => {
     return { val }
 })
 export const useSessionKeyStore = defineStore('sessionKey', () => {
-    const val = ref()
+    const val = ref('')
     // function increment() {
     //     count.value++
     // }
@@ -21,7 +22,7 @@ export const useSessionKeyStore = defineStore('sessionKey', () => {
 })
 
 export const useTokenStore = defineStore('token', () => {
-    const val = ref()
+    const val:Ref<string > = ref('')
     // function increment() {
     //     count.value++
     // }

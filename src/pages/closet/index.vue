@@ -40,7 +40,9 @@ const dynamicForm = {
     tag: [],
     //备注
     remarks: '',
-    images: []
+    images: [],
+    //穿搭日
+    days:'',
   }),
   show: reactive({
     season: false
@@ -84,6 +86,9 @@ const dynamicForm = {
     init() {
       let params = Taro.getCurrentInstance().router.params;
       console.log(params)
+
+
+
       if (params.id) {
         request({
           url: '/closet/' + params.id,
@@ -106,25 +111,28 @@ const dynamicForm = {
 
           }
         })
-        request({
-          url: `${closetRecords}/${params.id}`,
-
-          method: 'GET',
-          success: function (res) {
-            const arr = res.data.data.map(item => {
-              return item.dateStr;
-            })
-            console.log('arr',arr)
-            let concat = state.date.concat(arr);
-            state.date=concat
-            console.log('date',state.date)
-          }
-        })
+        getClosetDays(params.id);
       }
     }
   }
 };
+const   getClosetDays =function(id:string) {
+  request({
+    url: `${closetRecords}/${id}`,
 
+    method: 'GET',
+    success: function (res) {
+      const arr = res.data.data.map(item => {
+        return item.dateStr;
+      })
+      console.log('arr', arr)
+      dynamicForm.state.value.days = arr
+      console.log('arr', dynamicForm.state.value.days)
+      state.date = state.date.concat(arr)
+      // console.log('date',state.date)
+    }
+  })
+}
 const closeSwitch = (param) => {
   state[`${param}`] = false;
 };
@@ -144,8 +152,7 @@ const setChooseValue = (param) => {
     },
     method: 'POST',
     success: function (res) {
-
-
+      dynamicForm.methods.init()
     }
   })
 };
@@ -191,7 +198,6 @@ const state = reactive({
 });
 const endDate = dayjs().format('YYYY-MM-DD');
 const startDate = dayjs().subtract(1, 'month').format('YYYY-MM-DD');
-console.log(endDate)
 const date = ref([startDate, endDate])
 
 const calendarRef = ref(null);
@@ -260,6 +266,9 @@ const computedTotalPrice = computed(() => {
         <nut-input class="nut-input-text" v-model="computedTotalPrice" readonly
 
         />
+      </nut-form-item>
+      <nut-form-item label="穿搭日" prop="days" >
+        <nut-tag plain type="primary" color="#E9E9E9" text-color="#999999" v-for="item in dynamicForm.state.value.days"> {{item}} </nut-tag>
       </nut-form-item>
       <nut-uploader :before-xhr-upload="beforeXhrUpload" v-model:file-list="uploadList"
                     @delete="onDelete"></nut-uploader>
