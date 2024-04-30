@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import {reactive, toRefs, onMounted, ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import Tabbar from "../../component/index.vue";
 import Taro from "@tarojs/taro";
-import {savePoint} from "@/pages/my-clock/index";
+import {getMarkers, savePoint} from "@/pages/my-clock/index";
 
+
+const mapCtx = Taro.createMapContext('map')
 onMounted(() => {
-  setTimeout(() => {
-    // Taro.chooseLocation({
-    //
-    //   success:res=>{
-    //     console.log(1111,res)
-    //   },
-    //   fail:res=>{
-    //
-    //   }
-    // })
-  }, 500);
+  getMarkers(markers,mapCtx)
 });
 
 
@@ -60,9 +52,7 @@ const polyline=ref([{
   width: 2,
   dottedLine: true
 }])
-const getMarkers =function () {
 
-}
 const show =ref(false)
 //添加打卡位置
 const regionchange=function (e) {
