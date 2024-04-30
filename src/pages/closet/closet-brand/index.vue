@@ -33,13 +33,13 @@ onMounted(()=>{
 })
 const data = ref([
   {
-    // title: 'A',
-    // list: [
-    //   {
-    //     name: 'Armani',
-    //     id: 1
-    //   }
-    // ]
+    title: 'A',
+    list: [
+      {
+        name: 'Armani',
+        id: 1
+      }
+    ]
   }
 
 ]);
