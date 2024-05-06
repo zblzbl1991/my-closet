@@ -36,16 +36,22 @@ export default {
         text: '我的首页'
       },
       {
-        pagePath: '/pages/my-closet/index',
-        // selectedIconPath: '../images/tabbar_cate_on.png',
-        // iconPath: '../images/tabbar_cate.png',
-        text: '灵感穿搭'
-      },
-      {
         pagePath: '/pages/statistics/index',
         // selectedIconPath: '../images/tabbar_cate_on.png',
         // iconPath: '../images/tabbar_cate.png',
         text: '统计'
+      },
+/*      {
+        pagePath: '/pages/my-closet/index',
+        // selectedIconPath: '../images/tabbar_cate_on.png',
+        // iconPath: '../images/tabbar_cate.png',
+        text: '灵感穿搭'
+      },*/
+      {
+        pagePath: '/pages/time/index',
+        // selectedIconPath: '../images/tabbar_cate_on.png',
+        // iconPath: '../images/tabbar_cate.png',
+        text: '时间管理'
       },
       {
         pagePath: '/pages/my-clock/index',

@@ -9,3 +9,6 @@ export const closetConfigBrandsGroup='/closet/config/brandsGroup'
 export const closetTypeGroup='/closetType/group'
 export const clockIn='/clock/in'
 export const clockList='/clock/list'
+
+export const saveTime='/time/save'
+export const timeList='/time/list'

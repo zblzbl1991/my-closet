@@ -10,6 +10,7 @@ export default defineAppConfig({
         'pages/config/config-color/index',
         'pages/config/config-size/index',
         'pages/config/config-brand/index',
+        'pages/time/index',
     ],
     window: {
         backgroundTextStyle: 'light',
@@ -36,11 +37,17 @@ export default defineAppConfig({
                 text: '首页'
             },
             {
-                pagePath: 'pages/my-closet/index',
-                // selectedIconPath: 'images/tabbar_cate_on.png',
-                // iconPath: 'images/tabbar_cate.png',
-                text: '穿搭灵感'
+                pagePath: 'pages/time/index',
+                // selectedIconPath: 'images/tabbar_home_on.png',
+                // iconPath: 'images/tabbar_home.png',
+                text: '时间管理'
             },
+            // {
+            //     pagePath: 'pages/my-closet/index',
+            //     // selectedIconPath: 'images/tabbar_cate_on.png',
+            //     // iconPath: 'images/tabbar_cate.png',
+            //     text: '穿搭灵感'
+            // },
             {
                 pagePath: 'pages/statistics/index',
                 // selectedIconPath: '../images/tabbar_cate_on.png',

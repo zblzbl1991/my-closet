@@ -14,7 +14,7 @@ import { Input } from '@nutui/nutui-taro';
 import { Checkbox, CheckboxGroup } from '@nutui/nutui-taro';
 import { IconFont } from '@nutui/icons-vue-taro';
 import './app.scss'
-import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";
+// import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";
 import {createPinia} from "pinia";
 const App = createApp({
   // onShow (options) {},
