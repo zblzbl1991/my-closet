@@ -11,7 +11,7 @@ import {timeList} from "../../api/closetApi";
 
 //图表
 
-const chartData=ref([])
+const chartData = ref([])
 const ec = reactive({
   // onInit:initChart
   lazyLoad: true
@@ -23,7 +23,7 @@ const refresh = function (option, value: Ref<UnwrapRef<string>>) {
     console.error("未获取到ec")
     return
   }
-  const { page } = getCurrentInstance()
+  const {page} = getCurrentInstance()
   let selectComponent = page.selectComponent('#mychart');
   selectComponent?.init((canvas, width, height, canvasDpr) => {
 
@@ -38,7 +38,129 @@ const refresh = function (option, value: Ref<UnwrapRef<string>>) {
     chart.setOption(option);
   })
 }
-var option = ref({
+// 各状态的颜色
+var colors = ['red', 'orange'];
+// 状态
+var state = ['正常', '繁忙'];
+var optionLine = ref({
+
+  color: colors,
+  tooltip: {
+    formatter: function (params) {
+      return params.value[1].substr(11) + '~' + params.value[2].substr(11);
+    }
+  },
+  legend: {
+    data: state,
+    bottom: '1%',
+    selectedMode: false, // 图例设为不可点击
+    textStyle: {
+      color: '#000'
+    }
+  },
+  grid: {
+    left: '3%',
+    right: '3%',
+    top: '1%',
+    bottom: '10%',
+    containLabel: true
+  },
+  xAxis: {
+    // type: 'time',
+    // //设置横坐标标签格式
+    // axisLabel: {
+    //   formatter: function (value) {
+    //     var date = new Date(value);
+    //     return getzf(date.getHours()) + ':' + getzf(date.getMinutes());
+    //     function getzf(num) {
+    //       if (parseInt(num) < 10) {
+    //         num = '0' + num;
+    //       }
+    //       return num;
+    //     }
+    //   }
+    // }
+  },
+  yAxis: {
+    type: 'time',
+    //设置横坐标标签格式
+    axisLabel: {
+      formatter: function (value) {
+        var date = new Date(value);
+        return getzf(date.getHours()) + ':' + getzf(date.getMinutes());
+        function getzf(num) {
+          if (parseInt(num) < 10) {
+            num = '0' + num;
+          }
+          return num;
+        }
+      }
+    }
+    // data: state
+  },
+  series: [
+    // 用空bar来显示图例
+    { name: state[0], type: 'bar', data: [] },
+    { name: state[1], type: 'bar', data: [] },
+    {
+      type: 'custom',
+      renderItem: function (params, api) {
+        //开发者自定义的图形元素渲染逻辑，是通过书写 renderItem 函数实现的
+        var categoryIndex = api.value(0); //这里使用 api.value(0) 取出当前 dataItem 中第一个维度的数值。
+        var start = api.coord([api.value(1), categoryIndex]); // 这里使用 api.coord(...) 将数值在当前坐标系中转换成为屏幕上的点的像素值。
+        var end = api.coord([api.value(2), categoryIndex]);
+        var height = 170;
+
+        return {
+          type: 'rect', // 表示这个图形元素是矩形。还可以是 'circle', 'sector', 'polygon' 等等。
+          shape: echarts.graphic.clipRectByRect(
+              {
+                // 矩形的位置和大小。
+                x: start[0],
+                y: start[1] - height / 2,
+                width: end[0] - start[0],
+                height: height
+              },
+              {
+                // 当前坐标系的包围盒。
+                x: params.coordSys.x,
+                y: params.coordSys.y,
+                width: params.coordSys.width,
+                height: params.coordSys.height
+              }
+          ),
+          style: api.style()
+        };
+      },
+      encode: {
+        x: [1, 2],
+        y: 0
+      },
+      data: [
+        {
+          //0表示正常；1表示繁忙
+          value: [0, '2021-11-18 05:54:32', '2021-11-18 06:05:32'],
+          itemStyle: {
+            color: colors[0]
+          }
+        },
+        {
+          value: [1, '2021-11-18 06:05:32', '2021-11-18 07:15:32'],
+          itemStyle: {
+            color: colors[1]
+          }
+        },
+        {
+          value: [0, '2021-11-18 07:15:32', '2021-11-18 10:15:59'],
+          itemStyle: {
+            color: colors[0]
+          }
+        }
+      ]
+    }
+  ]
+});
+var optionCicle = ref({
   series: [
 
     {
@@ -47,25 +169,25 @@ var option = ref({
       radius: [20, 140],
       center: ['50%', '75%'],
       roseType: 'area',
-      label:{
-        overflow:'none'
+      label: {
+        overflow: 'none'
       },
       itemStyle: {
         borderRadius: 5
       },
       data: [
-        { value: 30, name: 'rose 1' },
-        { value: 28, name: 'rose 2' },
-        { value: 26, name: 'rose 3' },
-        { value: 24, name: 'rose 4' },
-        { value: 22, name: 'rose 5' },
-        { value: 20, name: 'rose 6' },
-        { value: 18, name: 'rose 7' },
-        { value: 16, name: 'rose 8' }
+        {value: 30, name: 'rose 1'},
+        {value: 28, name: 'rose 2'},
+        {value: 26, name: 'rose 3'},
+        {value: 24, name: 'rose 4'},
+        {value: 22, name: 'rose 5'},
+        {value: 20, name: 'rose 6'},
+        {value: 18, name: 'rose 7'},
+        {value: 16, name: 'rose 8'}
       ]
     }
   ]
-});
+})
 
 const onClick = () => {
   showRight.value = true
@@ -136,42 +258,62 @@ const formatter = (type, option) => {
 }
 
 //tab栏切换
-const handlerChange =function (res) {
-  tabList.value=[]
+const handlerChange = function (res) {
+  tabList.value = []
   getData(res.paneKey)
 
 }
-const value = ref('DAY');
+const tabValue = ref('DAY');
+const tabRowValue = ref('');
 
-const tabList =ref([])
-onMounted(()=>{
-  getData(value.value)
+const tabList = ref([])
+const tabRows=ref([])
+onMounted(() => {
+  getData(tabValue.value)
 
-  setTimeout(()=>{
 
-    // option.value.series[0].data=chartData.value
-    refresh(option.value,value)
-  }, 1000)
 })
 const getData = (type) => {
   request({
-    url:`${timeList}`,
-    data:{
-      type:type
+    url: `${timeList}`,
+    data: {
+      type: type
     },
     success: function (res) {
-      console.log(res.data.data)
-      tabList.value=res.data.data
-      getChartsData(chartData)
+      tabList.value = res.data.data
+      tabRows.value=[]
+      for (var key in tabList.value){
+        tabRows.value.push(key)
+        //add your statement to get key value
+      }
+      tabRowValue.value=tabRows.value[0]
+      // console.log('tabRowValue.value',tabRowValue.value)
+      // getChartsData(chartData)
+      setTimeout(() => {
+        if (type === 'DAY') {
+          console.log('tabList.value[tabRowValue.value]',tabList.value[tabRowValue.value])
+          let yAxis = tabList.value[tabRowValue.value].map(item=>item.startTime);
+          let value = tabList.value[tabRowValue.value].map(item=>item.value);
+          console.log('yAxis',yAxis)
+          console.log('value',value)
+          // optionLine.value.yAxis.data=yAxis
+          // optionLine.value.series[0].data=value
+          refresh(optionLine.value, tabValue)
+        } else {
+          refresh(optionCicle.value, tabValue)
+        }
+        // option.value.series[0].data=chartData.value
+
+      }, 1000)
       // dataList.value=res.data.data
     }
   })
 };
-const getResult =function (item) {
-  const length= item.closetList.length
-  let res=0
-  if(item.closetList.length>0){
-    res = item.closetList.map(closet=>closet.price).reduce((total, num) => total + num);
+const getResult = function (item) {
+  const length = item.closetList.length
+  let res = 0
+  if (item.closetList.length > 0) {
+    res = item.closetList.map(closet => closet.price).reduce((total, num) => total + num);
   }
   return `${length} | ￥${res} >`
 }
@@ -181,10 +323,16 @@ const getResult =function (item) {
 
 
   <nut-navbar title="我的时间" desc="记录" @click-right="onClick"></nut-navbar>
-  <nut-tabs @change="handlerChange" v-model="value" auto-height>
+  <nut-tabs @change="handlerChange" v-model="tabValue" auto-height>
     <nut-tab-pane title="按日" pane-key="DAY" style="height: 500px">
-<!--      <nut-cell v-for="item in tabList" :title="item.typeName" :desc="getResult(item)"></nut-cell>-->
-      <ec-canvas class="container" id="mychart" ref="ecCanvasRef" canvas-id="mychart" :ec="ec"></ec-canvas>
+      <!--      左右切换-->
+      <nut-tabs class="tabPane"  v-model="tabRowValue" direction="vertical" title-scroll name="tabName">
+        <nut-tab-pane  v-for="item in tabRows" :key="item" :title="`${item}`" :pane-key="item">
+          <ec-canvas class="container" id="mychart" ref="ecCanvasRef" canvas-id="mychart" :ec="ec"></ec-canvas>
+        </nut-tab-pane>
+      </nut-tabs>
+      <!--      <nut-cell v-for="item in tabList" :title="item.typeName" :desc="getResult(item)"></nut-cell>-->
+      <!--      <ec-canvas class="container" id="mychart" ref="ecCanvasRef" canvas-id="mychart" :ec="ec"></ec-canvas>-->
     </nut-tab-pane>
     <nut-tab-pane title="按月" pane-key="MONTH">
       <nut-cell v-for="item in tabList" :title="item.typeName" :desc="getResult(item)"></nut-cell>
@@ -193,7 +341,7 @@ const getResult =function (item) {
       <nut-cell v-for="item in tabList" :title="item.typeName" :desc="getResult(item)"></nut-cell>
     </nut-tab-pane>
   </nut-tabs>
-<!--  <ec-canvas class="container" id="mychart" ref="ecCanvasRef" canvas-id="mychart" :ec="ec"></ec-canvas>-->
+  <!--  <ec-canvas class="container" id="mychart" ref="ecCanvasRef" canvas-id="mychart" :ec="ec"></ec-canvas>-->
 
 
   <nut-popup v-model:visible="showRight" position="right" :style="{ width: '70%', height: '100%' }">
@@ -239,6 +387,9 @@ const getResult =function (item) {
 :root,
 page {
   --nut-cell-desc-color: black
+}
+.tabPane{
+  height: 500px;
 }
 
 .container {
