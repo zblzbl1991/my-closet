@@ -7,57 +7,75 @@ import {getMarkers, savePoint} from "@/pages/my-clock/index";
 
 const mapCtx = Taro.createMapContext('map')
 onMounted(() => {
-  getMarkers(markers,mapCtx)
+  getMarkers(markers, mapCtx)
 });
-
-const openChooseLocation=function () {
+let formData = ref({
+  name: '',
+  address: '',
+  rating: '',
+  reviews: '',
+  price: '',
+  defaultFileList: [],
+  longitude: 0,
+  latitude: 0
+})
+const openChooseLocation = function () {
   Taro.chooseLocation({
 
-    success:res=>{
-      console.log(1111,res.name)
-      if(res.name){
+    success: res => {
+      console.log(1111, res.name)
+      if (res.name) {
 
-        show.value=true
-        formData.value.name=res.name
-        formData.value.address=res.address
-        formData.value.longitude=res.longitude
-        formData.value.latitude=res.latitude
+        show.value = true
+        formData.value.name = res.name
+        formData.value.address = res.address
+        formData.value.longitude = res.longitude
+        formData.value.latitude = res.latitude
         console.log(formData)
       }
       // savePoint(res)
     },
-    fail:res=>{
+    fail: res => {
 
     }
   })
 }
-const formData = ref({
-  name: '',
-  address: '',
-  level: '',
-  reviews: '',
-  info: '',
-  defaultFileList:[],
-  longitude:0,
-  latitude:0
-})
-const markers =ref( [
-])
-const polyline=ref([{
-  points: [
-  ],
-  color:"#FF0000DD",
+const submit = () => {
+  // formRef.value?.validate().then(({ valid, errors }) => {
+  //   if (valid) {
+  //     console.log('success:', formData.value)
+  //   } else {
+  //     console.warn('error:', errors)
+  //   }
+  // })
+ savePoint(formData.value,show)
+  formData.value={
+    address: "",
+    defaultFileList: [],
+    latitude: 0,
+    longitude: 0,
+    name: "",
+    price: "",
+    rating: "",
+    reviews: ""
+  }
+}
+
+const markers = ref([])
+const polyline = ref([{
+  points: [],
+  color: "#FF0000DD",
   width: 2,
   dottedLine: true
 }])
 
-const show =ref(false)
+const show = ref(false)
 //添加打卡位置
-const regionchange=function (e) {
+const regionchange = function (e) {
   console.log(e.type)
 }
 
-const markertap =function (e) {
+const markertap = function (e) {
   console.log("markertap:", e.detail.markerId)
 }
 const onClick = () => {
@@ -83,45 +101,51 @@ const onClick = () => {
   <nut-popup v-model:visible="show" :style="{ padding: '30px 50px' }">
     <nut-form>
       <nut-form-item label="名称">
-        <nut-input v-model="formData.name" placeholder="请输入名称" type="text" />
+        <nut-input v-model="formData.name" placeholder="请输入名称" type="text"/>
       </nut-form-item>
       <nut-form-item label="地址">
-        <nut-input v-model="formData.address" placeholder="请输入地址" type="text" />
+        <nut-input v-model="formData.address" placeholder="请输入地址" type="text"/>
       </nut-form-item>
       <nut-form-item label="星级">
-        <nut-rate v-model="formData.level" />
+        <nut-rate v-model="formData.rating"/>
       </nut-form-item>
       <nut-form-item label="评价">
-        <nut-input v-model="formData.reviews" placeholder="请输入评价" type="text" />
+        <nut-input v-model="formData.reviews" placeholder="请输入评价" type="text"/>
       </nut-form-item>
       <nut-form-item label="价格">
-        <nut-input v-model="formData.info" placeholder="请输入备注" type="text" />
+        <nut-input v-model="formData.price" placeholder="请输入备注" type="digit"/>
       </nut-form-item>
-      <nut-form-item label="图片">
-        <nut-uploader
-            v-model:file-list="formData.defaultFileList"
-            url="http://服务地址"
-            accept="image/*"
-            maximum="3"
-            multiple
-        >
-        </nut-uploader>
-      </nut-form-item>
+<!--      <nut-form-item label="图片">-->
+<!--        <nut-uploader-->
+<!--            v-model:file-list="formData.defaultFileList"-->
+<!--            url="http://服务地址"-->
+<!--            accept="image/*"-->
+<!--            maximum="3"-->
+<!--            multiple-->
+<!--        >-->
+<!--        </nut-uploader>-->
+<!--      </nut-form-item>-->
+      <nut-space style="margin: 10px">
+        <nut-button type="primary" size="small" @click="submit">提交</nut-button>
+<!--        <nut-button size="small" @click="reset">重置提示状态</nut-button>-->
+      </nut-space>
     </nut-form>
   </nut-popup>
   <Tabbar></Tabbar>
 </template>
 <style lang="scss">
 :root,
-page{
+page {
   --nut-cell-desc-color: black
 }
+
 .overlay-body {
   display: flex;
   height: 100%;
   align-items: center;
   justify-content: center;
 }
+
 .overlay-content {
   display: flex;
   //width: 150px;
