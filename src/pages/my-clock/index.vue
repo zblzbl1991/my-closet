@@ -10,43 +10,41 @@ onMounted(() => {
   getMarkers(markers,mapCtx)
 });
 
-
 const openChooseLocation=function () {
   Taro.chooseLocation({
 
     success:res=>{
-      console.log(1111,res)
-      //{errMsg: "chooseLocation:ok", name: "陆家嘴金融贸易区星聚会KTV(三林印象城店)", address: "上海市浦东新区世纪大道", latitude: 31.22114, longitude: 121.54409}
-      savePoint(res)
+      console.log(1111,res.name)
+      if(res.name){
+
+        show.value=true
+        formData.value.name=res.name
+        formData.value.address=res.address
+        formData.value.longitude=res.longitude
+        formData.value.latitude=res.latitude
+        console.log(formData)
+      }
+      // savePoint(res)
     },
     fail:res=>{
 
     }
   })
 }
+const formData = ref({
+  name: '',
+  address: '',
+  level: '',
+  reviews: '',
+  info: '',
+  defaultFileList:[],
+  longitude:0,
+  latitude:0
+})
 const markers =ref( [
-//     {
-//   // iconPath: "https://avatars2.githubusercontent.com/u/1782542?s=460&u=d20514a52100ed1f82282bcfca6f49052793c889&v=4",
-//   id: 0,
-//   longitude: 113.02,
-//   latitude: 28.07,
-//   // width: 50,
-//   // height: 50
-// },{
-//   id:1,
-//   longitude: 113.01,
-//   latitude: 28.07,
-// }
 ])
 const polyline=ref([{
   points: [
-  //     {
-  //   longitude: 113.3245211,
-  //   latitude: 23.10229
-  // }, {
-  //   longitude: 113.324520,
-  //   latitude: 23.21229
-  // }
   ],
   color:"#FF0000DD",
   width: 2,
@@ -82,17 +80,57 @@ const onClick = () => {
       @regionchange="regionchange"
       @markertap="markertap"
   />
-<!--  <nut-popup v-model:visible="show" position="bottom" :style="{ height: '20%' }">-->
-<!--    <span>肯德基</span>-->
-<!--    <span>麦当劳</span>-->
-<!--    <span>汉堡王</span>-->
-<!--  </nut-popup>-->
+  <nut-popup v-model:visible="show" :style="{ padding: '30px 50px' }">
+    <nut-form>
+      <nut-form-item label="名称">
+        <nut-input v-model="formData.name" placeholder="请输入名称" type="text" />
+      </nut-form-item>
+      <nut-form-item label="地址">
+        <nut-input v-model="formData.address" placeholder="请输入地址" type="text" />
+      </nut-form-item>
+      <nut-form-item label="星级">
+        <nut-rate v-model="formData.level" />
+      </nut-form-item>
+      <nut-form-item label="评价">
+        <nut-input v-model="formData.reviews" placeholder="请输入评价" type="text" />
+      </nut-form-item>
+      <nut-form-item label="价格">
+        <nut-input v-model="formData.info" placeholder="请输入备注" type="text" />
+      </nut-form-item>
+      <nut-form-item label="图片">
+        <nut-uploader
+            v-model:file-list="formData.defaultFileList"
+            url="http://服务地址"
+            accept="image/*"
+            maximum="3"
+            multiple
+        >
+        </nut-uploader>
+      </nut-form-item>
+    </nut-form>
+  </nut-popup>
   <Tabbar></Tabbar>
 </template>
 <style lang="scss">
 :root,
 page{
   --nut-cell-desc-color: black
+}
+.overlay-body {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.overlay-content {
+  display: flex;
+  //width: 150px;
+  //height: 150px;
+  background: #fff;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  color: red;
 }
 </style>
 <style scoped lang="scss">
